@@ -22,6 +22,8 @@ whatilearned/
 ### Security
 - **[supply-chain-security](en/security/supply-chain-security.md)** — Open source supply chain security prevention playbook
 
+> 🤖 Some content in this repository is generated with the assistance of AI. All content is reviewed, edited, and curated manually to ensure accuracy and relevance.
+
 ## 🇮🇩 Bahasa Indonesia
 
 ### Terminal
@@ -31,10 +33,4 @@ whatilearned/
 ### Keamanan
 - **[supply-chain-security](id/keamanan/supply-chain-security.md)** — Panduan pencegahan keamanan supply chain open source
 
-## 🤖 Disclaimer
-
-Some content in this repository is generated with the assistance of AI. All content is reviewed, edited, and curated manually to ensure accuracy and relevance before publishing.
-
-## 🤖 Penyangkalan
-
-Sebagian konten di repositori ini dibuat dengan bantuan AI. Semua konten telah ditinjau, diedit, dan dikurasi secara manual untuk memastikan akurasi dan relevansi sebelum dipublikasikan.
+> 🤖 Sebagian konten di repositori ini dibuat dengan bantuan AI. Semua konten telah ditinjau, diedit, dan dikurasi secara manual untuk memastikan akurasi dan relevansi.
