@@ -93,6 +93,16 @@
         .markdown-body .tag { display: inline-block; background: var(--bg3); color: var(--text2); font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 12px; margin: 1px 2px; border: 1px solid var(--border); }
         .markdown-body .tag.green { background: #10b98122; color: var(--green); border-color: #10b98144; }
         .markdown-body table tr:first-child th { position: sticky; top: 0; z-index: 1; }
+        .home-header { text-align: center; padding: 0 0 24px; }
+        .home-header h1 { font-size: 32px; font-weight: 800; margin: 0 0 4px; background: linear-gradient(135deg,var(--accent),var(--green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .home-header p { color: var(--text2); font-size: 14px; }
+        .categories-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin-bottom: 24px; }
+        .cat-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 18px; cursor: pointer; transition: all 0.15s; }
+        .cat-card:hover { border-color: var(--accent); background: var(--bg3); transform: translateY(-2px); }
+        .cat-card .emoji { font-size: 28px; display: block; margin-bottom: 8px; }
+        .cat-card h3 { font-size: 15px; font-weight: 600; margin: 0 0 4px; }
+        .cat-card .desc { font-size: 12px; color: var(--text2); line-height: 1.4; }
+        .cat-card .meta { font-size: 11px; color: var(--text3); margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border); }
         .home-greeting { padding: 8px 20px; }
         .home-greeting p { font-size: 13px; color: var(--text2); line-height: 1.5; }
         /* Loading */
@@ -125,17 +135,7 @@
         </aside>
 
         <main class="content" id="content">
-            <div class="markdown-body" id="markdownContent">
-                <h1 id="pageTitle">📚 WhatILearned</h1>
-                <p class="subtitle" id="pageSubtitle">Bilingual documentation hub for DevOps, security, and infrastructure topics.</p>
-                <p id="welcomeText">Welcome! Pick a topic from the sidebar to get started.</p>
-                <h2>Categories</h2>
-                <ul id="homeCategories">
-                    <li><strong>🖥️ Terminal</strong> — ZSH, oh-my-zsh, colorls, terminal customization</li>
-                    <li><strong>🔒 Security</strong> — Supply chain security, best practices</li>
-                    <li><strong>☁️ Cloudflare</strong> — Pages, Workers, DNS, deployments</li>
-                </ul>
-            </div>
+            <div id="pageContent"></div>
         </main>
     </div>
 
@@ -155,9 +155,9 @@
                 home: 'Select a topic from the sidebar to start reading.',
                 welcome: 'Welcome! Pick a topic from the sidebar to get started.',
                 categories: {
-                    'terminal': '🖥️ Terminal',
-                    'security': '🔒 Security', 
-                    'cloudflare': '☁️ Cloudflare'
+                    'terminal': 'Terminal',
+                    'security': 'Security', 
+                    'cloudflare': 'Cloudflare'
                 },
                 descs: {
                     'terminal': 'ZSH, oh-my-zsh, colorls, terminal customization',
@@ -170,9 +170,9 @@
                 home: 'Pilih topik dari sidebar untuk mulai membaca.',
                 welcome: 'Selamat datang! Pilih topik dari sidebar untuk memulai.',
                 categories: {
-                    'terminal': '🖥️ Terminal',
-                    'keamanan': '🔒 Keamanan',
-                    'cloudflare': '☁️ Cloudflare'
+                    'terminal': 'Terminal',
+                    'keamanan': 'Keamanan',
+                    'cloudflare': 'Cloudflare'
                 },
                 descs: {
                     'terminal': 'ZSH, oh-my-zsh, colorls, kustomisasi terminal',
@@ -253,25 +253,63 @@
 
         function showHome() {
             const t = titles[currentLang];
-            document.getElementById('pageTitle').textContent = '📚 WhatILearned';
-            document.getElementById('pageSubtitle').textContent = t.site;
-            document.getElementById('welcomeText').textContent = t.welcome;
-            const ul = document.getElementById('homeCategories');
-            ul.innerHTML = '';
-            Object.keys(t.categories).forEach(cat => {
-                const li = document.createElement('li');
-                li.innerHTML = `<strong>${t.categories[cat]}</strong> — ${t.descs[cat]}`;
-                ul.appendChild(li);
+            const c = document.getElementById('pageContent');
+            
+            let html = `
+                <div class="home-header">
+                    <h1>📚 WhatILearned</h1>
+                    <p>${t.site}</p>
+                </div>
+                <div class="categories-grid">
+            `;
+            
+            const catKeys = Object.keys(t.categories);
+            const catOrder = currentLang === 'en' 
+                ? ['terminal', 'security', 'cloudflare']
+                : ['terminal', 'keamanan', 'cloudflare'];
+            
+            const emojis = { terminal: '🖥️', security: '🔒', keamanan: '🔒', cloudflare: '☁️' };
+            
+            catOrder.forEach(cat => {
+                const files = getFilesForCategory(cat);
+                html += `
+                    <div class="cat-card" onclick="loadFirstDoc('${cat}')">
+                        <span class="emoji">${emojis[cat] || '📚'}</span>
+                        <h3>${t.categories[cat]}</h3>
+                        <div class="desc">${t.descs[cat]}</div>
+                        <div class="meta">${files.length} article${files.length !== 1 ? 's' : ''}</div>
+                    </div>
+                `;
             });
-            document.getElementById('markdownContent').style.display = 'block';
+            
+            html += `</div>`;
+            c.innerHTML = html;
+            
             document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
             currentFile = null;
+            history.replaceState(null, '', `#/`);
+        }
+
+        function getFilesForCategory(cat) {
+            if (!navData) return [];
+            const data = navData[currentLang];
+            if (!data) return [];
+            const group = data.find(g => g.category === cat);
+            return group ? group.files : [];
+        }
+
+        function loadFirstDoc(cat) {
+            const files = getFilesForCategory(cat);
+            if (files.length > 0) {
+                const path = `${cat}/${files[0]}`;
+                loadDoc(path, currentLang);
+            }
         }
 
         async function loadDoc(path, lang) {
             const t = titles[lang];
-            const content = document.getElementById('markdownContent');
-            content.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+            const c = document.getElementById('pageContent');
+            c.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
             
             try {
                 const resp = await fetch(`${lang}/${path}.md?t=${Date.now()}`);
@@ -282,10 +320,17 @@
                 const cleanMd = md.replace(/^---[\s\S]*?---\n*/, '');
                 
                 const html = marked.parse(cleanMd);
-                content.innerHTML = html;
+                c.innerHTML = `
+                    <div class="markdown-body">
+                        <div style="margin-bottom:16px">
+                            <a href="#" onclick="showHome(); return false;" style="color:var(--accent);text-decoration:none;font-size:13px;font-weight:500;">← ${lang === 'en' ? 'Back to categories' : 'Kembali ke kategori'}</a>
+                        </div>
+                        ${html}
+                    </div>
+                `;
                 
-                // Fix heading IDs for TOC
-                content.querySelectorAll('h2, h3, h4').forEach(h => {
+                // Fix heading IDs
+                c.querySelectorAll('h2, h3, h4').forEach(h => {
                     if (!h.id) {
                         h.id = h.textContent.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
                     }
@@ -297,18 +342,15 @@
                 });
                 currentFile = path;
 
-                // Scroll to top
                 window.scrollTo(0, 0);
-
-                // Update URL hash
                 history.replaceState(null, '', `#/${lang}/${path}`);
 
             } catch (e) {
-                content.innerHTML = `
+                c.innerHTML = `
                     <div class="error-state">
                         <div class="emoji">🔍</div>
                         <h3>${lang === 'en' ? 'Page not found' : 'Halaman tidak ditemukan'}</h3>
-                        <p>${lang === 'en' ? `Could not load <code>${path}.md</code>. Make sure the file exists.` : `Tidak dapat memuat <code>${path}.md</code>. Pastikan file tersedia.`}</p>
+                        <p>${lang === 'en' ? `Could not load <code>${path}.md</code>.` : `Tidak dapat memuat <code>${path}.md</code>.`}</p>
                         <p><a href="#" onclick="showHome(); return false;">${lang === 'en' ? '← Back to home' : '← Kembali ke beranda'}</a></p>
                     </div>
                 `;
