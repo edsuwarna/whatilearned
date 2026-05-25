@@ -1,0 +1,30 @@
+{
+  "en": [
+    {
+      "category": "terminal",
+      "files": ["colorls", "customize-terminal"]
+    },
+    {
+      "category": "security",
+      "files": ["supply-chain-security"]
+    },
+    {
+      "category": "cloudflare",
+      "files": ["deploy-littlelink-to-cloudflare-pages"]
+    }
+  ],
+  "id": [
+    {
+      "category": "terminal",
+      "files": ["colorls", "customize-terminal"]
+    },
+    {
+      "category": "keamanan",
+      "files": ["supply-chain-security"]
+    },
+    {
+      "category": "cloudflare",
+      "files": ["deploy-littlelink-ke-cloudflare-pages"]
+    }
+  ]
+}
