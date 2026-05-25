@@ -25,7 +25,8 @@ whatilearned/
 ## 🇮🇩 Bahasa Indonesia
 
 ### Terminal
-- *Belum ada konten*
+- **[colorls](id/terminal/colorls.md)** — Mempercantik perintah ls dengan warna dan ikon
+- **[customize-terminal](id/terminal/customize-terminal.md)** — Panduan instalasi ZSH + oh-my-zsh
 
 ### Keamanan
 - **[supply-chain-security](id/keamanan/supply-chain-security.md)** — Panduan pencegahan keamanan supply chain open source
