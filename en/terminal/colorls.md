@@ -29,4 +29,4 @@ Save the file and reload zsh using this command:
 
 Now your ls command will be beautiful like this
 
-![colosls](../images/colorls.png)
+![colorls](colorls.png)
