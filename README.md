@@ -15,6 +15,8 @@ whatilearned/
 
 ## 🇬🇧 English
 
+> 🤖 Some content in this repository is generated with the assistance of AI. All content is reviewed, edited, and curated manually to ensure accuracy and relevance.
+
 ### Terminal
 - **[colorls](en/terminal/colorls.md)** — Beautify your ls command with color and icons
 - **[customize-terminal](en/terminal/customize-terminal.md)** — ZSH + oh-my-zsh installation guide
@@ -22,9 +24,9 @@ whatilearned/
 ### Security
 - **[supply-chain-security](en/security/supply-chain-security.md)** — Open source supply chain security prevention playbook
 
-> 🤖 Some content in this repository is generated with the assistance of AI. All content is reviewed, edited, and curated manually to ensure accuracy and relevance.
-
 ## 🇮🇩 Bahasa Indonesia
+
+> 🤖 Sebagian konten di repositori ini dibuat dengan bantuan AI. Semua konten telah ditinjau, diedit, dan dikurasi secara manual untuk memastikan akurasi dan relevansi.
 
 ### Terminal
 - **[colorls](id/terminal/colorls.md)** — Mempercantik perintah ls dengan warna dan ikon
@@ -32,5 +34,3 @@ whatilearned/
 
 ### Keamanan
 - **[supply-chain-security](id/keamanan/supply-chain-security.md)** — Panduan pencegahan keamanan supply chain open source
-
-> 🤖 Sebagian konten di repositori ini dibuat dengan bantuan AI. Semua konten telah ditinjau, diedit, dan dikurasi secara manual untuk memastikan akurasi dan relevansi.
