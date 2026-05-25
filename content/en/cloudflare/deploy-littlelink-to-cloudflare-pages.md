@@ -69,7 +69,7 @@ git push origin main
    - **Production branch**: `main`
    - **Framework preset**: **None** (it's plain HTML/CSS)
    - **Build command**: leave empty
-   - **Build output directory**: leave empty (or `/` for the root)
+   - **Build output directory**: `/` (root directory — this is where `index.html` lives)
 7. Click **Save and Deploy**
 
 > ⚡ That's it! Cloudflare will deploy your site in ~30 seconds.

@@ -69,7 +69,7 @@ git push origin main
    - **Production branch**: `main`
    - **Framework preset**: **None** (plain HTML/CSS)
    - **Build command**: kosongkan
-   - **Build output directory**: kosongkan (atau `/`)
+   - **Build output directory**: `/` (root directory — tempat `index.html` berada)
 7. Klik **Save and Deploy**
 
 > ⚡ Selesai! Cloudflare akan deploy site lo dalam ~30 detik.
