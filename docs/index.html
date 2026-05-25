@@ -105,6 +105,14 @@
         .cat-card .meta { font-size: 11px; color: var(--text3); margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border); }
         .home-greeting { padding: 8px 20px; }
         .home-greeting p { font-size: 13px; color: var(--text2); line-height: 1.5; }
+        .article-list { max-width: 640px; margin: 0 auto; }
+        .article-list h2 { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+        .article-list .back { display: inline-block; color: var(--accent); text-decoration: none; font-size: 13px; font-weight: 500; margin-bottom: 16px; cursor: pointer; }
+        .article-list .back:hover { text-decoration: underline; }
+        .article-item { display: block; padding: 12px 16px; background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 8px; text-decoration: none; color: var(--text); transition: all 0.15s; }
+        .article-item:hover { border-color: var(--accent); background: var(--bg3); }
+        .article-item .title { font-size: 14px; font-weight: 600; }
+        .article-item .desc { font-size: 12px; color: var(--text2); margin-top: 2px; }
         /* Loading */
         .loading { display: flex; align-items: center; justify-content: center; padding: 80px 0; }
         .spinner { width: 32px; height: 32px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; }
@@ -273,7 +281,7 @@
             catOrder.forEach(cat => {
                 const files = getFilesForCategory(cat);
                 html += `
-                    <div class="cat-card" onclick="loadFirstDoc('${cat}')">
+                    <div class="cat-card" onclick="showCategory('${cat}')">
                         <span class="emoji">${emojis[cat] || '📚'}</span>
                         <h3>${t.categories[cat]}</h3>
                         <div class="desc">${t.descs[cat]}</div>
@@ -298,18 +306,58 @@
             return group ? group.files : [];
         }
 
-        function loadFirstDoc(cat) {
+        function showCategory(cat) {
+            const t = titles[currentLang];
             const files = getFilesForCategory(cat);
-            if (files.length > 0) {
-                const path = `${cat}/${files[0]}`;
-                loadDoc(path, currentLang);
+            const c = document.getElementById('pageContent');
+            const emojis = { terminal: '🖥️', security: '🔒', keamanan: '🔒', cloudflare: '☁️' };
+
+            if (files.length === 0) {
+                c.innerHTML = `
+                    <div class="article-list">
+                        <a class="back" onclick="showHome()">← ${currentLang === 'en' ? 'Back to categories' : 'Kembali ke kategori'}</a>
+                        <h2>${emojis[cat] || '📚'} ${t.categories[cat]}</h2>
+                        <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">${t.descs[cat]}</p>
+                        <div class="error-state">
+                            <div class="emoji">📭</div>
+                            <h3>${currentLang === 'en' ? 'No articles yet' : 'Belum ada artikel'}</h3>
+                        </div>
+                    </div>
+                `;
+                return;
             }
+
+            let itemsHtml = files.map(file => {
+                const display = file.replace(/-/g, ' ');
+                const path = `${cat}/${file}`;
+                return `
+                    <a class="article-item" href="#/${currentLang}/${path}" onclick="event.preventDefault(); loadDoc('${path}', '${currentLang}')">
+                        <div class="title">${display.charAt(0).toUpperCase() + display.slice(1)}</div>
+                    </a>
+                `;
+            }).join('');
+
+            c.innerHTML = `
+                <div class="article-list">
+                    <a class="back" onclick="showHome()">← ${currentLang === 'en' ? 'Back to categories' : 'Kembali ke kategori'}</a>
+                    <h2>${emojis[cat] || '📚'} ${t.categories[cat]}</h2>
+                    <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">${t.descs[cat]}</p>
+                    <div id="articleItems">${itemsHtml}</div>
+                </div>
+            `;
+
+            document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+            currentFile = null;
+            history.replaceState(null, '', `#/${currentLang}/${cat}`);
         }
 
         async function loadDoc(path, lang) {
             const t = titles[lang];
             const c = document.getElementById('pageContent');
             c.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+
+            // Extract category from path (e.g. "terminal/colorls" → "terminal")
+            const cat = path.split('/')[0];
             
             try {
                 const resp = await fetch(`${lang}/${path}.md?t=${Date.now()}`);
@@ -323,7 +371,7 @@
                 c.innerHTML = `
                     <div class="markdown-body">
                         <div style="margin-bottom:16px">
-                            <a href="#" onclick="showHome(); return false;" style="color:var(--accent);text-decoration:none;font-size:13px;font-weight:500;">← ${lang === 'en' ? 'Back to categories' : 'Kembali ke kategori'}</a>
+                            <a href="#" onclick="showCategory('${cat}'); return false;" style="color:var(--accent);text-decoration:none;font-size:13px;font-weight:500;">← ${lang === 'en' ? 'Back to list' : 'Kembali ke daftar'}</a>
                         </div>
                         ${html}
                     </div>
@@ -351,7 +399,7 @@
                         <div class="emoji">🔍</div>
                         <h3>${lang === 'en' ? 'Page not found' : 'Halaman tidak ditemukan'}</h3>
                         <p>${lang === 'en' ? `Could not load <code>${path}.md</code>.` : `Tidak dapat memuat <code>${path}.md</code>.`}</p>
-                        <p><a href="#" onclick="showHome(); return false;">${lang === 'en' ? '← Back to home' : '← Kembali ke beranda'}</a></p>
+                        <p><a href="#" onclick="showCategory('${cat}'); return false;">${lang === 'en' ? '← Back to list' : '← Kembali ke daftar'}</a></p>
                     </div>
                 `;
                 currentFile = null;
@@ -379,23 +427,30 @@
         });
         document.getElementById('sidebarOverlay').addEventListener('click', closeSidebar);
 
-        // Hash routing
-        window.addEventListener('hashchange', () => {
+        function handleHash() {
             const hash = location.hash.slice(1);
             if (hash.startsWith('/')) {
-                const parts = hash.split('/');
-                if (parts.length >= 3) {
-                    const lang = parts[1];
-                    const path = parts.slice(2).join('/');
-                    if (lang === 'en' || lang === 'id') {
-                        switchLang(lang);
+                const parts = hash.split('/').filter(Boolean);
+                if (parts.length >= 2 && (parts[0] === 'en' || parts[0] === 'id')) {
+                    const lang = parts[0];
+                    currentFile = null; // prevent switchLang from double-loading
+                    switchLang(lang);
+                    if (parts.length >= 3) {
+                        // #/en/terminal/colorls → load article
+                        const path = parts.slice(1).join('/');
                         loadDoc(path, lang);
-                        return;
+                    } else {
+                        // #/en/terminal → show category list
+                        showCategory(parts[1]);
                     }
+                    return;
                 }
             }
             showHome();
-        });
+        }
+
+        // Hash routing
+        window.addEventListener('hashchange', handleHash);
 
         // Init
         marked.setOptions({
@@ -404,16 +459,7 @@
         });
 
         fetchNav().then(() => {
-            const hash = location.hash.slice(1);
-            if (hash.startsWith('/')) {
-                const parts = hash.split('/');
-                if (parts.length >= 3 && (parts[1] === 'en' || parts[1] === 'id')) {
-                    switchLang(parts[1]);
-                    loadDoc(parts.slice(2).join('/'), parts[1]);
-                    return;
-                }
-            }
-            showHome();
+            handleHash();
         });
     </script>
 </body>
