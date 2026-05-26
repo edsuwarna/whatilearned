@@ -44,6 +44,9 @@
         .sidebar-nav a { display: block; padding: 6px 20px; color: var(--text2); text-decoration: none; font-size: 13px; border-left: 2px solid transparent; transition: all 0.15s; }
         .sidebar-nav a:hover { color: var(--text); background: var(--bg3); }
         .sidebar-nav a.active { color: var(--accent); border-left-color: var(--accent); background: var(--card-hover); font-weight: 600; }
+        .sidebar-cat { border-bottom: 1px solid var(--border); }
+        .sidebar-cat-header { display: flex; align-items: center; padding: 8px 20px; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--text); transition: background 0.15s; }
+        .sidebar-cat-header:hover { background: var(--bg3); }
         .sidebar::-webkit-scrollbar { width: 6px; }
         .sidebar::-webkit-scrollbar-track { background: transparent; }
         .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
@@ -223,6 +226,17 @@
             const data = navData[currentLang];
             if (!data) return;
             nav.innerHTML = '';
+            // Home link
+            const homeDiv = document.createElement('div');
+            homeDiv.className = 'sidebar-cat';
+            const homeLink = document.createElement('div');
+            homeLink.className = 'sidebar-cat-header';
+            homeLink.innerHTML = '<span>🏠 Home</span>';
+            homeLink.style.cursor = 'pointer';
+            homeLink.onclick = () => { showHome(); if (window.innerWidth <= 900) closeSidebar(); };
+            homeDiv.appendChild(homeLink);
+            nav.appendChild(homeDiv);
+            // Categories
             data.forEach(group => {
                 const label = document.createElement('div');
                 label.className = 'sidebar-label';
