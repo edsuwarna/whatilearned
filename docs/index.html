@@ -441,12 +441,32 @@
         });
         document.getElementById('sidebarOverlay').addEventListener('click', closeSidebar);
 
+        // URL alias map: old path → new path (for backward compatibility)
+        const urlAliases = {
+            // Indonesian: 'security' folder → actual 'keamanan'
+            'id/security/supply-chain-security': 'id/keamanan/supply-chain-security',
+            // English: 'ke' filename → actual 'to'
+            'en/cloudflare/deploy-littlelink-ke-cloudflare-pages': 'en/cloudflare/deploy-littlelink-to-cloudflare-pages'
+        };
+
         function handleHash() {
             const hash = location.hash.slice(1);
             if (hash.startsWith('/')) {
                 const parts = hash.split('/').filter(Boolean);
                 if (parts.length >= 2 && (parts[0] === 'en' || parts[0] === 'id')) {
                     const lang = parts[0];
+                    const fullPath = parts.join('/');
+
+                    // Check URL aliases
+                    const alias = urlAliases[fullPath];
+                    if (alias) {
+                        const aliasParts = alias.split('/');
+                        history.replaceState(null, '', `#/${alias}`);
+                        switchLang(aliasParts[0]);
+                        loadDoc(aliasParts.slice(1).join('/'), aliasParts[0]);
+                        return;
+                    }
+
                     currentFile = null; // prevent switchLang from double-loading
                     switchLang(lang);
                     if (parts.length >= 3) {
