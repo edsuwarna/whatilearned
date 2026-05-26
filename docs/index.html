@@ -258,7 +258,28 @@
             });
         }
 
+        // Find equivalent path in another language using nav data
+        function findEquivalentPath(path, fromLang, toLang) {
+            if (fromLang === toLang || !navData) return path;
+            const fromData = navData[fromLang];
+            const toData = navData[toLang];
+            if (!fromData || !toData) return path;
+
+            for (const group of fromData) {
+                const idx = group.files.indexOf(path.replace(group.category + '/', ''));
+                if (idx !== -1) {
+                    // Found: map by group index + file index
+                    const gi = fromData.indexOf(group);
+                    if (gi < toData.length && idx < toData[gi].files.length) {
+                        return `${toData[gi].category}/${toData[gi].files[idx]}`;
+                    }
+                }
+            }
+            return path;
+        }
+
         function switchLang(lang) {
+            const prevLang = currentLang;
             currentLang = lang;
             document.querySelectorAll('.lang-btn').forEach(b => {
                 b.classList.toggle('active', b.dataset.lang === lang);
@@ -267,7 +288,9 @@
             document.getElementById('homeText').textContent = titles[lang].home;
             renderNav();
             if (currentFile) {
-                loadDoc(currentFile, lang);
+                // Map path between languages (handles diff category & file names)
+                const mappedPath = findEquivalentPath(currentFile, prevLang, lang);
+                loadDoc(mappedPath, lang);
             } else {
                 showHome();
             }
