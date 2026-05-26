@@ -2,7 +2,7 @@
 
 A personal documentation of what I learned about various tools and technologies, especially in infrastructure. Bilingual — English (EN) and Bahasa Indonesia (ID).
 
-🌐 **Live docs**: [https://whatilearned.pages.dev](https://whatilearned.pages.dev)
+🌐 **Live docs**: [https://notes.edsuwarna.id](https://notes.edsuwarna.id)
 
 ```
 whatilearned/
