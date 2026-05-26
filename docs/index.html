@@ -33,12 +33,6 @@
         .sidebar-header { padding: 16px 20px; border-bottom: 1px solid var(--border); }
         .sidebar-header h2 { font-size: 16px; font-weight: 800; background: linear-gradient(135deg,var(--green),var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
         .sidebar-header small { display: block; font-size: 11px; color: var(--text2); font-weight: 400; -webkit-text-fill-color: var(--text2); margin-top: 2px; }
-        .lang-toggle { display: flex; gap: 0; padding: 8px 20px; border-bottom: 1px solid var(--border); }
-        .lang-btn { flex: 1; padding: 5px 8px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: var(--bg2); color: var(--text2); transition: all 0.15s; text-align: center; font-family: inherit; }
-        .lang-btn:first-child { border-radius: 5px 0 0 5px; }
-        .lang-btn:last-child { border-radius: 0 5px 5px 0; }
-        .lang-btn.active { background: var(--green); color: #fff; border-color: var(--green); }
-        .lang-btn:not(.active):hover { background: var(--bg3); color: var(--text); }
         .sidebar-nav { padding: 8px 0; }
         .sidebar-label { padding: 6px 20px 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text3); }
         .sidebar-nav a { display: block; padding: 6px 20px; color: var(--text2); text-decoration: none; font-size: 13px; border-left: 2px solid transparent; transition: all 0.15s; }
@@ -133,14 +127,10 @@
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <h2>📚 WhatILearned</h2>
-                <small id="headerSubtitle">Bilingual Documentation</small>
+                <small>Documentation Hub</small>
             </div>
-            <div class="lang-toggle">
-                <button class="lang-btn active" data-lang="en" onclick="switchLang('en')">🇬🇧 EN</button>
-                <button class="lang-btn" data-lang="id" onclick="switchLang('id')">🇮🇩 ID</button>
-            </div>
-            <div class="home-greeting" id="homeGreeting">
-                <p id="homeText">Select a topic from the sidebar to start reading.</p>
+            <div class="home-greeting">
+                <p>Select a topic from the sidebar to start reading.</p>
             </div>
             <nav class="sidebar-nav" id="sidebarNav"></nav>
         </aside>
@@ -155,76 +145,39 @@
     <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js">
     </script>
     <script>
-        let currentLang = 'en';
         let currentFile = null;
-        let navData = null;
-        let pageTitles = {};
 
-        const titles = {
-            en: { 
-                site: 'Bilingual Documentation',
-                home: 'Select a topic from the sidebar to start reading.',
-                welcome: 'Welcome! Pick a topic from the sidebar to get started.',
-                categories: {
-                    'terminal': 'Terminal',
-                    'security': 'Security', 
-                    'cloudflare': 'Cloudflare'
-                },
-                descs: {
-                    'terminal': 'ZSH, oh-my-zsh, colorls, terminal customization',
-                    'security': 'Supply chain security, best practices',
-                    'cloudflare': 'Pages, Workers, DNS, deployments'
-                }
-            },
-            id: {
-                site: 'Dokumentasi Bilingual',
-                home: 'Pilih topik dari sidebar untuk mulai membaca.',
-                welcome: 'Selamat datang! Pilih topik dari sidebar untuk memulai.',
-                categories: {
-                    'terminal': 'Terminal',
-                    'keamanan': 'Keamanan',
-                    'cloudflare': 'Cloudflare'
-                },
-                descs: {
-                    'terminal': 'ZSH, oh-my-zsh, colorls, kustomisasi terminal',
-                    'keamanan': 'Keamanan supply chain, praktik terbaik',
-                    'cloudflare': 'Pages, Workers, DNS, deployment'
-                }
-            }
+        // Backward compat: old URL patterns → new flat paths
+        const oldUrlMap = {
+            'en/terminal/colorls': 'terminal/colorls',
+            'en/terminal/customize-terminal': 'terminal/customize-terminal',
+            'en/security/supply-chain-security': 'security/supply-chain-security',
+            'en/cloudflare/deploy-littlelink-to-cloudflare-pages': 'cloudflare/deploy-littlelink-to-cloudflare-pages',
+            'en/cloudflare/deploy-littlelink-ke-cloudflare-pages': 'cloudflare/deploy-littlelink-to-cloudflare-pages',
+            'id/terminal/colorls': 'terminal/colorls',
+            'id/terminal/customize-terminal': 'terminal/customize-terminal',
+            'id/keamanan/supply-chain-security': 'security/supply-chain-security',
+            'id/security/supply-chain-security': 'security/supply-chain-security',
+            'id/cloudflare/deploy-littlelink-ke-cloudflare-pages': 'cloudflare/deploy-littlelink-to-cloudflare-pages',
+            'id/cloudflare/deploy-littlelink-to-cloudflare-pages': 'cloudflare/deploy-littlelink-to-cloudflare-pages'
         };
 
-        async function fetchNav() {
-            try {
-                const resp = await fetch(`nav.json?t=${Date.now()}`);
-                if (!resp.ok) throw new Error('Nav not found');
-                navData = await resp.json();
-                renderNav();
-            } catch (e) {
-                // Build nav from directory listing
-                navData = buildDefaultNav();
-                renderNav();
-            }
-        }
+        const navData = [
+            { category: 'terminal', files: ['colorls', 'customize-terminal'] },
+            { category: 'security', files: ['supply-chain-security'] },
+            { category: 'cloudflare', files: ['deploy-littlelink-to-cloudflare-pages'] }
+        ];
 
-        function buildDefaultNav() {
-            return {
-                en: [
-                    { category: 'terminal', files: ['colorls', 'customize-terminal'] },
-                    { category: 'security', files: ['supply-chain-security'] },
-                    { category: 'cloudflare', files: ['deploy-littlelink-to-cloudflare-pages'] }
-                ],
-                id: [
-                    { category: 'terminal', files: ['colorls', 'customize-terminal'] },
-                    { category: 'keamanan', files: ['supply-chain-security'] },
-                    { category: 'cloudflare', files: ['deploy-littlelink-ke-cloudflare-pages'] }
-                ]
-            };
-        }
+        const categories = {
+            'terminal': { label: '🖥️ Terminal', desc: 'ZSH, oh-my-zsh, colorls, terminal customization' },
+            'security': { label: '🔒 Security', desc: 'Supply chain security, best practices' },
+            'cloudflare': { label: '☁️ Cloudflare', desc: 'Pages, Workers, DNS, deployments' }
+        };
+
+        const catOrder = ['terminal', 'security', 'cloudflare'];
 
         function renderNav() {
             const nav = document.getElementById('sidebarNav');
-            const data = navData[currentLang];
-            if (!data) return;
             nav.innerHTML = '';
             // Home link
             const homeDiv = document.createElement('div');
@@ -237,20 +190,20 @@
             homeDiv.appendChild(homeLink);
             nav.appendChild(homeDiv);
             // Categories
-            data.forEach(group => {
+            navData.forEach(group => {
                 const label = document.createElement('div');
                 label.className = 'sidebar-label';
-                label.textContent = (titles[currentLang].categories[group.category] || group.category).replace(/^[^\s]*\s/, '');
+                label.textContent = (categories[group.category]?.label || group.category).replace(/^[^\s]*\s/, '');
                 nav.appendChild(label);
                 group.files.forEach(file => {
                     const a = document.createElement('a');
                     const path = `${group.category}/${file}`;
-                    a.href = `#/${currentLang}/${path}`;
+                    a.href = `#/${path}`;
                     a.textContent = file.replace(/-/g, ' ');
                     a.dataset.path = path;
                     a.onclick = (e) => {
                         e.preventDefault();
-                        loadDoc(path, currentLang);
+                        loadDoc(path);
                         if (window.innerWidth <= 900) closeSidebar();
                     };
                     nav.appendChild(a);
@@ -258,106 +211,54 @@
             });
         }
 
-        // Find equivalent path in another language using nav data
-        function findEquivalentPath(path, fromLang, toLang) {
-            if (fromLang === toLang || !navData) return path;
-            const fromData = navData[fromLang];
-            const toData = navData[toLang];
-            if (!fromData || !toData) return path;
-
-            for (const group of fromData) {
-                const idx = group.files.indexOf(path.replace(group.category + '/', ''));
-                if (idx !== -1) {
-                    // Found: map by group index + file index
-                    const gi = fromData.indexOf(group);
-                    if (gi < toData.length && idx < toData[gi].files.length) {
-                        return `${toData[gi].category}/${toData[gi].files[idx]}`;
-                    }
-                }
-            }
-            return path;
-        }
-
-        function switchLang(lang) {
-            const prevLang = currentLang;
-            currentLang = lang;
-            document.querySelectorAll('.lang-btn').forEach(b => {
-                b.classList.toggle('active', b.dataset.lang === lang);
-            });
-            document.getElementById('headerSubtitle').textContent = titles[lang].site;
-            document.getElementById('homeText').textContent = titles[lang].home;
-            renderNav();
-            if (currentFile) {
-                // Map path between languages (handles diff category & file names)
-                const mappedPath = findEquivalentPath(currentFile, prevLang, lang);
-                loadDoc(mappedPath, lang);
-            } else {
-                showHome();
-            }
-        }
-
         function showHome() {
-            const t = titles[currentLang];
             const c = document.getElementById('pageContent');
-            
             let html = `
                 <div class="home-header">
                     <h1>📚 WhatILearned</h1>
-                    <p>${t.site}</p>
+                    <p>Documentation Hub</p>
                 </div>
                 <div class="categories-grid">
             `;
-            
-            const catKeys = Object.keys(t.categories);
-            const catOrder = currentLang === 'en' 
-                ? ['terminal', 'security', 'cloudflare']
-                : ['terminal', 'keamanan', 'cloudflare'];
-            
-            const emojis = { terminal: '🖥️', security: '🔒', keamanan: '🔒', cloudflare: '☁️' };
-            
             catOrder.forEach(cat => {
+                const info = categories[cat];
                 const files = getFilesForCategory(cat);
                 html += `
                     <div class="cat-card" onclick="showCategory('${cat}')">
-                        <span class="emoji">${emojis[cat] || '📚'}</span>
-                        <h3>${t.categories[cat]}</h3>
-                        <div class="desc">${t.descs[cat]}</div>
+                        <span class="emoji">${cat === 'terminal' ? '🖥️' : cat === 'security' ? '🔒' : '☁️'}</span>
+                        <h3>${info ? info.label.replace(/^[^\s]*\s/, '') : cat}</h3>
+                        <div class="desc">${info ? info.desc : ''}</div>
                         <div class="meta">${files.length} article${files.length !== 1 ? 's' : ''}</div>
                     </div>
                 `;
             });
-            
             html += `</div>`;
             c.innerHTML = html;
-            
             document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
             currentFile = null;
-            history.replaceState(null, '', `#/`);
+            history.replaceState(null, '', '#/');
         }
 
         function getFilesForCategory(cat) {
-            if (!navData) return [];
-            const data = navData[currentLang];
-            if (!data) return [];
-            const group = data.find(g => g.category === cat);
+            const group = navData.find(g => g.category === cat);
             return group ? group.files : [];
         }
 
         function showCategory(cat) {
-            const t = titles[currentLang];
+            const info = categories[cat];
             const files = getFilesForCategory(cat);
             const c = document.getElementById('pageContent');
-            const emojis = { terminal: '🖥️', security: '🔒', keamanan: '🔒', cloudflare: '☁️' };
+            const emoji = cat === 'terminal' ? '🖥️' : cat === 'security' ? '🔒' : '☁️';
 
             if (files.length === 0) {
                 c.innerHTML = `
                     <div class="article-list">
-                        <a class="back" onclick="showHome()">← ${currentLang === 'en' ? 'Back to categories' : 'Kembali ke kategori'}</a>
-                        <h2>${emojis[cat] || '📚'} ${t.categories[cat]}</h2>
-                        <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">${t.descs[cat]}</p>
+                        <a class="back" onclick="showHome()">← Back to categories</a>
+                        <h2>${emoji} ${info ? info.label.replace(/^[^\s]*\s/, '') : cat}</h2>
+                        <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">${info ? info.desc : ''}</p>
                         <div class="error-state">
                             <div class="emoji">📭</div>
-                            <h3>${currentLang === 'en' ? 'No articles yet' : 'Belum ada artikel'}</h3>
+                            <h3>No articles yet</h3>
                         </div>
                     </div>
                 `;
@@ -368,7 +269,7 @@
                 const display = file.replace(/-/g, ' ');
                 const path = `${cat}/${file}`;
                 return `
-                    <a class="article-item" href="#/${currentLang}/${path}" onclick="event.preventDefault(); loadDoc('${path}', '${currentLang}')">
+                    <a class="article-item" href="#/${path}" onclick="event.preventDefault(); loadDoc('${path}')">
                         <div class="title">${display.charAt(0).toUpperCase() + display.slice(1)}</div>
                     </a>
                 `;
@@ -376,44 +277,42 @@
 
             c.innerHTML = `
                 <div class="article-list">
-                    <a class="back" onclick="showHome()">← ${currentLang === 'en' ? 'Back to categories' : 'Kembali ke kategori'}</a>
-                    <h2>${emojis[cat] || '📚'} ${t.categories[cat]}</h2>
-                    <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">${t.descs[cat]}</p>
+                    <a class="back" onclick="showHome()">← Back to categories</a>
+                    <h2>${emoji} ${info ? info.label.replace(/^[^\s]*\s/, '') : cat}</h2>
+                    <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">${info ? info.desc : ''}</p>
                     <div id="articleItems">${itemsHtml}</div>
                 </div>
             `;
 
             document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
             currentFile = null;
-            history.replaceState(null, '', `#/${currentLang}/${cat}`);
+            history.replaceState(null, '', `#/${cat}`);
         }
 
-        async function loadDoc(path, lang) {
-            const t = titles[lang];
+        async function loadDoc(path) {
             const c = document.getElementById('pageContent');
             c.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
 
-            // Extract category from path (e.g. "terminal/colorls" → "terminal")
             const cat = path.split('/')[0];
-            
+
             try {
-                const resp = await fetch(`${lang}/${path}.md?t=${Date.now()}`);
+                const resp = await fetch(`${path}.md?t=${Date.now()}`);
                 if (!resp.ok) throw new Error('Not found');
                 const md = await resp.text();
-                
+
                 // Strip YAML frontmatter (--- ... ---)
                 const cleanMd = md.replace(/^---[\s\S]*?---\n*/, '');
-                
+
                 const html = marked.parse(cleanMd);
                 c.innerHTML = `
                     <div class="markdown-body">
                         <div style="margin-bottom:16px">
-                            <a href="#" onclick="showCategory('${cat}'); return false;" style="color:var(--accent);text-decoration:none;font-size:13px;font-weight:500;">← ${lang === 'en' ? 'Back to list' : 'Kembali ke daftar'}</a>
+                            <a href="#" onclick="showCategory('${cat}'); return false;" style="color:var(--accent);text-decoration:none;font-size:13px;font-weight:500;">← Back to list</a>
                         </div>
                         ${html}
                     </div>
                 `;
-                
+
                 // Fix heading IDs
                 c.querySelectorAll('h2, h3, h4').forEach(h => {
                     if (!h.id) {
@@ -428,15 +327,15 @@
                 currentFile = path;
 
                 window.scrollTo(0, 0);
-                history.replaceState(null, '', `#/${lang}/${path}`);
+                history.replaceState(null, '', `#/${path}`);
 
             } catch (e) {
                 c.innerHTML = `
                     <div class="error-state">
                         <div class="emoji">🔍</div>
-                        <h3>${lang === 'en' ? 'Page not found' : 'Halaman tidak ditemukan'}</h3>
-                        <p>${lang === 'en' ? `Could not load <code>${path}.md</code>.` : `Tidak dapat memuat <code>${path}.md</code>.`}</p>
-                        <p><a href="#" onclick="showCategory('${cat}'); return false;">${lang === 'en' ? '← Back to list' : '← Kembali ke daftar'}</a></p>
+                        <h3>Page not found</h3>
+                        <p>Could not load <code>${path}.md</code>.</p>
+                        <p><a href="#" onclick="showCategory('${cat}'); return false;">← Back to list</a></p>
                     </div>
                 `;
                 currentFile = null;
@@ -464,44 +363,30 @@
         });
         document.getElementById('sidebarOverlay').addEventListener('click', closeSidebar);
 
-        // URL alias map: old path → new path (for backward compatibility)
-        const urlAliases = {
-            // Indonesian: 'security' folder → actual 'keamanan'
-            'id/security/supply-chain-security': 'id/keamanan/supply-chain-security',
-            // English: 'ke' filename → actual 'to'
-            'en/cloudflare/deploy-littlelink-ke-cloudflare-pages': 'en/cloudflare/deploy-littlelink-to-cloudflare-pages'
-        };
-
         function handleHash() {
             const hash = location.hash.slice(1);
             if (hash.startsWith('/')) {
-                const parts = hash.split('/').filter(Boolean);
-                if (parts.length >= 2 && (parts[0] === 'en' || parts[0] === 'id')) {
-                    const lang = parts[0];
-                    const fullPath = parts.join('/');
-
-                    // Check URL aliases
-                    const alias = urlAliases[fullPath];
-                    if (alias) {
-                        const aliasParts = alias.split('/');
-                        history.replaceState(null, '', `#/${alias}`);
-                        switchLang(aliasParts[0]);
-                        loadDoc(aliasParts.slice(1).join('/'), aliasParts[0]);
+                const plainPath = hash.slice(1);
+                // Check backward compat for old #/en/... or #/id/... URLs
+                if (plainPath.startsWith('en/') || plainPath.startsWith('id/')) {
+                    const newPath = oldUrlMap[plainPath];
+                    if (newPath) {
+                        history.replaceState(null, '', `#/${newPath}`);
+                        loadDoc(newPath);
                         return;
                     }
-
-                    currentFile = null; // prevent switchLang from double-loading
-                    switchLang(lang);
-                    if (parts.length >= 3) {
-                        // #/en/terminal/colorls → load article
-                        const path = parts.slice(1).join('/');
-                        loadDoc(path, lang);
-                    } else {
-                        // #/en/terminal → show category list
-                        showCategory(parts[1]);
-                    }
-                    return;
                 }
+                const parts = plainPath.split('/').filter(Boolean);
+                if (parts.length >= 2) {
+                    // #/category/file → load article
+                    loadDoc(plainPath);
+                } else if (parts.length === 1) {
+                    // #/category → show category list
+                    showCategory(parts[0]);
+                } else {
+                    showHome();
+                }
+                return;
             }
             showHome();
         }
@@ -515,9 +400,8 @@
             gfm: true
         });
 
-        fetchNav().then(() => {
-            handleHash();
-        });
+        renderNav();
+        handleHash();
     </script>
 </body>
 </html>
