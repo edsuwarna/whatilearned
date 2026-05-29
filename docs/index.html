@@ -165,16 +165,18 @@
         const navData = [
             { category: 'terminal', files: ['colorls', 'customize-terminal'] },
             { category: 'security', files: ['supply-chain-security'] },
-            { category: 'cloudflare', files: ['deploy-littlelink-to-cloudflare-pages'] }
+            { category: 'cloudflare', files: ['deploy-littlelink-to-cloudflare-pages'] },
+            { category: 'ai', files: ['picoclaw-deep-dive'] }
         ];
 
         const categories = {
             'terminal': { label: '🖥️ Terminal', desc: 'ZSH, oh-my-zsh, colorls, terminal customization' },
             'security': { label: '🔒 Security', desc: 'Supply chain security, best practices' },
-            'cloudflare': { label: '☁️ Cloudflare', desc: 'Pages, Workers, DNS, deployments' }
+            'cloudflare': { label: '☁️ Cloudflare', desc: 'Pages, Workers, DNS, deployments' },
+            'ai': { label: '🤖 AI', desc: 'AI agent frameworks, comparisons, deep dives' }
         };
 
-        const catOrder = ['terminal', 'security', 'cloudflare'];
+        const catOrder = ['terminal', 'security', 'cloudflare', 'ai'];
 
         function renderNav() {
             const nav = document.getElementById('sidebarNav');
@@ -225,7 +227,7 @@
                 const files = getFilesForCategory(cat);
                 html += `
                     <div class="cat-card" onclick="showCategory('${cat}')">
-                        <span class="emoji">${cat === 'terminal' ? '🖥️' : cat === 'security' ? '🔒' : '☁️'}</span>
+                        <span class="emoji">${cat === 'terminal' ? '🖥️' : cat === 'security' ? '🔒' : cat === 'cloudflare' ? '☁️' : '🤖'}</span>
                         <h3>${info ? info.label.replace(/^[^\s]*\s/, '') : cat}</h3>
                         <div class="desc">${info ? info.desc : ''}</div>
                         <div class="meta">${files.length} article${files.length !== 1 ? 's' : ''}</div>
@@ -248,7 +250,7 @@
             const info = categories[cat];
             const files = getFilesForCategory(cat);
             const c = document.getElementById('pageContent');
-            const emoji = cat === 'terminal' ? '🖥️' : cat === 'security' ? '🔒' : '☁️';
+            const emoji = cat === 'terminal' ? '🖥️' : cat === 'security' ? '🔒' : cat === 'cloudflare' ? '☁️' : '🤖';
 
             if (files.length === 0) {
                 c.innerHTML = `

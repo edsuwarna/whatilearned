@@ -11,6 +11,7 @@ whatilearned/
 │   ├── terminal/         # Terminal tools & customization
 │   ├── security/         # Security best practices
 │   ├── cloudflare/       # Pages, Workers, DNS, deployments
+│   ├── ai/               # AI agent frameworks & deep dives
 │   └── images/           # Centralized images
 └── README.md
 ```
@@ -30,3 +31,6 @@ Deployed on [Cloudflare Pages](https://pages.cloudflare.com) — auto-deploys on
 
 ### Cloudflare
 - **[deploy-littlelink-to-cloudflare-pages](docs/cloudflare/deploy-littlelink-to-cloudflare-pages.md)** — Step-by-step guide to deploy LittleLink on Cloudflare Pages
+
+### AI
+- **[picoclaw-deep-dive](docs/ai/picoclaw-deep-dive.md)** — Comprehensive deep dive into Picoclaw (sipeed/picoclaw), the ultra-lightweight Go-based AI agent framework
