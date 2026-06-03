@@ -18,6 +18,7 @@ CATEGORY_META = {
     "cloudflare": {"emoji": "☁️", "desc": "Pages, Workers, DNS, deployments"},
     "ai": {"emoji": "🤖", "desc": "AI agent frameworks, comparisons, deep dives"},
     "infrastructure": {"emoji": "⚙️", "desc": "Deployment, Docker, Traefik, Dokploy"},
+    "compliance": {"emoji": "🛡️", "desc": "Compliance scanning, CIS benchmarks, Lynis"},
 }
 
 IGNORE_DIRS = {"images"}

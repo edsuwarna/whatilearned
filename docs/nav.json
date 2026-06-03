@@ -15,6 +15,13 @@
         "deploy-littlelink-to-cloudflare-pages"
       ]
     },
+    "compliance": {
+      "emoji": "🛡️",
+      "desc": "Compliance scanning, CIS benchmarks, Lynis",
+      "articles": [
+        "anjungan-compliance-scanner"
+      ]
+    },
     "infrastructure": {
       "emoji": "⚙️",
       "desc": "Deployment, Docker, Traefik, Dokploy",
@@ -41,6 +48,7 @@
   "order": [
     "ai",
     "cloudflare",
+    "compliance",
     "infrastructure",
     "security",
     "terminal"
