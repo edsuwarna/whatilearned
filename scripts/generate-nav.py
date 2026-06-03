@@ -18,9 +18,8 @@ CATEGORY_META = {
     "cloudflare": {"emoji": "☁️", "desc": "Pages, Workers, DNS, deployments"},
     "ai": {"emoji": "🤖", "desc": "AI agent frameworks, comparisons, deep dives"},
     "infrastructure": {"emoji": "⚙️", "desc": "Deployment, Docker, Traefik, Dokploy"},
-    "compliance": {"emoji": "🛡️", "desc": "Compliance scanning, CIS benchmarks, Lynis"},
+    "compliance": {"emoji": "🛡️", "desc": "CIS benchmarks, Lynis, Anjungan — plus 30+ technology compliance standards"},
 }
-
 IGNORE_DIRS = {"images"}
 IGNORE_FILES = {"index.html", "nav.json"}
 
@@ -45,9 +44,9 @@ def main() -> int:
 
         slug = child.name
         articles = sorted(
-            f.stem
-            for f in child.iterdir()
-            if f.suffix == ".md" and f.name not in IGNORE_FILES
+            str(f.relative_to(child).with_suffix(''))
+            for f in child.rglob('*.md')
+            if f.name not in IGNORE_FILES
         )
         if not articles:
             continue

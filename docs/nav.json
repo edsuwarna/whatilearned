@@ -17,9 +17,17 @@
     },
     "compliance": {
       "emoji": "🛡️",
-      "desc": "Compliance scanning, CIS benchmarks, Lynis",
+      "desc": "CIS benchmarks, Lynis, Anjungan — plus 30+ technology compliance standards",
       "articles": [
-        "anjungan-compliance-scanner"
+        "anjungan-compliance-scanner",
+        "standards/01-governance-risk",
+        "standards/02-server-infrastructure",
+        "standards/03-cloud-saas",
+        "standards/04-finance-payment",
+        "standards/05-healthcare-privacy",
+        "standards/06-container-devops",
+        "standards/07-regional-standards",
+        "standards/README"
       ]
     },
     "infrastructure": {
