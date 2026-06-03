@@ -146,6 +146,16 @@
     </script>
     <script>
         let currentFile = null;
+        let siteData = null;
+
+        // Fallback meta for categories when nav.json isn't available
+        const fallbackMeta = {
+            'terminal': { emoji: '🖥️', desc: 'ZSH, oh-my-zsh, colorls, terminal customization' },
+            'security': { emoji: '🔒', desc: 'Supply chain security, best practices' },
+            'cloudflare': { emoji: '☁️', desc: 'Pages, Workers, DNS, deployments' },
+            'ai': { emoji: '🤖', desc: 'AI agent frameworks, comparisons, deep dives' },
+            'infrastructure': { emoji: '⚙️', desc: 'Deployment, Docker, Traefik, Dokploy' }
+        };
 
         // Backward compat: old URL patterns → new flat paths
         const oldUrlMap = {
@@ -162,25 +172,29 @@
             'id/cloudflare/deploy-littlelink-to-cloudflare-pages': 'cloudflare/deploy-littlelink-to-cloudflare-pages'
         };
 
-        const navData = [
-            { category: 'terminal', files: ['colorls', 'customize-terminal'] },
-            { category: 'security', files: ['supply-chain-security'] },
-            { category: 'cloudflare', files: ['deploy-littlelink-to-cloudflare-pages'] },
-            { category: 'ai', files: ['picoclaw-deep-dive', 'claw-framework-comparison'] },
-            { category: 'infrastructure', files: ['dokploy-basic-auth'] }
-        ];
-
-        const categories = {
-            'terminal': { label: '🖥️ Terminal', desc: 'ZSH, oh-my-zsh, colorls, terminal customization' },
-            'security': { label: '🔒 Security', desc: 'Supply chain security, best practices' },
-            'cloudflare': { label: '☁️ Cloudflare', desc: 'Pages, Workers, DNS, deployments' },
-            'ai': { label: '🤖 AI', desc: 'AI agent frameworks, comparisons, deep dives' },
-            'infrastructure': { label: '⚙️ Infrastructure', desc: 'Deployment, Docker, Traefik, Dokploy' }
-        };
-
-        const catOrder = ['terminal', 'security', 'cloudflare', 'ai', 'infrastructure'];
+        async function loadNavData() {
+            try {
+                const resp = await fetch('nav.json?t=' + Date.now());
+                if (!resp.ok) throw new Error('Not found');
+                siteData = await resp.json();
+            } catch (e) {
+                // Fallback: construct from static meta (no article list)
+                siteData = { categories: {}, order: [] };
+                Object.keys(fallbackMeta).forEach(cat => {
+                    siteData.categories[cat] = {
+                        emoji: fallbackMeta[cat].emoji,
+                        desc: fallbackMeta[cat].desc,
+                        articles: []
+                    };
+                    siteData.order.push(cat);
+                });
+            }
+            renderNav();
+            handleHash();
+        }
 
         function renderNav() {
+            if (!siteData) return;
             const nav = document.getElementById('sidebarNav');
             nav.innerHTML = '';
             // Home link
@@ -194,14 +208,16 @@
             homeDiv.appendChild(homeLink);
             nav.appendChild(homeDiv);
             // Categories
-            navData.forEach(group => {
+            siteData.order.forEach(cat => {
+                const info = siteData.categories[cat];
+                if (!info) return;
                 const label = document.createElement('div');
                 label.className = 'sidebar-label';
-                label.textContent = (categories[group.category]?.label || group.category).replace(/^[^\s]*\s/, '');
+                label.textContent = info.emoji + ' ' + cat.charAt(0).toUpperCase() + cat.slice(1);
                 nav.appendChild(label);
-                group.files.forEach(file => {
+                info.articles.forEach(file => {
                     const a = document.createElement('a');
-                    const path = `${group.category}/${file}`;
+                    const path = `${cat}/${file}`;
                     a.href = `#/${path}`;
                     a.textContent = file.replace(/-/g, ' ');
                     a.dataset.path = path;
@@ -216,6 +232,7 @@
         }
 
         function showHome() {
+            if (!siteData) return;
             const c = document.getElementById('pageContent');
             let html = `
                 <div class="home-header">
@@ -224,15 +241,15 @@
                 </div>
                 <div class="categories-grid">
             `;
-            catOrder.forEach(cat => {
-                const info = categories[cat];
-                const files = getFilesForCategory(cat);
+            siteData.order.forEach(cat => {
+                const info = siteData.categories[cat];
+                if (!info) return;
                 html += `
                     <div class="cat-card" onclick="showCategory('${cat}')">
-                        <span class="emoji">${cat === 'terminal' ? '🖥️' : cat === 'security' ? '🔒' : cat === 'cloudflare' ? '☁️' : cat === 'infrastructure' ? '⚙️' : '🤖'}</span>
-                        <h3>${info ? info.label.replace(/^[^\s]*\s/, '') : cat}</h3>
-                        <div class="desc">${info ? info.desc : ''}</div>
-                        <div class="meta">${files.length} article${files.length !== 1 ? 's' : ''}</div>
+                        <span class="emoji">${info.emoji}</span>
+                        <h3>${cat.charAt(0).toUpperCase() + cat.slice(1)}</h3>
+                        <div class="desc">${info.desc}</div>
+                        <div class="meta">${info.articles.length} article${info.articles.length !== 1 ? 's' : ''}</div>
                     </div>
                 `;
             });
@@ -243,23 +260,19 @@
             history.replaceState(null, '', '#/');
         }
 
-        function getFilesForCategory(cat) {
-            const group = navData.find(g => g.category === cat);
-            return group ? group.files : [];
-        }
-
         function showCategory(cat) {
-            const info = categories[cat];
-            const files = getFilesForCategory(cat);
+            if (!siteData || !siteData.categories[cat]) { showHome(); return; }
+            const info = siteData.categories[cat];
+            const files = info.articles;
             const c = document.getElementById('pageContent');
-            const emoji = cat === 'terminal' ? '🖥️' : cat === 'security' ? '🔒' : cat === 'cloudflare' ? '☁️' : cat === 'infrastructure' ? '⚙️' : '🤖';
+            const emoji = info.emoji;
 
             if (files.length === 0) {
                 c.innerHTML = `
                     <div class="article-list">
                         <a class="back" onclick="showHome()">← Back to categories</a>
-                        <h2>${emoji} ${info ? info.label.replace(/^[^\s]*\s/, '') : cat}</h2>
-                        <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">${info ? info.desc : ''}</p>
+                        <h2>${emoji} ${cat.charAt(0).toUpperCase() + cat.slice(1)}</h2>
+                        <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">${info.desc}</p>
                         <div class="error-state">
                             <div class="emoji">📭</div>
                             <h3>No articles yet</h3>
@@ -282,8 +295,8 @@
             c.innerHTML = `
                 <div class="article-list">
                     <a class="back" onclick="showHome()">← Back to categories</a>
-                    <h2>${emoji} ${info ? info.label.replace(/^[^\s]*\s/, '') : cat}</h2>
-                    <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">${info ? info.desc : ''}</p>
+                    <h2>${emoji} ${cat.charAt(0).toUpperCase() + cat.slice(1)}</h2>
+                    <p style="color:var(--text2);font-size:13px;margin-bottom:16px;">${info.desc}</p>
                     <div id="articleItems">${itemsHtml}</div>
                 </div>
             `;
@@ -404,8 +417,7 @@
             gfm: true
         });
 
-        renderNav();
-        handleHash();
+        loadNavData();
     </script>
 </body>
 </html>

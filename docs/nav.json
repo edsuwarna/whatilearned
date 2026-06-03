@@ -1,0 +1,48 @@
+{
+  "categories": {
+    "ai": {
+      "emoji": "🤖",
+      "desc": "AI agent frameworks, comparisons, deep dives",
+      "articles": [
+        "claw-framework-comparison",
+        "picoclaw-deep-dive"
+      ]
+    },
+    "cloudflare": {
+      "emoji": "☁️",
+      "desc": "Pages, Workers, DNS, deployments",
+      "articles": [
+        "deploy-littlelink-to-cloudflare-pages"
+      ]
+    },
+    "infrastructure": {
+      "emoji": "⚙️",
+      "desc": "Deployment, Docker, Traefik, Dokploy",
+      "articles": [
+        "dokploy-basic-auth"
+      ]
+    },
+    "security": {
+      "emoji": "🔒",
+      "desc": "Supply chain security, best practices",
+      "articles": [
+        "supply-chain-security"
+      ]
+    },
+    "terminal": {
+      "emoji": "🖥️",
+      "desc": "ZSH, oh-my-zsh, colorls, terminal customization",
+      "articles": [
+        "colorls",
+        "customize-terminal"
+      ]
+    }
+  },
+  "order": [
+    "ai",
+    "cloudflare",
+    "infrastructure",
+    "security",
+    "terminal"
+  ]
+}

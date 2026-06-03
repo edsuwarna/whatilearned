@@ -1,0 +1,9 @@
+#!/bin/sh
+# Pre-commit hook: auto-generate nav.json before each commit
+# Install: git config core.hooksPath .githooks
+
+set -e
+cd "$(git rev-parse --show-toplevel)" || exit 1
+echo "🔧 pre-commit: generating nav.json..."
+python3 scripts/generate-nav.py
+git add docs/nav.json
