@@ -21,40 +21,6 @@ Three scan modes are available:
 
 ---
 
-## How to Trigger a Scan
-
-### Via API
-
-```bash
-# CIS Level 1
-POST /api/compliance/{serverID}/scan?profile=cis1
-
-# CIS Level 2
-POST /api/compliance/{serverID}/scan?profile=cis2
-
-# All checks (CIS Level 1 + Level 2)
-POST /api/compliance/{serverID}/scan?profile=all
-
-# Lynis audit
-POST /api/compliance/{serverID}/scan/lynis
-```
-
-### Via Frontend (Compliance Page)
-
-1. Go to **Compliance** → select a server
-2. Click **Scan** → choose profile: *CIS Level 1*, *CIS Level 2*, or *Lynis*
-3. Wait for scan to complete — results auto-refresh
-
-### Single Check Execution
-
-Run one check at a time (Prowler-style):
-
-```bash
-POST /api/compliance/{serverID}/scan/check/{checkID}
-```
-
----
-
 ## CIS Level 1 (cis1)
 
 > **Goal**: Foundational security posture — easy to implement, automated, low operational overhead.
@@ -311,46 +277,6 @@ score = 100 - (criticals × 15) - ((high + medium) × 5)
 ### Lynis Scoring
 
 Lynis hardening score is produced by Lynis itself based on its own proprietary formula (not calculated by Anjungan).
-
----
-
-## API Endpoints
-
-| Method | Endpoint | Description |
-|---|---|---|
-| `GET` | `/api/compliance/checks` | List all available checks with metadata |
-| `GET` | `/api/compliance/summary` | Fleet-wide compliance overview |
-| `GET` | `/api/compliance/{serverID}/latest` | Latest scan result for a server |
-| `GET` | `/api/compliance/{serverID}/latest/categories` | Latest scan broken down by category |
-| `GET` | `/api/compliance/{serverID}/history` | Scan history for a server |
-| `GET` | `/api/compliance/{serverID}/history/{scanID}` | Individual scan details |
-| `GET` | `/api/compliance/{serverID}/history/categories/{category}` | History filtered by category |
-| `GET` | `/api/compliance/history` | Global scan history across all servers |
-| `POST` | `/api/compliance/{serverID}/scan` | Trigger CIS scan (query: `profile=cis1`/`cis2`/`all`) |
-| `POST` | `/api/compliance/{serverID}/scan/lynis` | Trigger Lynis audit |
-| `POST` | `/api/compliance/{serverID}/scan/check/{checkID}` | Run a single check |
-
----
-
-## Architecture
-
-```
-┌─────────────┐     SSH      ┌──────────────┐
-│   Browser   │ ──────HTTP──▶│  Anjungan    │
-│ (SvelteKit) │              │  Backend     │
-└─────────────┘              │  (Go/Chi)    │
-                             │              │
-                             ├──────────────┤
-                             │  Scanner     │──▶ SSH → remote server
-                             │  ├ Registry  │       │
-                             │  ├ CIS L1    │       ├ read /etc/sshd_config
-                             │  ├ CIS L2    │       ├ sysctl params
-                             │  └ Lynis     │       ├ systemctl status
-                             │              │       ├ find /... perms
-                             │  Repository  │       └ lynis audit
-                             │  (Postgres)  │
-                             └──────────────┘
-```
 
 ---
 
