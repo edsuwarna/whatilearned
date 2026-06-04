@@ -9,7 +9,7 @@ Dokploy v0.29.x has built-in basic auth via **Traefik middleware** — but the U
 | Type | Built-in UI? | How |
 |------|:---:|-----|
 | **Application** | ✅ Yes | Advanced → Security card |
-| **Compose** | ❌ No | Manual via Traefik labels + domain middleware field |
+| **Compose** | ❌ No | Manual via full Traefik labels in docker-compose.yml (UI middleware field doesn't apply) |
 
 ---
 
@@ -48,28 +48,38 @@ docker run --rm xmartlabs/htpasswd user123 "your-password" 2>/dev/null | cut -d:
 
 Output example: `$2y$05$Lk0R7NyV8NQj...`
 
-### Step 2 — Add middleware label to docker-compose.yml
+### Step 2 — Add full Traefik labels to docker-compose.yml
 
-Add a Traefik label to the service you want to protect:
+For **Compose** type, the Dokploy UI Middlewares field **does not apply labels to services inside compose**. You must define everything inline in `docker-compose.yml`:
 
 ```yaml
 services:
   your-app:
     image: your-image
+    # ports:                          ← HAPUS jika Traefik handle routing
+    #   - "5000:5000"
     labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app.rule=Host(`your-domain.com`)"
+      - "traefik.http.routers.app.entrypoints=websecure"
+      - "traefik.http.routers.app.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.app.service=app"
+      - "traefik.http.routers.app.middlewares=app-auth"
+      - "traefik.http.services.app.loadbalancer.server.port=PORT"
       - "traefik.http.middlewares.app-auth.basicauth.users=user123:$$2y$$05$$Lk0R7NyV8NQj..."
 ```
 
-⚠️ **Important:** Each `$` in the bcrypt hash must be doubled to `$$` in docker-compose YAML, otherwise Docker Compose interprets it as a variable interpolation.
+⚠️ **Critical:** Every `$` in the bcrypt hash — not just the first one — must be doubled to `$$`. Docker Compose treats `$` as variable interpolation, so `$2y$05$hash...` becomes `$$2y$$05$$hash...`.
 
-### Step 3 — Reference middleware in domain settings
+Also remove the `ports:` mapping — Traefik routes via the internal Docker network, so direct port exposure isn't needed.
+
+### Step 3 — Set domain in Dokploy
 
 1. Go to your Compose app in the Dokploy dashboard
 2. Navigate to the **Domains** tab
-3. Click **Edit** (pencil icon) on the domain you want to protect
-4. Scroll down to the **Middlewares** field
-5. Add: `app-auth@docker`
-6. Click **Add**, then **Save**
+3. Add your domain (e.g. `your-domain.com`)
+4. Let Dokploy handle the HTTPS certificate automatically via Let's Encrypt
+5. **Skip the Middlewares field** — it only works for Application type, not Compose
 
 ### Step 4 — Redeploy
 
@@ -79,19 +89,30 @@ Deploy or restart your application for the changes to take effect.
 
 ## How it works (Compose method)
 
+For **Application** type, Dokploy creates a Traefik file provider config, so you reference middleware via `@file`.
+
+For **Compose** type, all labels **must be on the service itself** in `docker-compose.yml`:
+
 ```
 docker-compose.yml
-  └── label: traefik.http.middlewares.app-auth.basicauth.users=...
+  └── label: traefik.enable=true
+  └── label: traefik.http.routers.app.rule=Host(...)
+  └── label: traefik.http.routers.app.service=app
+  └── label: traefik.http.routers.app.middlewares=app-auth  ← apply middleware
+  └── label: traefik.http.services.app.loadbalancer.server.port=PORT
+  └── label: traefik.http.middlewares.app-auth.basicauth.users=...  ← define middleware
                     │
                     ▼
-       Traefik stores middleware as "app-auth@docker"
+       Traefik reads all labels from the running container
                     │
                     ▼
-       Domain middleware reference: "app-auth@docker"
+       Router + middleware + service all defined inline
                     │
                     ▼
-       Router applies basic auth on every request
+       Basic auth applied on every HTTPS request
 ```
+
+**Why the UI Middlewares field doesn't work for Compose:** Dokploy's domain middleware field generates a Traefik file provider config snippet, but it only applies to the **outer** Compose project router — individual services inside compose files are invisible to it.
 
 ### Provider suffixes explained
 
@@ -119,6 +140,7 @@ Then in the domain Middlewares field, reference it as `app-auth@file`.
 
 ## Limitations
 
-- Each domain needs its own middleware reference
-- For the Compose method, credentials in the Dokploy dashboard show the raw label value (hashed in Traefik config)
-- Each service needs its own middleware label when using the compose method
+- For Compose type, all Traefik labels must be inline in `docker-compose.yml` — the UI Middlewares field only works for Application type
+- Credentials visible in compose file (hashed, but plaintext readable by anyone with file access)
+- Each service needs its own full label set when using the compose method
+- `ports:` mapping should be removed from compose when Traefik handles routing
