@@ -32,11 +32,12 @@
     },
     "infrastructure": {
       "emoji": "⚙️",
-      "desc": "Deployment, Docker, Traefik, Dokploy, Registries",
+      "desc": "Deployment, Docker, Traefik, Dokploy",
       "articles": [
         "dokploy-basic-auth",
-        "zot-registry",
-        "object-storage-comparison"
+        "kopia-backup",
+        "object-storage-comparison",
+        "zot-registry"
       ]
     },
     "security": {
