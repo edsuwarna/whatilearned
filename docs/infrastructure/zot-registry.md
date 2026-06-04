@@ -376,6 +376,98 @@ services:
 
 ---
 
+## CVE Scanning (Trivy)
+
+Zot embeds **Trivy as a library** (not a separate binary) — every scan runs inside the Zot process.
+
+### How it works
+
+1. Push image to Zot
+2. Zot **automatically triggers** Trivy scan on the new image
+3. Results are **cached by digest** — same image (same digest) pushed again won't rescan
+4. Shared base image layers are detected — no redundant rescans
+5. Trivy vulnerability DB updates periodically based on `updateInterval`
+6. Results visible via **Web UI** or **REST API**
+
+### Enable config
+
+```json
+{
+  "extensions": {
+    "search": {
+      "cve": {
+        "updateInterval": "2h",
+        "trivy": {
+          "dbRepository": "ghcr.io/aquasecurity/trivy-db",
+          "javaDBRepository": "ghcr.io/aquasecurity/trivy-java-db",
+          "vulnSeveritySources": ["auto"]
+        }
+      }
+    },
+    "ui": {
+      "enable": true
+    }
+  }
+}
+```
+
+Minimal config (just `updateInterval`):
+
+```json
+"extensions": {
+  "search": {
+    "cve": {
+      "updateInterval": "2h"
+    }
+  },
+  "ui": {
+    "enable": true
+  }
+}
+```
+
+### Trivy config options
+
+| Field | Default | Description |
+|-------|---------|-------------|
+| `updateInterval` | `2h` | How often to update Trivy vulnerability DB |
+| `dbRepository` | `ghcr.io/aquasecurity/trivy-db` | Trivy DB container image reference |
+| `javaDBRepository` | `ghcr.io/aquasecurity/trivy-java-db` | Java vulnerability DB reference |
+| `vulnSeveritySources` | `["auto"]` | Severity source: `auto`, `nvd`, `redhat`, etc. |
+| `sbom.enable` | `false` | Generate SBOM during scan |
+| `sbom.format` | `"spdx-json"` | SBOM format: `spdx-json` or `cyclonedx` |
+
+### What Trivy scans
+
+- **OS packages** — Alpine, Debian, Ubuntu, CentOS, etc.
+- **Language packages** — pip, npm, gem, maven, go modules, cargo
+- **Shared base images** — recognizes reused layers across images
+
+**Not scanned:** Dockerfile misconfigurations, IaC scanning, secrets in images.
+
+### API endpoints
+
+Available via REST on `/v2/_zot/ext/search`:
+
+| API | Function |
+|-----|----------|
+| `GetCVEListForImage` | List CVEs for an image, filterable by `repo`, `tag`, `severity` |
+| `GetImageListForCVE` | Find all images affected by a specific CVE |
+| `GetImageListWithCVEFixed` | Images where a specific CVE has been fixed |
+| `GetCVESummaryForImageMedia` | CVE severity summary for an image |
+| `GetCVEDiffListForImages` | CVE comparison between two images (before/after update) |
+
+All APIs are integrated into the **Web UI** — open the registry domain, click an image, see CVE breakdown by severity.
+
+### Notes
+
+- `search` extension does **not** need `"enable": true` — the `cve` sub-block implicitly enables it
+- `ui` **does** need `"enable": true` (different from search)
+- CVE results are cached efficiently — only new/changed layers trigger a rescan
+- The Trivy DB download happens on first scan, then periodically per `updateInterval`
+
+---
+
 ## Pitfalls
 
 - **Port exposure:** `127.0.0.1:5000:5000` = localhost only (safe for proxy pattern). `5000:5000` = public (dangerous without auth)
