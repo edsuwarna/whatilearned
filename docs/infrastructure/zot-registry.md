@@ -468,6 +468,249 @@ All APIs are integrated into the **Web UI** — open the registry domain, click 
 
 ---
 
+## Advanced Features
+
+### 📡 Sync / Mirror — Pull-Through Proxy
+
+Zot can act as a **Docker Hub mirror / pull-through cache**. When an image isn't found locally, it automatically pulls from the upstream registry and caches it.
+
+```json
+{
+  "extensions": {
+    "sync": {
+      "enable": true,
+      "credentialsFile": "./sync-auth.json",
+      "registries": [
+        {
+          "urls": ["https://index.docker.io"],
+          "onDemand": true,
+          "pollInterval": "6h",
+          "tlsVerify": true,
+          "maxRetries": 5,
+          "retryDelay": "30s"
+        }
+      ]
+    }
+  }
+}
+```
+
+**Key features:**
+- **`onDemand: true`** — pull-through proxy mode (cache on first pull)
+- **`pollInterval`** — periodic sync (pre-fetch images every N hours)
+- **Tag filters** — regex, semver, exclude patterns
+- **Prefix remapping** — strip or rename repo prefixes on sync
+- **Only signed** — `onlySigned: true` to sync only cosign-signed images
+- **Multiple upstreams** — can sync from different registries simultaneously
+
+Example with tag filtering + prefix remapping:
+
+```json
+{
+  "urls": ["https://registry.example.com"],
+  "onDemand": false,
+  "pollInterval": "6h",
+  "content": [
+    {
+      "prefix": "/library/nginx",
+      "destination": "/nginx",
+      "stripPrefix": true,
+      "tags": { "semver": true }
+    }
+  ]
+}
+```
+
+### 📦 Retention Policies — Auto-Cleanup
+
+Automatically delete old/stale images based on configurable rules. Essential for CI/CD pipelines that push images on every build.
+
+```json
+{
+  "storage": {
+    "retention": {
+      "dryRun": false,
+      "delay": "24h",
+      "policies": [
+        {
+          "repositories": ["prod/**"],
+          "deleteReferrers": false,
+          "keepTags": [
+            { "patterns": ["v2.*", ".*-stable"] },
+            { "mostRecentlyPushedCount": 10 },
+            { "mostRecentlyPulledCount": 5 }
+          ]
+        },
+        {
+          "repositories": ["tmp/**"],
+          "deleteUntagged": true,
+          "deleteReferrers": true,
+          "keepTags": [
+            { "pushedWithin": "168h" },
+            { "pulledWithin": "720h" }
+          ]
+        },
+        {
+          "repositories": ["**"],
+          "deleteUntagged": true,
+          "keepTags": [
+            { "mostRecentlyPushedCount": 50 }
+          ]
+        }
+      ]
+    }
+  }
+}
+```
+
+**Retention rules:**
+| Rule | Description |
+|------|-------------|
+| `patterns` | Keep tags matching regex (e.g. `v2.*`) |
+| `mostRecentlyPushedCount` | Keep last N pushed tags |
+| `mostRecentlyPulledCount` | Keep last N pulled tags |
+| `pushedWithin` | Keep tags pushed within duration (e.g. `"168h"` = 7 days) |
+| `pulledWithin` | Keep tags pulled within duration |
+| `deleteUntagged` | Remove orphaned blobs without tags |
+| `deleteReferrers` | Remove linked artifacts (signatures, SBOMs) |
+
+**⚠️ Use `dryRun: true` first** to preview what would be deleted.
+
+### 🚦 Rate Limiting
+
+Protect the registry from abuse or CI stampedes:
+
+```json
+{
+  "http": {
+    "ratelimit": {
+      "rate": 100,
+      "methods": [
+        { "method": "GET", "rate": 50 },
+        { "method": "PUT", "rate": 20 }
+      ]
+    }
+  }
+}
+```
+
+Rate is **requests per second**. Per-method overrides the global rate.
+
+### 🔗 Multi-Storage (SubPaths)
+
+One Zot instance can serve multiple storage backends at different repo prefixes:
+
+```json
+{
+  "storage": {
+    "rootDirectory": "/var/lib/zot",
+    "dedupe": true,
+    "gc": true,
+    "subPaths": {
+      "/base": {
+        "rootDirectory": "/mnt/ssd/base-images",
+        "dedupe": true
+      },
+      "/cache": {
+        "rootDirectory": "/mnt/hdd/cache",
+        "dedupe": true
+      },
+      "/scratch": {
+        "rootDirectory": "/mnt/tmp/scratch",
+        "dedupe": false
+      }
+    }
+  }
+}
+```
+
+Each sub-path can have:
+- Different storage backend (local, S3, R2)
+- Independent dedupe setting
+- Independent retention policy
+
+### 📡 Events (Webhooks)
+
+Trigger HTTP calls or NATS messages on registry events (push, pull, delete):
+
+```json
+{
+  "extensions": {
+    "events": {
+      "enable": true,
+      "sinks": [
+        {
+          "type": "http",
+          "address": "https://hooks.example.com/registry",
+          "timeout": "10s"
+        },
+        {
+          "type": "nats",
+          "address": "nats://127.0.0.1:4222",
+          "channel": "registry-events"
+        }
+      ]
+    }
+  }
+}
+```
+
+Useful for:
+- Triggering CI/CD pipelines on push
+- Audit logging to external systems
+- Slack/Telegram notifications
+
+### 🔍 Scrub — Data Integrity
+
+Periodically checks blob integrity in storage:
+
+```json
+{
+  "extensions": {
+    "scrub": {
+      "enable": true,
+      "interval": "24h"
+    }
+  }
+}
+```
+
+Detects corruption, bit rot, or missing blobs — especially useful for R2/S3 storage.
+
+### ⚙️ GC + Dedupe
+
+Built-in garbage collection and cross-repo deduplication — no cron jobs needed:
+
+```json
+{
+  "storage": {
+    "gc": true,
+    "gcDelay": "2h",
+    "gcInterval": "1h",
+    "dedupe": true
+  }
+}
+```
+
+- **GC** removes unused blobs after tag deletion — delay prevents accidental removal
+- **Dedupe** shares layers across repositories — saves significant storage
+- Works across sub-paths
+
+### 🏗️ Clustering
+
+Zot supports **scale-out clustering** for cloud deployments with shared storage (R2/S3/GCS). Multiple Zot instances can point to the same backend storage. See the [clustering article](https://zotregistry.dev/articles/clustering/) for details.
+
+### 📏 Binary Size
+
+| Build | Size | Use Case |
+|-------|------|----------|
+| **Full** (`zot-linux-amd64`) | ~20MB | All extensions included |
+| **Minimal** (`zot-linux-amd64-minimal`) | ~15MB | Embedded / minimal attack surface |
+
+The minimal build strips all extensions (no sync, search, UI, etc.) — just a bare OCI distribution-spec registry.
+
+---
+
 ## Pitfalls
 
 - **Port exposure:** `127.0.0.1:5000:5000` = localhost only (safe for proxy pattern). `5000:5000` = public (dangerous without auth)
