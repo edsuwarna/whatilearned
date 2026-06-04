@@ -35,7 +35,8 @@
       "desc": "Deployment, Docker, Traefik, Dokploy, Registries",
       "articles": [
         "dokploy-basic-auth",
-        "zot-registry"
+        "zot-registry",
+        "object-storage-comparison"
       ]
     },
     "security": {
