@@ -308,50 +308,50 @@ o9r 'Analyze request patterns: are we hitting rate limits? Suggest improvements'
 
 ---
 
-## 🎯 Cara Manggil Custom Commands
+## 🎯 How to Run Custom Commands
 
-Custom commands yang udah lu daftarin di `~/.opencode.json` bisa dipanggil dari **OpenCode TUI**:
+Once you've defined custom commands in `~/.opencode.json`, call them from the **OpenCode TUI**:
 
 ### Via Command Palette (Ctrl+P)
 
 ```
-o9              # Masuk TUI dulu
+o9              # Start TUI first
 ```
 
-Terus tekan **`Ctrl+P`** → muncul command palette → mulai ketik nama command:
-1. Ketik `test` → Enter
-2. Isi parameter `file` (path file yang mau di-test) → Enter
-3. Otomatis jalan
+Then press **`Ctrl+P`** → command palette opens → start typing the command name:
+1. Type `test` → Enter
+2. Enter the `file` parameter (path to the file you want to test) → Enter
+3. Runs automatically
 
-### Contoh Skenario
+### Quick Examples
 
-| Mau | Yang Dilakuin |
-|-----|--------------|
-| Bikin unit test | `Ctrl+P` → `test` → isi `src/services/user.ts` → Enter |
-| Review file | `Ctrl+P` → `review` → isi `src/auth/login.ts` → Enter |
-| Bikin Dockerfile | `Ctrl+P` → `docker` → isi `anjungan` → Enter |
-| Dokumentasi | `Ctrl+P` → `doc` → isi `src/utils/helpers.ts` → Enter |
+| Goal | Action |
+|------|--------|
+| Write unit tests | `Ctrl+P` → `test` → enter `src/services/user.ts` → Enter |
+| Review code | `Ctrl+P` → `review` → enter `src/auth/login.ts` → Enter |
+| Create Docker setup | `Ctrl+P` → `docker` → enter project name → Enter |
+| Write documentation | `Ctrl+P` → `doc` → enter `src/utils/helpers.ts` → Enter |
 
-Gak perlu ngetik prompt panjang lagi — tinggal 2-3 langkah dari command palette.
+No need to type long prompts — just 2-3 steps from the command palette.
 
 ### Shell Aliases (One-Shot)
 
-Kalo mau lebih cepet lagi buat task yang file-nya udah pasti, bikin alias di `~/.zshrc`:
+For tasks that always target the same file, create aliases in `~/.zshrc`:
 
 ```bash
-# Task berulang dengan file tetap
+# Recurring tasks with fixed files
 alias o9test-auth='o9r test -f src/services/authService.ts'
 alias o9review-api='o9r review -f src/api/routes.ts'
-alias o9fix-latest='o9r "Fix bugs dan error di project ini"'
+alias o9fix-latest='o9r "Fix bugs and errors in this project"'
 alias o9commit='o9r "Generate commit message" -f <(git diff --cached)'
 ```
 
 Reload: `source ~/.zshrc`
 
-Abis itu tinggal:
+Then just:
 ```bash
-o9test-auth      # Jalanin test auth
-o9commit         # Bikin commit message
+o9test-auth      # Run auth tests
+o9commit         # Generate commit message
 ```
 
 ---
