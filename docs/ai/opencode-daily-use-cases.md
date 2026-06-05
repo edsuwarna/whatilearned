@@ -308,6 +308,54 @@ o9r 'Analyze request patterns: are we hitting rate limits? Suggest improvements'
 
 ---
 
+## 🎯 Cara Manggil Custom Commands
+
+Custom commands yang udah lu daftarin di `~/.opencode.json` bisa dipanggil dari **OpenCode TUI**:
+
+### Via Command Palette (Ctrl+P)
+
+```
+o9              # Masuk TUI dulu
+```
+
+Terus tekan **`Ctrl+P`** → muncul command palette → mulai ketik nama command:
+1. Ketik `test` → Enter
+2. Isi parameter `file` (path file yang mau di-test) → Enter
+3. Otomatis jalan
+
+### Contoh Skenario
+
+| Mau | Yang Dilakuin |
+|-----|--------------|
+| Bikin unit test | `Ctrl+P` → `test` → isi `src/services/user.ts` → Enter |
+| Review file | `Ctrl+P` → `review` → isi `src/auth/login.ts` → Enter |
+| Bikin Dockerfile | `Ctrl+P` → `docker` → isi `anjungan` → Enter |
+| Dokumentasi | `Ctrl+P` → `doc` → isi `src/utils/helpers.ts` → Enter |
+
+Gak perlu ngetik prompt panjang lagi — tinggal 2-3 langkah dari command palette.
+
+### Shell Aliases (One-Shot)
+
+Kalo mau lebih cepet lagi buat task yang file-nya udah pasti, bikin alias di `~/.zshrc`:
+
+```bash
+# Task berulang dengan file tetap
+alias o9test-auth='o9r test -f src/services/authService.ts'
+alias o9review-api='o9r review -f src/api/routes.ts'
+alias o9fix-latest='o9r "Fix bugs dan error di project ini"'
+alias o9commit='o9r "Generate commit message" -f <(git diff --cached)'
+```
+
+Reload: `source ~/.zshrc`
+
+Abis itu tinggal:
+```bash
+o9test-auth      # Jalanin test auth
+o9commit         # Bikin commit message
+```
+
+---
+
 ## 💡 Tips
 
 - **Plan first** for complex tasks: `--agent plan` makes OpenCode design before coding
