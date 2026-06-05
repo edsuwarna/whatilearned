@@ -34,6 +34,7 @@ Deployed on [Cloudflare Pages](https://pages.cloudflare.com) — auto-deploys on
 - **[deploy-littlelink-to-cloudflare-pages](docs/cloudflare/deploy-littlelink-to-cloudflare-pages.md)** — Step-by-step guide to deploy LittleLink on Cloudflare Pages
 
 ### AI
+- **[9router-free-ai-router](docs/ai/9router-free-ai-router.md)** — Setup guide for 9Router: free AI gateway for OpenCode, Claude Code, and other CLI tools
 - **[picoclaw-deep-dive](docs/ai/picoclaw-deep-dive.md)** — Comprehensive deep dive into Picoclaw (sipeed/picoclaw), the ultra-lightweight Go-based AI agent framework
 - **[claw-framework-comparison](docs/ai/claw-framework-comparison.md)** — Side-by-side comparison of OpenClaw, Hermes Agent, Nanoclaw, and Picoclaw AI agent frameworks
 

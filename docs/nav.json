@@ -4,6 +4,7 @@
       "emoji": "🤖",
       "desc": "AI agent frameworks, comparisons, deep dives",
       "articles": [
+        "9router-free-ai-router",
         "claw-framework-comparison",
         "picoclaw-deep-dive"
       ]
