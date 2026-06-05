@@ -39,6 +39,7 @@ Deployed on [Cloudflare Pages](https://pages.cloudflare.com) — auto-deploys on
 - **[picoclaw-deep-dive](docs/ai/picoclaw-deep-dive.md)** — Comprehensive deep dive into Picoclaw (sipeed/picoclaw), the ultra-lightweight Go-based AI agent framework
 - **[claw-framework-comparison](docs/ai/claw-framework-comparison.md)** — Side-by-side comparison of OpenClaw, Hermes Agent, Nanoclaw, and Picoclaw AI agent frameworks
 - **[opencode-commands-by-role](docs/ai/opencode-commands-by-role.md)** — OpenCode custom commands organized by engineering role: Developer, DevOps, SRE, Cloud, and Infrastructure
+- **[opencode-advanced-tips](docs/ai/opencode-advanced-tips.md)** — Advanced OpenCode workflows: live log tailing, SSH analysis, MCP servers, incident response, per-project commands, and SRE emergency kit
 
 ### Infrastructure
 - **[dokploy-basic-auth](docs/infrastructure/dokploy-basic-auth.md)** — Adding basic auth to Compose applications on Dokploy via Traefik middleware
