@@ -383,30 +383,29 @@
 
         function handleHash() {
             const hash = location.hash.slice(1);
-            if (hash.startsWith('/')) {
-                const plainPath = hash.slice(1);
-                // Check backward compat for old #/en/... or #/id/... URLs
-                if (plainPath.startsWith('en/') || plainPath.startsWith('id/')) {
-                    const newPath = oldUrlMap[plainPath];
-                    if (newPath) {
-                        history.replaceState(null, '', `#/${newPath}`);
-                        loadDoc(newPath);
-                        return;
-                    }
+            if (!hash) { showHome(); return; }
+            // Non-'/' hashes are regular anchor links — let the browser scroll
+            if (!hash.startsWith('/')) return;
+            const plainPath = hash.slice(1);
+            // Check backward compat for old #/en/... or #/id/... URLs
+            if (plainPath.startsWith('en/') || plainPath.startsWith('id/')) {
+                const newPath = oldUrlMap[plainPath];
+                if (newPath) {
+                    history.replaceState(null, '', `#/${newPath}`);
+                    loadDoc(newPath);
+                    return;
                 }
-                const parts = plainPath.split('/').filter(Boolean);
-                if (parts.length >= 2) {
-                    // #/category/file → load article
-                    loadDoc(plainPath);
-                } else if (parts.length === 1) {
-                    // #/category → show category list
-                    showCategory(parts[0]);
-                } else {
-                    showHome();
-                }
-                return;
             }
-            showHome();
+            const parts = plainPath.split('/').filter(Boolean);
+            if (parts.length >= 2) {
+                // #/category/file → load article
+                loadDoc(plainPath);
+            } else if (parts.length === 1) {
+                // #/category → show category list
+                showCategory(parts[0]);
+            } else {
+                showHome();
+            }
         }
 
         // Hash routing

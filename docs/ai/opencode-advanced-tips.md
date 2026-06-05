@@ -8,18 +8,18 @@ Advanced OpenCode patterns for DevOps, SRE, Cloud, Infrastructure, and full-stac
 
 ## 📋 Table of Contents
 
-- [1. Per-Project Commands](#-1-per-project-commands)
-- [2. Chained Commands (Pipelines)](#-2-chained-commands-pipelines)
-- [3. Live Log Tailing + OpenCode](#-3-live-log-tailing--opencode)
-- [4. Remote Server Analysis via SSH](#-4-remote-server-analysis-via-ssh)
-- [5. Plan Mode for Architecture Decisions](#-5-plan-mode-for-architecture-decisions)
-- [6. Per-Directory `.opencoderc`](#-6-per-directory-opencoderc)
-- [7. SRE Emergency Kit Commands](#-7-sre-emergency-kit-commands)
-- [8. MCP Servers (Direct Tool Execution)](#-8-mcp-servers-direct-tool-execution)
-- [9. One-Shot Shell Aliases Summary](#-9-one-shot-shell-aliases-summary)
-- [10. Workflow: Incident Response](#-10-workflow-incident-response)
-- [11. Workflow: New Server Onboarding](#-11-workflow-new-server-onboarding)
-- [12. Workflow: Zero-Downtime Deploy](#-12-workflow-zero-downtime-deploy)
+- [1. Per-Project Commands](#1-per-project-commands)
+- [2. Chained Commands (Pipelines)](#2-chained-commands-pipelines)
+- [3. Live Log Tailing + OpenCode](#3-live-log-tailing-opencode)
+- [4. Remote Server Analysis via SSH](#4-remote-server-analysis-via-ssh)
+- [5. Plan Mode for Architecture Decisions](#5-plan-mode-for-architecture-decisions)
+- [6. Per-Directory `.opencoderc`](#6-per-directory-opencoderc)
+- [7. SRE Emergency Kit Commands](#7-sre-emergency-kit-commands)
+- [8. MCP Servers (Direct Tool Execution)](#8-mcp-servers-direct-tool-execution)
+- [9. One-Shot Shell Aliases Summary](#9-one-shot-shell-aliases-summary)
+- [10. Workflow: Incident Response](#10-workflow-incident-response)
+- [11. Workflow: New Server Onboarding](#11-workflow-new-server-onboarding)
+- [12. Workflow: Zero-Downtime Deploy](#12-workflow-zero-downtime-deploy)
 
 ---
 

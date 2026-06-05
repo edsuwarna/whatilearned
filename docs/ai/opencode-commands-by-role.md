@@ -10,13 +10,13 @@ This reference collects battle-tested commands organized by engineering role. Ea
 
 ## 📋 Table of Contents
 
-- [Developer](#-developer)
-- [DevOps Engineer](#-devops-engineer)
-- [SRE](#-sre)
-- [Cloud Engineer](#-cloud-engineer)
-- [Infrastructure Engineer](#-infrastructure-engineer)
-- [Cross-Role Utilities](#-cross-role-utilities)
-- [Shell Aliases for Quick Access](#-shell-aliases)
+- [Developer](#developer)
+- [DevOps Engineer](#devops-engineer)
+- [SRE](#sre)
+- [Cloud Engineer](#cloud-engineer)
+- [Infrastructure Engineer](#infrastructure-engineer)
+- [Cross-Role Utilities](#cross-role-utilities)
+- [Shell Aliases for Quick Access](#shell-aliases-for-quick-access)
 
 ---
 

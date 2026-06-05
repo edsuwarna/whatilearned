@@ -8,18 +8,18 @@ Config tweaks, keyboard shortcuts, token management, session hygiene, and workfl
 
 ## 📋 Table of Contents
 
-- [1. Custom Instructions (System Behavior)](#-1-custom-instructions-system-behavior)
-- [2. TUI Keyboard Shortcuts](#-2-tui-keyboard-shortcuts)
-- [3. Token Budget & Context Management](#-3-token-budget--context-management)
-- [4. Model Strategy with 9Router](#-4-model-strategy-with-9router)
-- [5. Git Superpowers](#-5-git-superpowers)
-- [6. tmux + OpenCode Workflow](#-6-tmux--opencode-workflow)
-- [7. Session Management](#-7-session-management)
-- [8. Secrets & Sensitive Data Handling](#-8-secrets--sensitive-data-handling)
-- [9. Learning & Legacy Code Exploration](#-9-learning--legacy-code-exploration)
-- [10. Config Reference (`~/.opencode.json`)](#-10-config-reference-opencodejson)
-- [11. OpenCode + GitHub CLI Integration](#-11-opencode--github-cli-integration)
-- [12. Debugging OpenCode Itself](#-12-debugging-opencode-itself)
+- [1. Custom Instructions (System Behavior)](#1-custom-instructions-system-behavior)
+- [2. TUI Keyboard Shortcuts](#2-tui-keyboard-shortcuts)
+- [3. Token Budget & Context Management](#3-token-budget-context-management)
+- [4. Model Strategy with 9Router](#4-model-strategy-with-9router)
+- [5. Git Superpowers](#5-git-superpowers)
+- [6. tmux + OpenCode Workflow](#6-tmux-opencode-workflow)
+- [7. Session Management](#7-session-management)
+- [8. Secrets & Sensitive Data Handling](#8-secrets-sensitive-data-handling)
+- [9. Learning & Legacy Code Exploration](#9-learning-legacy-code-exploration)
+- [10. Config Reference (`~/.opencode.json`)](#10-config-reference-opencode-json)
+- [11. OpenCode + GitHub CLI Integration](#11-opencode-github-cli-integration)
+- [12. Debugging OpenCode Itself](#12-debugging-opencode-itself)
 
 ---
 
