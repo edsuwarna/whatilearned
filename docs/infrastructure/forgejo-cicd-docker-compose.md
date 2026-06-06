@@ -221,6 +221,220 @@ Compatible with GitHub Actions — `actions/checkout@v4`, `actions/setup-node`, 
 | Workflow directory | `.forgejo/workflows/` — NOT `.github/workflows/` |
 | GitHub Marketplace actions | Compatible — use them directly |
 
+## Reverse Proxy Setup
+
+Forgejo needs HTTP and SSH exposed. Both Nginx and Traefik can proxy HTTP (port 3000), but **SSH must still be directly mapped** on the host since reverse proxies don't natively proxy SSH (it's not HTTP).
+
+### Option A: Nginx
+
+Nginx reverse proxy for HTTPS termination + WebSocket support (needed for Git operations over HTTP).
+
+**`/etc/nginx/sites-available/forgejo`:**
+
+```nginx
+server {
+    listen 80;
+    server_name git.example.com;
+    return 301 https://$server_name$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name git.example.com;
+
+    ssl_certificate /etc/letsencrypt/live/git.example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/git.example.com/privkey.pem;
+
+    # Max upload size for large repos
+    client_max_body_size 512m;
+
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        # WebSocket support (required for Git operations)
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+}
+```
+
+Enable and reload:
+```bash
+sudo ln -s /etc/nginx/sites-available/forgejo /etc/nginx/sites-enabled/
+sudo nginx -t && sudo systemctl reload nginx
+```
+
+**SSL with Let's Encrypt:**
+```bash
+sudo apt install certbot python3-certbot-nginx
+sudo certbot --nginx -d git.example.com
+```
+
+### Option B: Traefik (Docker)
+
+If using Traefik (via Dokploy or standalone), add labels to the Forgejo service directly in `docker-compose.yml`:
+
+```yaml
+  forgejo:
+    # ... existing config ...
+    ports:
+      - "${FORGEJO_HTTP_PORT:-3000}:3000"
+      - "${FORGEJO_SSH_PORT:-22}:22"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.forgejo.rule=Host(`${FORGEJO_DOMAIN}`)"
+      - "traefik.http.routers.forgejo.entrypoints=websecure"
+      - "traefik.http.routers.forgejo.tls=true"
+      - "traefik.http.routers.forgejo.tls.certresolver=letsencrypt"
+      - "traefik.http.services.forgejo.loadbalancer.server.port=3000"
+```
+
+If deploying on **Dokploy**, go to Forgejo app → **Networking** tab:
+- **Port:** `3000` (HTTP)
+- **Domain:** `git.example.com`
+- Traefik handles SSL automatically via Dokploy's ACME config
+
+**Important for Traefik:** HTTP port mapping (`3000:3000`) is still needed for Forgejo to properly detect its own URL. The Traefik labels route external traffic to the container's port 3000.
+
+## SSH Setup for Git Operations
+
+### Understanding SSH Port Mapping
+
+Forgejo container exposes SSH on port 22 internally. On the host, you have two options:
+
+| Approach | Host Port | Command |
+|----------|-----------|---------|
+| **Direct (if host SSH on alt port)** | `22:22` | `ssh://git@git.example.com/user/repo.git` |
+| **Custom port (recommended)** | `2222:22` | `ssh://git@git.example.com:2222/user/repo.git` |
+
+**If host already uses port 22** (default SSH server), map Forgejo SSH to a different host port:
+
+```yaml
+# docker-compose.yml
+services:
+  forgejo:
+    ports:
+      - "2222:22"    # Host:2222 → Container:22
+```
+
+```ini
+# .env
+FORGEJO_SSH_PORT=2222
+FORGEJO_SSH_DOMAIN=git.example.com
+```
+
+Forgejo automatically uses these values to display the correct clone URL in the UI.
+
+### Adding SSH Keys to Forgejo
+
+1. Generate a key pair if you don't have one:
+   ```bash
+   ssh-keygen -t ed25519 -C "your-email@example.com"
+   ```
+
+2. Copy the public key:
+   ```bash
+   cat ~/.ssh/id_ed25519.pub
+   ```
+
+3. Add to Forgejo:
+   - Profile (top right avatar) → **Settings** → **SSH / GPG Keys** → **Add Key**
+   - Paste your public key → **Add Key**
+
+### Clone, Push, Pull
+
+**With custom port (2222):**
+
+```bash
+# Clone
+git clone ssh://git@git.example.com:2222/username/repo-name.git
+
+# Or if already cloned, set remote
+git remote add origin ssh://git@git.example.com:2222/username/repo-name.git
+
+# Push/pull work normally after that
+git push origin main
+git pull origin main
+```
+
+**With default port (22):**
+
+```bash
+git clone git@git.example.com:username/repo-name.git
+```
+
+### Simplify with ~/.ssh/config
+
+Create `~/.ssh/config` to avoid typing the port every time:
+
+```
+Host forgejo
+    HostName git.example.com
+    Port 2222
+    User git
+    IdentityFile ~/.ssh/id_ed25519
+```
+
+Then clone with a simple alias:
+
+```bash
+git clone forgejo:username/repo-name.git
+```
+
+**For Windows users (if applicable):** Same `~/.ssh/config` format works with Windows OpenSSH client at `%USERPROFILE%\.ssh\config`.
+
+### Verify SSH Connection
+
+```bash
+# Test connection to Forgejo
+ssh -T -p 2222 git@git.example.com
+
+# Expected output (if using ssh config alias):
+ssh -T forgejo
+# → "Hi there, username! You've successfully authenticated..."
+```
+
+### Common SSH Issues
+
+**Permission denied (publickey):**
+```bash
+# Make sure your key is added to ssh-agent
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519
+
+# Verify the key is registered in Forgejo UI
+# Profile → Settings → SSH / GPG Keys
+```
+
+**Port 22 already in use on host:**
+```bash
+# Check what's using port 22
+sudo lsof -i :22
+# Usually the host's SSH server. Move it to a different port instead:
+# /etc/ssh/sshd_config → change Port to 2222, then restart sshd
+# This frees up host port 22 for Forgejo
+
+# OR just use the custom port approach (2222 → 22) as shown above
+```
+
+**Clone URL shows wrong port in UI:**
+Make sure `.env` has:
+```ini
+FORGEJO_SSH_PORT=2222       # Must match the HOST port
+FORGEJO_SSH_DOMAIN=git.example.com
+FORGEJO_ROOT_URL=https://git.example.com
+```
+
+Then restart Forgejo:
+```bash
+docker compose up -d forgejo
+```
+
 ## Troubleshooting
 
 **Runner can't register:**
