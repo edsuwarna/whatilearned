@@ -230,6 +230,100 @@ Detailed instructions for the agent here.
 
 ---
 
+## Per-Role Recommendations
+
+Which skills to install based on your role. All repos are SKILL.md-compatible with OpenCode, Claude Code, and Codex CLI.
+
+### 👨‍💻 DevOps Engineer
+
+| Priority | Repo | ⭐ | Skills | Focus |
+|----------|------|----|--------|-------|
+| ✅ **Must-have** | `stevenke1981/linux-agent-skills` | New | **63+** | Ansible, CI/CD, git-advanced, monitoring, terraform, K8s (7 skills), Docker (5), Linux (6), network (6), security (4) |
+| ✅ **Must-have** | `bregman-arie/devops-sre-skills` | 12 | ~18 | K8s troubleshooting, Terraform drift, AWS/GCP triage, incident response, observability runbooks |
+| 🔹 Nice-to-have | `abdullahkhawer/devops-skills` | 6 | 15 | Tool-specific skills: aws-cli, github-cli, gitlab-cli, grafana, jenkins, prometheus, slack, terraform-helm |
+| 🔹 Nice-to-have | `agent-sh/agentsys` | 844 | 44 + 49 agents | Multi-agent DevOps workflows |
+
+```bash
+npx skills add https://github.com/stevenke1981/linux-agent-skills --all
+npx skills add https://github.com/bregman-arie/devops-sre-skills --all
+```
+
+---
+
+### 🚨 SRE Engineer
+
+| Priority | Repo | ⭐ | Highlight Skills |
+|----------|------|----|-----------------|
+| ✅ **Must-have** | `bregman-arie/devops-sre-skills` | 12 | `sev1-first-15-minutes` 🔥, `triage-error-budget-burn`, `triage-latency-regression`, `diagnose-crashloop`, `triage-node-pressure`, `triage-pending-pods`, `triage-service-dns` |
+| ✅ **Must-have** | `stevenke1981/linux-agent-skills` | New | K8s troubleshooting, network diagnostics (DNS, LB, proxy, traffic analysis, VPN), security audit |
+| 🔹 Nice-to-have | `samber/cc-skills` | ~500+ | `promql-cli` (PromQL), `snyk-agent-scan-compliance`, `site-launch-checklist` |
+| 🔹 Nice-to-have | `ljagiello/ctf-skills` | 2,310 | OSINT, forensics, web exploitation — SRE incident-response mindset |
+
+```bash
+npx skills add https://github.com/bregman-arie/devops-sre-skills --all
+npx skills add https://github.com/samber/cc-skills --all
+```
+
+---
+
+### ☁️ Cloud Engineer
+
+| Priority | Repo | ⭐ | Highlight Skills |
+|----------|------|----|-----------------|
+| ✅ **Must-have** | `bregman-arie/devops-sre-skills` | 12 | `triage-access-denied` (AWS IAM), `triage-eks-node-notready`, `triage-quota-exceeded` (GCP), `investigate-drift` (Terraform), `recover-state-lock` |
+| ✅ **Must-have** | `abdullahkhawer/devops-skills` | 6 | `aws-cli`, `create-terraform-helm-upgrade-plan`, `maintenance-check-aws-eks` |
+| 🔹 Nice-to-have | `Qovery/qovery-skills` | 7 | Deploy apps to K8s with Qovery |
+
+```bash
+npx skills add https://github.com/bregman-arie/devops-sre-skills --all
+npx skills add https://github.com/abdullahkhawer/devops-skills --all
+```
+
+---
+
+### ⚙️ Infrastructure Engineer
+
+| Priority | Repo | ⭐ | Skills | Focus |
+|----------|------|----|--------|-------|
+| ✅ **Must-have** | `stevenke1981/linux-agent-skills` | New | **63+** | Linux (file-ops, network-tools, process-mgmt, shell-scripting, system-admin, user-perms), network (DNS, LB, proxy, TCP/IP, traffic analysis, VPN), Docker (compose, Dockerfile, image, networking), K8s (helm, deployment, service-ingress) |
+| ✅ **Must-have** | `bregman-arie/devops-sre-skills` | 12 | ~18 | Terraform, K8s, cost optimization |
+| 🔹 Nice-to-have | `samber/cc-skills` | ~500+ | `promql-cli` for infrastructure monitoring |
+
+```bash
+npx skills add https://github.com/stevenke1981/linux-agent-skills --all
+npx skills add https://github.com/bregman-arie/devops-sre-skills --all
+```
+
+---
+
+### 🧑‍💻 Developer (Software Engineer)
+
+| Priority | Repo | ⭐ | Skills | Focus |
+|----------|------|----|--------|-------|
+| ✅ **Must-have** (Go) | `samber/cc-skills-golang` | 1,991 | **42** | Testing, concurrency, gRPC, performance, design-patterns, error-handling, observability, CLI, lint, CI, security, DB, DI, project-layout — *most complete Go skill collection on GitHub* |
+| ✅ **Must-have** | `Prat011/awesome-llm-skills` | 1,296 | ~30 | webapp-testing, changelog-generator, mcp-builder, file-organizer, canvas-design, theme-factory, image-enhancer, notion-integration |
+| 🔹 Nice-to-have | `samber/cc-skills` | ~500+ | 19 | conventional-git, deep-research, technical-article-writer, chrome-extension, crxjs, site-launch-checklist |
+| 🔹 Nice-to-have | `DKeken/codex-skills-alternative` | 4 | 19 | Creative & product design skills (UI/UX workflow) |
+
+```bash
+npx skills add https://github.com/samber/cc-skills-golang --all
+npx skills add https://github.com/Prat011/awesome-llm-skills --all
+```
+
+---
+
+### 📊 Quick Summary
+
+| Role | Mandatory | Optional |
+|------|-----------|----------|
+| **DevOps** | `linux-agent-skills` + `devops-sre-skills` | `abdullahkhawer/devops-skills` |
+| **SRE** | `devops-sre-skills` | `cc-skills` (promql + snyk) |
+| **Cloud** | `devops-sre-skills` + `abdullahkhawer/devops-skills` | `qovery-skills` |
+| **Infra** | `linux-agent-skills` + `devops-sre-skills` | `cc-skills` |
+| **Developer** | `cc-skills-golang` (Go) or `awesome-llm-skills` | `cc-skills` generic |
+
+---
+
 ## Quick Reference: Most Valuable Picks
 
 | What You Need | Best Pick |
