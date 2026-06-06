@@ -435,6 +435,228 @@ Then restart Forgejo:
 docker compose up -d forgejo
 ```
 
+## Object Storage (S3-Compatible)
+
+Forgejo supports S3-compatible object storage for separating file storage from the main data volume. You can configure each storage type independently.
+
+### Which Data Can Use Object Storage?
+
+| Storage Type | Env Var Prefix | What It Stores | Default |
+|-------------|---------------|----------------|---------|
+| `attachments` | `FORGEJO__attachment__` | Issue/PR file attachments | Local |
+| `avatars` | `FORGEJO__avatar__` | User & org avatars | Local |
+| `repo-avatars` | `FORGEJO__picture__` | Repository avatars | Local |
+| `lfs` | `FORGEJO__lfs__` | Git LFS objects | Local |
+| `actions-artifacts` | `FORGEJO__actions__` | CI/CD job artifacts | Local |
+| `packages` | `FORGEJO__packages__` | Package registry (npm, Docker, etc.) | Local |
+
+### Generic S3 Pattern
+
+All S3-compatible providers use the same config pattern with `STORAGE_TYPE: minio` (Forgejo uses "minio" as the generic S3 label):
+
+```yaml
+FORGEJO__{type}__STORAGE_TYPE: minio
+FORGEJO__{type}__MINIO_ENDPOINT: s3.amazonaws.com
+FORGEJO__{type}__MINIO_ACCESS_KEY_ID: ${S3_ACCESS_KEY}
+FORGEJO__{type}__MINIO_SECRET_ACCESS_KEY: ${S3_SECRET_KEY}
+FORGEJO__{type}__MINIO_BUCKET: forgejo-{type}
+FORGEJO__{type}__MINIO_LOCATION: auto
+FORGEJO__{type}__MINIO_USE_SSL: true
+# Optional: custom path style (required for some providers)
+FORGEJO__{type}__MINIO_PATH_STYLE: true   # Garages, MinIO
+```
+
+### Provider Examples
+
+#### ☁️ AWS S3
+
+Best for: production, global accessibility, existing AWS setup.
+
+```yaml
+forgejo:
+  environment:
+    # Actions Artifacts
+    FORGEJO__actions__ARTIFACT_STORAGE_TYPE: minio
+    FORGEJO__actions__MINIO_ENDPOINT: s3.amazonaws.com
+    FORGEJO__actions__MINIO_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+    FORGEJO__actions__MINIO_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    FORGEJO__actions__MINIO_BUCKET: forgejo-actions
+    FORGEJO__actions__MINIO_LOCATION: ap-southeast-1
+    FORGEJO__actions__MINIO_USE_SSL: true
+
+    # Git LFS
+    FORGEJO__lfs__STORAGE_TYPE: minio
+    FORGEJO__lfs__MINIO_ENDPOINT: s3.amazonaws.com
+    FORGEJO__lfs__MINIO_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+    FORGEJO__lfs__MINIO_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+    FORGEJO__lfs__MINIO_BUCKET: forgejo-lfs
+    FORGEJO__lfs__MINIO_LOCATION: ap-southeast-1
+    FORGEJO__lfs__MINIO_USE_SSL: true
+```
+
+Create S3 buckets first:
+```bash
+aws s3 mb s3://forgejo-actions --region ap-southeast-1
+aws s3 mb s3://forgejo-lfs --region ap-southeast-1
+```
+
+Pricing: ~$0.023/GB/month (S3 Standard) + $0.005/1k PUT + egress fees.
+
+#### ☁️ Cloudflare R2
+
+Best for: zero egress fees, global edge, low cost.
+
+```yaml
+forgejo:
+  environment:
+    FORGEJO__actions__ARTIFACT_STORAGE_TYPE: minio
+    FORGEJO__actions__MINIO_ENDPOINT: ${R2_ACCOUNT_ID}.r2.cloudflarestorage.com
+    FORGEJO__actions__MINIO_ACCESS_KEY_ID: ${R2_ACCESS_KEY_ID}
+    FORGEJO__actions__MINIO_SECRET_ACCESS_KEY: ${R2_SECRET_ACCESS_KEY}
+    FORGEJO__actions__MINIO_BUCKET: forgejo-actions
+    FORGEJO__actions__MINIO_LOCATION: auto
+    FORGEJO__actions__MINIO_USE_SSL: true
+
+    FORGEJO__lfs__STORAGE_TYPE: minio
+    FORGEJO__lfs__MINIO_ENDPOINT: ${R2_ACCOUNT_ID}.r2.cloudflarestorage.com
+    FORGEJO__lfs__MINIO_ACCESS_KEY_ID: ${R2_ACCESS_KEY_ID}
+    FORGEJO__lfs__MINIO_SECRET_ACCESS_KEY: ${R2_SECRET_ACCESS_KEY}
+    FORGEJO__lfs__MINIO_BUCKET: forgejo-lfs
+    FORGEJO__lfs__MINIO_LOCATION: auto
+    FORGEJO__lfs__MINIO_USE_SSL: true
+```
+
+**Setup:**
+1. Go to Cloudflare Dashboard → R2 → Create bucket (`forgejo-actions`, `forgejo-lfs`)
+2. Go to **Manage R2 API Tokens** → Create API token with `Object Read & Write` permission
+3. Copy `Access Key ID` and `Secret Access Key` to `.env`
+4. Account ID is found in R2 dashboard URL or Workers & Pages → right sidebar
+
+```ini
+# .env
+R2_ACCOUNT_ID=your-account-id
+R2_ACCESS_KEY_ID=your-access-key
+R2_SECRET_ACCESS_KEY=your-secret-key
+```
+
+**Why R2 for personal use:** Zero egress fees — clone/push/pull traffic is free. 10GB storage free tier. No data transfer cost when developers pull from different locations.
+
+#### ☁️ Google Cloud Storage (GCS)
+
+GCS supports S3-compatible HMAC keys via the XML API.
+
+```yaml
+forgejo:
+  environment:
+    FORGEJO__actions__ARTIFACT_STORAGE_TYPE: minio
+    FORGEJO__actions__MINIO_ENDPOINT: storage.googleapis.com
+    FORGEJO__actions__MINIO_ACCESS_KEY_ID: ${GCS_HMAC_ACCESS_KEY}
+    FORGEJO__actions__MINIO_SECRET_ACCESS_KEY: ${GCS_HMAC_SECRET_KEY}
+    FORGEJO__actions__MINIO_BUCKET: forgejo-actions
+    FORGEJO__actions__MINIO_LOCATION: auto
+    FORGEJO__actions__MINIO_USE_SSL: true
+```
+
+**Setup:**
+1. Go to GCP Console → Cloud Storage → Create bucket (must be globally unique name)
+2. Go to **Settings** → **Interoperability** → **Create HMAC key** for your service account
+3. The HMAC key gives you an Access Key + Secret compatible with S3
+
+**Pricing:** ~$0.020/GB/month, $0.005/1k operations, but egress is expensive ($0.12/GB). Best if most access is from GCP.
+
+#### 🏠 Garage (Self-Hosted S3)
+
+[Garage](https://garagehq.deuxfleurs.fr/) is an open-source, lightweight S3-compatible object store designed for geo-distributed deployments. Much lighter than MinIO (~30MB RAM vs MinIO's ~100-200MB).
+
+```yaml
+  garage:
+    image: dxflrs/garage:latest
+    container_name: forgejo-garage
+    environment:
+      GARAGE_ADMIN_TOKEN: ${GARAGE_ADMIN_TOKEN}
+      GARAGE_METRICS_TOKEN: ${GARAGE_METRICS_TOKEN}
+      GARAGE_RPC_SECRET: ${GARAGE_RPC_SECRET}
+    volumes:
+      - garage_data:/data
+    ports:
+      - "${GARAGE_S3_PORT:-3900}:3900"   # S3-compatible API
+      - "3901:3901"                       # Admin API
+    restart: unless-stopped
+
+  forgejo:
+    environment:
+      FORGEJO__actions__ARTIFACT_STORAGE_TYPE: minio
+      FORGEJO__actions__MINIO_ENDPOINT: garage:3900
+      FORGEJO__actions__MINIO_ACCESS_KEY_ID: ${GARAGE_ACCESS_KEY_ID}
+      FORGEJO__actions__MINIO_SECRET_ACCESS_KEY: ${GARAGE_SECRET_ACCESS_KEY}
+      FORGEJO__actions__MINIO_BUCKET: forgejo-actions
+      FORGEJO__actions__MINIO_LOCATION: auto
+      FORGEJO__actions__MINIO_USE_SSL: false
+      FORGEJO__actions__MINIO_PATH_STYLE: true    # Required for Garage & MinIO
+```
+
+**Garage setup after first deploy:**
+```bash
+# Configure Garage (one-time)
+docker exec forgejo-garage garage layout assign -z dc1 -c 1 $(docker exec forgejo-garage garage node id)
+docker exec forgejo-garage garage layout apply
+
+# Create bucket and access keys
+docker exec forgejo-garage garage bucket create forgejo-actions
+docker exec forgejo-garage garage bucket create forgejo-lfs
+docker exec forgejo-garage garage key create forgejo-user
+docker exec forgejo-garage garage bucket allow forgejo-actions --key forgejo-user --read --write --owner
+docker exec forgejo-garage garage bucket allow forgejo-lfs --key forgejo-user --read --write --owner
+
+# Get access key & secret
+docker exec forgejo-garage garage key info forgejo-user
+```
+
+**Why Garage over MinIO on a MiniPC:**
+- ~30MB RAM vs MinIO's ~100-200MB
+- Designed for edge/small deployments
+- Built-in geo-replication if you ever add more nodes
+- Simpler resource footprint
+
+### Recommendation for MiniPC (4c/8GB/512GB)
+
+| Approach | RAM Usage | Complexity | Best For |
+|----------|-----------|------------|----------|
+| **Local storage** (default) | 0MB extra | None | Starting out, single user |
+| **Garage** (self-hosted) | ~30MB | Medium | Lightweight S3, low RAM |
+| **Cloudflare R2** | 0MB extra | Low | Zero egress, free tier |
+| **AWS S3** | 0MB extra | Low | Production, team access |
+| **MinIO** (self-hosted) | ~100-200MB | Medium | Feature-rich S3 |
+| **GCS** | 0MB extra | Low | If already on GCP |
+
+**Gw recommend:** Mulai dengan **local** dulu. Kalo butuh object storage, pilih:
+
+1. **Cloudflare R2** — kalo lo pengen storage di cloud tanpa biaya egress dan free tier 10GB. Cocok buat LFS kalo lo sering push binary/assets.
+2. **Garage** — kalo lo pengen self-hosted tapi RAM miniPC-nya terbatas. Jauh lebih ringan dari MinIO.
+3. **Jangan MinIO** di MiniPC — kebanyakan makan RAM buat single-user setup.
+
+### Migrating Existing Data
+
+If you switch from local to object storage mid-way, local files **don't auto-migrate**. Forgejo will start writing new data to S3 but old data stays local. To migrate:
+
+```bash
+# Stop Forgejo
+docker compose stop forgejo
+
+# Copy local attachments to S3 (example)
+docker run --rm -v forgejo_data:/data amazon/aws-cli s3 sync \
+  /data/forgejo/attachments/ s3://forgejo-attachments/
+
+# Or for Garage:
+docker run --rm -v forgejo_data:/data \
+  -e AWS_ACCESS_KEY_ID=... -e AWS_SECRET_ACCESS_KEY=... \
+  amazon/aws-cli --endpoint-url http://garage:3900 s3 sync \
+  /data/forgejo/attachments/ s3://forgejo-attachments/
+
+# Restart Forgejo
+docker compose up -d forgejo
+```
+
 ## Troubleshooting
 
 **Runner can't register:**
