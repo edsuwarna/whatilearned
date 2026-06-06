@@ -4,6 +4,22 @@
 
 > **Note**: Free tier has rate limits (RPD = Requests Per Day). These reset daily. If you exhaust your quota, you can either wait for reset or enable billing for pay-as-you-go.
 
+
+## Table of Contents
+
+- [📋 Free Models (June 2026)](#free-models-june-2026)
+  - [Text & Multimodal Models](#text-multimodal-models)
+  - [Specialized Models](#specialized-models)
+  - [Deep Research (Free Preview)](#deep-research-free-preview)
+- [⚡ Rate Limits & Quotas](#rate-limits-quotas)
+- [🔌 API Access](#api-access)
+  - [Get an API Key](#get-an-api-key)
+  - [Using with OpenCode](#using-with-opencode)
+  - [Using with 9Router](#using-with-9router)
+- [🆚 Free Tier Comparison](#free-tier-comparison)
+- [💡 Tips](#tips)
+- [🔗 Related](#related)
+
 ---
 
 ## 📋 Free Models (June 2026)

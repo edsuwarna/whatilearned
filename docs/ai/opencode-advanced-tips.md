@@ -1,5 +1,48 @@
 # OpenCode — Advanced Tips & Workflows
 
+
+## Table of Contents
+
+- [📋 Table of Contents](#table-of-contents)
+- [1. 🏠 Per-Project Commands](#1-per-project-commands)
+  - [Directory Structure](#directory-structure)
+  - [Usage](#usage)
+  - [Example: Project Command](#example-project-command)
+- [2. 🔗 Chained Commands (Pipelines)](#2-chained-commands-pipelines)
+  - [Pipeline Command](#pipeline-command)
+- [3. 🔥 Live Log Tailing + OpenCode](#3-live-log-tailing-opencode)
+  - [Basic Patterns](#basic-patterns)
+  - [Aliases for Quick Use](#aliases-for-quick-use)
+  - [Pattern: Filter → Analyze](#pattern-filter-analyze)
+- [4. 🖥️ Remote Server Analysis via SSH](#4-remote-server-analysis-via-ssh)
+  - [One-Liner Health Check](#one-liner-health-check)
+  - [Dedicated Command File](#dedicated-command-file)
+- [5. 📊 Plan Mode for Architecture Decisions](#5-plan-mode-for-architecture-decisions)
+  - [When to Use Plan Mode](#when-to-use-plan-mode)
+  - [Examples](#examples)
+  - [Pro Tip](#pro-tip)
+- [6. 📁 Per-Directory `.opencoderc`](#6-per-directory-opencoderc)
+  - [Example](#example)
+  - [Benefits](#benefits)
+- [7. 🚨 SRE Emergency Kit Commands](#7-sre-emergency-kit-commands)
+  - [On-Call Handoff](#on-call-handoff)
+  - [Post-Deploy Verification](#post-deploy-verification)
+  - [Incident Timeline](#incident-timeline)
+- [8. 🔌 MCP Servers (Direct Tool Execution)](#8-mcp-servers-direct-tool-execution)
+  - [Configuration](#configuration)
+  - [Recommended MCP Servers for Each Role](#recommended-mcp-servers-for-each-role)
+  - [What MCP Enables](#what-mcp-enables)
+  - [Installation](#installation)
+- [9. ⚡ One-Shot Shell Aliases Summary](#9-one-shot-shell-aliases-summary)
+- [10. 🔄 Workflow: Incident Response](#10-workflow-incident-response)
+  - [Step 1: Alert Fires](#step-1-alert-fires)
+  - [Step 2: Investigate](#step-2-investigate)
+  - [Step 3: Mitigate](#step-3-mitigate)
+  - [Step 4: Postmortem](#step-4-postmortem)
+- [11. 🔄 Workflow: New Server Onboarding](#11-workflow-new-server-onboarding)
+- [12. 🔄 Workflow: Zero-Downtime Deploy](#12-workflow-zero-downtime-deploy)
+- [💡 Final Tips](#final-tips)
+
 Advanced OpenCode patterns for DevOps, SRE, Cloud, Infrastructure, and full-stack developers who use it daily across multiple projects and servers.
 
 > **Prerequisite**: Basic OpenCode setup with 9Router or direct API key. See [opencode-daily-use-cases](opencode-daily-use-cases.md) for fundamentals and [opencode-commands-by-role](opencode-commands-by-role.md) for role-specific commands.

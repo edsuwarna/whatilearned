@@ -3,6 +3,39 @@
 > **Last updated:** 2026-06-06
 > **Compatible with:** OpenCode, Claude Code, Codex CLI, Cursor, Gemini CLI, Antigravity, and any tool supporting the SKILL.md standard.
 
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Top Open-Source Skill Repositories](#top-open-source-skill-repositories)
+  - [🥇 cc-skills-golang — ⭐ 1,991](#cc-skills-golang-1991)
+  - [🥇 awesome-llm-skills — ⭐ 1,296](#awesome-llm-skills-1296)
+  - [🥇 obsidian-skills (kepano) — ⭐ 34,575](#obsidian-skills-kepano-34575)
+  - [🥇 ctf-skills — ⭐ 2,310](#ctf-skills-2310)
+  - [🥇 Deep-Research-skills — ⭐ 994](#deep-research-skills-994)
+  - [🥇 devops-sre-skills — ⭐ 12 (new)](#devops-sre-skills-12-new)
+  - [🥇 context-engineering-kit — ⭐ 1,075](#context-engineering-kit-1075)
+- [Skill Manager Tools](#skill-manager-tools)
+  - [Skillkit — ⭐ 1,189](#skillkit-1189)
+  - [Agnix — ⭐ 267](#agnix-267)
+  - [agentic-stack — ⭐ 2,074](#agentic-stack-2074)
+  - [oh-my-agent — ⭐ 1,062](#oh-my-agent-1062)
+  - [agentsys — ⭐ 844](#agentsys-844)
+- [How Skills Work in OpenCode](#how-skills-work-in-opencode)
+  - [Directory Structure](#directory-structure)
+  - [SKILL.md Format](#skillmd-format)
+- [What I Do](#what-i-do)
+  - [Key Facts](#key-facts)
+- [Per-Role Recommendations](#per-role-recommendations)
+  - [👨‍💻 DevOps Engineer](#devops-engineer)
+  - [🚨 SRE Engineer](#sre-engineer)
+  - [☁️ Cloud Engineer](#cloud-engineer)
+  - [⚙️ Infrastructure Engineer](#infrastructure-engineer)
+  - [🧑‍💻 Developer (Software Engineer)](#developer-software-engineer)
+  - [📊 Quick Summary](#quick-summary)
+- [Quick Reference: Most Valuable Picks](#quick-reference-most-valuable-picks)
+- [Related](#related)
+
 ## Overview
 
 OpenCode uses the **universal SKILL.md** format — the same standard supported by Claude Code, Codex, Cursor, Windsurf, Kiro, and 40+ other AI coding assistants. Skills are loaded from `.opencode/skills/<name>/SKILL.md` (project-level) or `~/.config/opencode/skills/<name>/SKILL.md` (global).

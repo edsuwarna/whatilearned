@@ -3,6 +3,20 @@
 **Research date:** 2026-05-29  
 **Methodology:** GitHub API data, README analysis, project documentation
 
+
+## Table of Contents
+
+- [Executive Summary](#executive-summary)
+- [Quick Comparison Table](#quick-comparison-table)
+- [Detailed Analysis](#detailed-analysis)
+  - [1. OpenClaw (`openclaw/openclaw`) — The Original](#1-openclaw-openclawopenclaw-the-original)
+  - [2. Hermes Agent (`NousResearch/hermes-agent`) — The Self-Improving Agent](#2-hermes-agent-nousresearchhermes-agent-the-self-improving-agent)
+  - [3. Nanoclaw (`nanocoai/nanoclaw`) — The Secure, Understandable Alternative](#3-nanoclaw-nanocoainanoclaw-the-secure-understandable-alternative)
+  - [4. Picoclaw (`sipeed/picoclaw`) — The Ultra-Lightweight Champion](#4-picoclaw-sipeedpicoclaw-the-ultra-lightweight-champion)
+- [Relationship Map](#relationship-map)
+- [When to Choose Which](#when-to-choose-which)
+- [Methodology Notes](#methodology-notes)
+
 ---
 
 ## Executive Summary

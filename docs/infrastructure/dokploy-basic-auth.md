@@ -2,6 +2,22 @@
 
 > How to add basic authentication (username + password) to applications deployed on Dokploy, for both **Application** and **Compose** types.
 
+
+## Table of Contents
+
+- [Background](#background)
+- [Method 1: Application Type (Built-in)](#method-1-application-type-built-in)
+  - [Steps](#steps)
+- [Method 2: Compose Type (Manual Traefik Middleware)](#method-2-compose-type-manual-traefik-middleware)
+  - [Step 1 — Generate bcrypt password hash](#step-1-generate-bcrypt-password-hash)
+  - [Step 2 — Add full Traefik labels to docker-compose.yml](#step-2-add-full-traefik-labels-to-docker-composeyml)
+  - [Step 3 — Set domain in Dokploy](#step-3-set-domain-in-dokploy)
+  - [Step 4 — Redeploy](#step-4-redeploy)
+- [How it works (Compose method)](#how-it-works-compose-method)
+  - [Provider suffixes explained](#provider-suffixes-explained)
+- [Alternative: File provider (any type)](#alternative-file-provider-any-type)
+- [Limitations](#limitations)
+
 ## Background
 
 Dokploy v0.29.x has built-in basic auth via **Traefik middleware** — but the UI implementation differs by app type:

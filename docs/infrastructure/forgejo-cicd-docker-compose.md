@@ -3,6 +3,43 @@
 > **Last updated:** 2026-06-07  
 > **Stack:** Forgejo 1.22 + PostgreSQL 18 + act_runner (Forgejo Actions)
 
+
+## Table of Contents
+
+- [Overview](#overview)
+  - [Architecture](#architecture)
+  - [Stack Components](#stack-components)
+- [Docker Compose Setup](#docker-compose-setup)
+  - [File Structure](#file-structure)
+  - [docker-compose.yml](#docker-composeyml)
+  - [.env](#env)
+- [Setup Steps](#setup-steps)
+  - [Step 1: Start Database + Forgejo](#step-1-start-database-forgejo)
+  - [Step 2: Create Admin Account](#step-2-create-admin-account)
+  - [Step 3: Get Runner Registration Token](#step-3-get-runner-registration-token)
+  - [Step 4: Start the Runner](#step-4-start-the-runner)
+  - [Step 5: Verify](#step-5-verify)
+- [Example Workflow](#example-workflow)
+- [Key Details](#key-details)
+- [Reverse Proxy Setup](#reverse-proxy-setup)
+  - [Option A: Nginx](#option-a-nginx)
+  - [Option B: Traefik (Docker)](#option-b-traefik-docker)
+- [SSH Setup for Git Operations](#ssh-setup-for-git-operations)
+  - [Understanding SSH Port Mapping](#understanding-ssh-port-mapping)
+  - [Adding SSH Keys to Forgejo](#adding-ssh-keys-to-forgejo)
+  - [Clone, Push, Pull](#clone-push-pull)
+  - [Simplify with ~/.ssh/config](#simplify-with-sshconfig)
+  - [Verify SSH Connection](#verify-ssh-connection)
+  - [Common SSH Issues](#common-ssh-issues)
+- [Object Storage (S3-Compatible)](#object-storage-s3-compatible)
+  - [Which Data Can Use Object Storage?](#which-data-can-use-object-storage)
+  - [Generic S3 Pattern](#generic-s3-pattern)
+  - [Provider Examples](#provider-examples)
+  - [Recommendation for MiniPC (4c/8GB/512GB)](#recommendation-for-minipc-4c8gb512gb)
+  - [Migrating Existing Data](#migrating-existing-data)
+- [Troubleshooting](#troubleshooting)
+- [Related](#related)
+
 ## Overview
 
 Deploy a complete self-hosted Git server with built-in CI/CD using Forgejo Actions — compatible with GitHub Actions workflow syntax.

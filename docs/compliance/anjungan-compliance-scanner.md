@@ -1,5 +1,25 @@
 # Anjungan Compliance Scanner
 
+
+## Table of Contents
+
+- [Overview](#overview)
+- [CIS Level 1 (cis1)](#cis-level-1-cis1)
+  - [Categories & Checks (40 total)](#categories-checks-40-total)
+- [CIS Level 2 (cis2)](#cis-level-2-cis2)
+  - [Additional Level 2 Checks](#additional-level-2-checks)
+  - [When to Use Level 2](#when-to-use-level-2)
+- [Lynis](#lynis)
+  - [Prerequisites](#prerequisites)
+  - [What Lynis Scans](#what-lynis-scans)
+  - [Output Structure](#output-structure)
+  - [How to Interpret Results](#how-to-interpret-results)
+  - [Limitation](#limitation)
+- [Scoring Formula](#scoring-formula)
+  - [Score Tiers](#score-tiers)
+  - [Lynis Scoring](#lynis-scoring)
+- [References](#references)
+
 Documentation for the compliance scanning system in Anjungan — covering scan profiles (CIS Level 1, CIS Level 2), category breakdown, and Lynis integration.
 
 - **Author**: Anjungan IDP Team

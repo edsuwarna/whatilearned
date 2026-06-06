@@ -9,6 +9,42 @@
 **Website:** [picoclaw.io](https://picoclaw.io) | **Docs:** [docs.picoclaw.io](https://docs.picoclaw.io)  
 **Created:** Feb 2026 (~4 months old)
 
+
+## Table of Contents
+
+- [📊 GitHub Statistics](#github-statistics)
+- [🏗️ Architecture Overview](#architecture-overview)
+  - [Package Structure (`pkg/` — 35+ packages)](#package-structure-pkg-35-packages)
+  - [CLI Layer (`cmd/`)](#cli-layer-cmd)
+  - [Web Layer (`web/`)](#web-layer-web)
+- [🔄 Core Runtime: The Agent Loop](#core-runtime-the-agent-loop)
+  - [Message Flow](#message-flow)
+  - [Turn Lifecycle](#turn-lifecycle)
+- [🔥 Key Features In Detail](#key-features-in-detail)
+  - [1. 🪶 Ultra-Lightweight (<10 MB RAM)](#1-ultra-lightweight-10-mb-ram)
+  - [2. 🤖 Native MCP Protocol Support](#2-native-mcp-protocol-support)
+  - [3. 🧠 30+ LLM Providers via Protocol-Prefix Routing](#3-30-llm-providers-via-protocol-prefix-routing)
+  - [4. 🔌 19+ Messaging Channels](#4-19-messaging-channels)
+  - [5. 🔄 SubTurn Mechanism (Sub-Agent Coordination)](#5-subturn-mechanism-sub-agent-coordination)
+  - [6. 🎯 Steering System (Mid-Turn Injection)](#6-steering-system-mid-turn-injection)
+  - [7. 🔗 Hook System](#7-hook-system)
+  - [8. 🧬 Agent Self-Evolution](#8-agent-self-evolution)
+  - [9. 📱 Android Support](#9-android-support)
+  - [10. ⏰ Cron/Scheduled Tasks](#10-cronscheduled-tasks)
+  - [11. 🛠️ Built-in Tools](#11-built-in-tools)
+- [📦 Installation](#installation)
+  - [Binary Download (Recommended)](#binary-download-recommended)
+  - [Build from Source](#build-from-source)
+  - [Docker](#docker)
+  - [Android APK](#android-apk)
+- [⚙️ Configuration](#configuration)
+- [🆚 Picoclaw vs Hermes Agent](#picoclaw-vs-hermes-agent)
+  - [Picoclaw Strengths (vs Hermes)](#picoclaw-strengths-vs-hermes)
+  - [Picoclaw Limitations (vs Hermes)](#picoclaw-limitations-vs-hermes)
+- [🛑 Honest Limitations](#honest-limitations)
+- [🗺️ Roadmap Highlights](#roadmap-highlights)
+- [🏁 Summary](#summary)
+
 ---
 
 ## 📊 GitHub Statistics

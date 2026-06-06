@@ -2,6 +2,30 @@
 
 > Comparing three self-hosted storage solutions for an Internal Developer Platform (IDP) running on a single VPS with Cloudflare R2.
 
+
+## Table of Contents
+
+- [Quick Summary](#quick-summary)
+- [Architectural Difference](#architectural-difference)
+  - [SeaweedFS](#seaweedfs)
+  - [Garage](#garage)
+  - [JuiceFS](#juicefs)
+- [Feature Comparison](#feature-comparison)
+  - [S3 & Object Storage](#s3-object-storage)
+  - [Filesystem](#filesystem)
+  - [Operations](#operations)
+  - [Resource Usage (single VPS)](#resource-usage-single-vps)
+- [JuiceFS Deep Dive](#juicefs-deep-dive)
+  - [How Data Flows](#how-data-flows)
+  - [Why This Matters for a VPS with R2](#why-this-matters-for-a-vps-with-r2)
+  - [JuiceFS Community Edition vs Enterprise Edition](#juicefs-community-edition-vs-enterprise-edition)
+- [Decision Matrix](#decision-matrix)
+  - [Choose SeaweedFS when:](#choose-seaweedfs-when)
+  - [Choose Garage when:](#choose-garage-when)
+  - [Choose JuiceFS when:](#choose-juicefs-when)
+- [Recommended Architecture for a VPS + R2 Setup](#recommended-architecture-for-a-vps-r2-setup)
+- [Reference](#reference)
+
 ## Quick Summary
 
 | | **SeaweedFS** | **Garage** | **JuiceFS** |

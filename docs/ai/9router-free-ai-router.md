@@ -2,6 +2,24 @@
 
 **9Router** is a smart AI gateway that sits between your coding CLI tools (OpenCode, Claude Code, Cursor, Codex, Cline, etc.) and 60+ AI providers. It provides a single OpenAI-compatible endpoint and handles routing, format translation, quota tracking, and auto-fallback.
 
+
+## Table of Contents
+
+- [How It Works](#how-it-works)
+- [Free Providers](#free-providers)
+- [Install](#install)
+- [Usage](#usage)
+  - [Docker (VPS/server)](#docker-vpsserver)
+  - [Resources](#resources)
+- [Setup: OpenCode CLI + 9Router (Free AI)](#setup-opencode-cli-9router-free-ai)
+  - [Step 1: Install & run 9Router](#step-1-install-run-9router)
+  - [Step 2: Connect a free provider](#step-2-connect-a-free-provider)
+  - [Step 3: Config OpenCode](#step-3-config-opencode)
+  - [Model naming](#model-naming)
+- [Key Features](#key-features)
+- [Supported CLI Tools](#supported-cli-tools)
+- [Notes](#notes)
+
 Project: [9router.com](https://9router.com) · GitHub: [decolua/9router](https://github.com/decolua/9router) (16k+ stars, MIT)
 
 ## How It Works

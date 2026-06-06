@@ -2,6 +2,23 @@
 
 > Kopia: backup tool — incremental, dedup, encrypted. Cocok kombinasi sama **Cloudflare R2** untuk VPS dengan disk terbatas.
 
+
+## Table of Contents
+
+- [Quick Summary](#quick-summary)
+- [Kenapa Kopia untuk IDP?](#kenapa-kopia-untuk-idp)
+  - [1. Storage ke R2 Langsung](#1-storage-ke-r2-langsung)
+  - [2. Dedup + Compression + Encryption (Default)](#2-dedup-compression-encryption-default)
+  - [3. Snapshot (Point-in-time restore)](#3-snapshot-point-in-time-restore)
+  - [4. Policy Retention (Auto Cleanup)](#4-policy-retention-auto-cleanup)
+  - [5. Web UI](#5-web-ui)
+- [Bandingin Backup Tools](#bandingin-backup-tools)
+- [Skenario untuk VPS (4-8 GB RAM, 40GB Disk, R2)](#skenario-untuk-vps-4-8-gb-ram-40gb-disk-r2)
+  - [Arsitektur Ideal](#arsitektur-ideal)
+  - [Setup Cepat](#setup-cepat)
+  - [Kapan Pake Kopia vs Lainnya](#kapan-pake-kopia-vs-lainnya)
+- [Tips](#tips)
+
 ## Quick Summary
 
 | | |

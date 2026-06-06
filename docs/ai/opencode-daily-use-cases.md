@@ -2,6 +2,35 @@
 
 **OpenCode** is a provider-agnostic AI coding agent CLI. This guide covers real-world daily use cases for developers and devops engineers.
 
+
+## Table of Contents
+
+- [Alias Setup](#alias-setup)
+- [👨‍💻 Developer Daily](#developer-daily)
+  - [Writing Code (Core Features)](#writing-code-core-features)
+  - [Debugging](#debugging)
+  - [Refactoring](#refactoring)
+  - [Unit Tests](#unit-tests)
+  - [Database](#database)
+  - [Code Review](#code-review)
+  - [Documentation](#documentation)
+  - [Git](#git)
+- [🐳 DevOps Daily](#devops-daily)
+  - [Docker](#docker)
+  - [Server Management](#server-management)
+  - [CI/CD](#cicd)
+  - [Security](#security)
+  - [Deployment](#deployment)
+  - [Config Review](#config-review)
+  - [Network/DNS Debugging](#networkdns-debugging)
+  - [Log Analysis](#log-analysis)
+- [⚙️ Config File Reference](#config-file-reference)
+- [🎯 How to Run Custom Commands](#how-to-run-custom-commands)
+  - [Via Command Palette (Ctrl+P)](#via-command-palette-ctrlp)
+  - [Quick Examples](#quick-examples)
+  - [Shell Aliases (One-Shot)](#shell-aliases-one-shot)
+- [💡 Tips](#tips)
+
 Docs: [github.com/opencode-ai/opencode](https://github.com/opencode-ai/opencode) · Install: `npm i -g opencode-ai`
 
 > This guide assumes OpenCode is configured with a provider via 9Router or direct API key.

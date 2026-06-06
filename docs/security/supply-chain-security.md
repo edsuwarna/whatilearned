@@ -3,6 +3,17 @@
 > Lessons learned from the Trivy supply chain attack (GHSA-69fq-xp46-6x23, March 2026)
 > and general best practices for securing open source projects.
 
+
+## Table of Contents
+
+- [1. 🔐 GitHub / Repository Security](#1-github-repository-security)
+- [2. 🔄 CI/CD Security](#2-cicd-security)
+- [3. 📦 Dependency Management](#3-dependency-management)
+- [4. 📤 Release Security](#4-release-security)
+- [5. 👥 Access Control](#5-access-control)
+- [6. 🕵️ Pre-commit & Secret Detection](#6-pre-commit-secret-detection)
+- [7. 📋 Open Source Project Checklist](#7-open-source-project-checklist)
+
 ## 1. 🔐 GitHub / Repository Security
 
 **Branch protection** — protect your `main` branch:

@@ -7,6 +7,20 @@ tags: [cloudflare, pages, littlelink, hosting, static-site]
 
 # Deploy LittleLink to Cloudflare Pages
 
+
+## Table of Contents
+
+- [Prerequisites](#prerequisites)
+- [Step 1: Fork LittleLink](#step-1-fork-littlelink)
+- [Step 2: Customize Your Page](#step-2-customize-your-page)
+- [Step 3: Push to GitHub](#step-3-push-to-github)
+- [Step 4: Deploy on Cloudflare Pages](#step-4-deploy-on-cloudflare-pages)
+- [Step 5: Set Custom Domain (Optional)](#step-5-set-custom-domain-optional)
+- [Auto-Deploy on Every Push](#auto-deploy-on-every-push)
+- [Adding Custom Button Colors](#adding-custom-button-colors)
+- [Troubleshooting](#troubleshooting)
+- [References](#references)
+
 [LittleLink](https://github.com/sethcottle/littlelink) is an open-source alternative to Linktree/Bio.link. It's a lightweight, single-page HTML site with 100+ branded button styles.
 
 Cloudflare Pages is a perfect fit — it's free, fast, and automatically deploys from your GitHub repo.

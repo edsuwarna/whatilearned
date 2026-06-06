@@ -2,6 +2,50 @@
 
 > Lightweight (~20MB binary, ~50MB RAM idle), OCI-compliant container registry in Go. A production-ready alternative to Docker Distribution and Harbor for resource-constrained environments.
 
+
+## Table of Contents
+
+- [Why Zot?](#why-zot)
+- [Deploy with Docker Compose](#deploy-with-docker-compose)
+  - [Basic compose + local storage:](#basic-compose-local-storage)
+- [Cloudflare R2 Storage](#cloudflare-r2-storage)
+- [Auth Options](#auth-options)
+  - [1. htpasswd (for docker CLI)](#1-htpasswd-for-docker-cli)
+  - [2. OIDC (for web browser SSO)](#2-oidc-for-web-browser-sso)
+  - [3. Dual auth (recommended — htpasswd for CLI + OIDC for web)](#3-dual-auth-recommended-htpasswd-for-cli-oidc-for-web)
+  - [4. Traefik Basic Auth (for Dokploy Compose)](#4-traefik-basic-auth-for-dokploy-compose)
+- [Access Control (RBAC)](#access-control-rbac)
+  - [Actions](#actions)
+  - [Permission levels](#permission-levels)
+  - [Glob patterns for repos](#glob-patterns-for-repos)
+  - [Example config](#example-config)
+  - [Anonymous access (public pull)](#anonymous-access-public-pull)
+  - [Conditional policies (CEL)](#conditional-policies-cel)
+- [Artifact Support](#artifact-support)
+  - [Artifact types supported](#artifact-types-supported)
+  - [Referrers API](#referrers-api)
+- [Extensions](#extensions)
+- [Dokploy Compose Deployment](#dokploy-compose-deployment)
+  - [Full inline Traefik auth for Compose (alternative to Zot auth)](#full-inline-traefik-auth-for-compose-alternative-to-zot-auth)
+- [CVE Scanning (Trivy)](#cve-scanning-trivy)
+  - [How it works](#how-it-works)
+  - [Enable config](#enable-config)
+  - [Trivy config options](#trivy-config-options)
+  - [What Trivy scans](#what-trivy-scans)
+  - [API endpoints](#api-endpoints)
+  - [Notes](#notes)
+- [Advanced Features](#advanced-features)
+  - [📡 Sync / Mirror — Pull-Through Proxy](#sync-mirror-pull-through-proxy)
+  - [📦 Retention Policies — Auto-Cleanup](#retention-policies-auto-cleanup)
+  - [🚦 Rate Limiting](#rate-limiting)
+  - [🔗 Multi-Storage (SubPaths)](#multi-storage-subpaths)
+  - [📡 Events (Webhooks)](#events-webhooks)
+  - [🔍 Scrub — Data Integrity](#scrub-data-integrity)
+  - [⚙️ GC + Dedupe](#gc-dedupe)
+  - [🏗️ Clustering](#clustering)
+  - [📏 Binary Size](#binary-size)
+- [Pitfalls](#pitfalls)
+
 ## Why Zot?
 
 | Aspect | Zot | Docker Distribution | Harbor |
