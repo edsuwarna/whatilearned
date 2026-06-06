@@ -42,6 +42,7 @@
       "desc": "Deployment, Docker, Traefik, Dokploy",
       "articles": [
         "dokploy-basic-auth",
+        "forgejo-cicd-docker-compose",
         "kopia-backup",
         "object-storage-comparison",
         "zot-registry"

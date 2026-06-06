@@ -45,3 +45,4 @@ Deployed on [Cloudflare Pages](https://pages.cloudflare.com) — auto-deploys on
 
 ### Infrastructure
 - **[dokploy-basic-auth](docs/infrastructure/dokploy-basic-auth.md)** — Adding basic auth to Compose applications on Dokploy via Traefik middleware
+- **[forgejo-cicd-docker-compose](docs/infrastructure/forgejo-cicd-docker-compose.md)** — Self-hosted Forgejo with CI/CD (Forgejo Actions) using Docker Compose
