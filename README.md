@@ -45,5 +45,7 @@ Deployed on [Cloudflare Pages](https://pages.cloudflare.com) — auto-deploys on
 
 ### Infrastructure
 - **[act](docs/infrastructure/act.md)** — Run GitHub Actions workflows locally with nektos/act: installation, CLI reference, runner images, secrets, events, and practical examples
+- **[dagger](docs/infrastructure/dagger.md)** — Programmable CI/CD platform: SDKs in 8 languages, content-addressed caching, built-in tracing, Dagger Cloud
 - **[dokploy-basic-auth](docs/infrastructure/dokploy-basic-auth.md)** — Adding basic auth to Compose applications on Dokploy via Traefik middleware
 - **[forgejo-cicd-docker-compose](docs/infrastructure/forgejo-cicd-docker-compose.md)** — Self-hosted Forgejo with CI/CD (Forgejo Actions) using Docker Compose
+- **[taskfile](docs/infrastructure/taskfile.md)** — Modern YAML-based task runner: dependencies, caching, templates, includes, platform-specific commands

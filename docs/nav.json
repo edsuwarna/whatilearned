@@ -42,10 +42,12 @@
       "desc": "Deployment, Docker, Traefik, Dokploy",
       "articles": [
         "act",
+        "dagger",
         "dokploy-basic-auth",
         "forgejo-cicd-docker-compose",
         "kopia-backup",
         "object-storage-comparison",
+        "taskfile",
         "zot-registry"
       ]
     },
