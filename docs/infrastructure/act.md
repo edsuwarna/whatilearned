@@ -6,6 +6,48 @@
 > **Docs:** https://nektosact.com
 > **License:** MIT
 
+## Table of Contents
+
+- [Overview](#overview)
+  - [Why Use It?](#why-use-it)
+  - [How It Works](#how-it-works)
+- [Installation](#installation)
+  - [Prerequisites](#prerequisites)
+  - [Quick Install (Linux/macOS)](#quick-install-linuxmacos)
+  - [Package Managers](#package-managers)
+  - [Build from Source](#build-from-source)
+  - [Verify](#verify)
+- [Basic Usage](#basic-usage)
+  - [Quick Examples](#quick-examples)
+- [Complete Flag Reference](#complete-flag-reference)
+  - [General](#general)
+  - [Execution Control](#execution-control)
+  - [Container & Docker](#container--docker)
+  - [Secrets, Vars, Env & Inputs](#secrets-vars-env--inputs)
+  - [Event & Matrix](#event--matrix)
+  - [Caching & Artifacts](#caching--artifacts)
+  - [Output](#output)
+  - [Miscellaneous](#miscellaneous)
+- [Configuration (.actrc)](#configuration-actrc)
+- [Runner Images](#runner-images)
+  - [Default Platform Mappings](#default-platform-mappings)
+  - [Custom Images](#custom-images)
+- [Secrets, Variables & Environment](#secrets-variables--environment)
+- [Events & Custom Payloads](#events--custom-payloads)
+- [Skipping Jobs/Steps Locally](#skipping-jobssteps-locally)
+- [Matrix Strategy](#matrix-strategy)
+- [Artifacts](#artifacts)
+- [Offline Mode](#offline-mode)
+- [Watch Mode](#watch-mode)
+- [Local Repository Override](#local-repository-override)
+- [Dry Run & Validation](#dry-run--validation)
+- [Debugging](#debugging)
+- [Known Limitations](#known-limitations)
+- [Integration with Gitea/Forgejo](#integration-with-giteaforgejo)
+- [Practical Examples](#practical-examples)
+- [Summary](#summary)
+- [Related](#related)
+
 ## Overview
 
 `act` lets you run [GitHub Actions](https://github.com/features/actions) workflows **locally** on your own machine using Docker containers. No more commit-push-wait cycles just to test a workflow change.
