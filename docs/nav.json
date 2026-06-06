@@ -45,6 +45,7 @@
         "dagger",
         "dokploy-basic-auth",
         "forgejo-cicd-docker-compose",
+        "glibc-vs-musl",
         "kopia-backup",
         "object-storage-comparison",
         "taskfile",
