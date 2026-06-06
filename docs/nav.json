@@ -41,6 +41,7 @@
       "emoji": "⚙️",
       "desc": "Deployment, Docker, Traefik, Dokploy",
       "articles": [
+        "act",
         "dokploy-basic-auth",
         "forgejo-cicd-docker-compose",
         "kopia-backup",
