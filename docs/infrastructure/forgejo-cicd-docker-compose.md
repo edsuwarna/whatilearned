@@ -1,7 +1,7 @@
 # Forgejo + Forgejo Actions CI/CD with Docker Compose
 
 > **Last updated:** 2026-06-07  
-> **Stack:** Forgejo 1.22 + PostgreSQL 18 + act_runner (Forgejo Actions)
+> **Stack:** Forgejo 15 + PostgreSQL 18 + Forgejo Runner (Forgejo Actions)
 
 
 ## Table of Contents
@@ -46,30 +46,35 @@ Deploy a complete self-hosted Git server with built-in CI/CD using Forgejo Actio
 
 ### Architecture
 
-```
-┌─────────────────────────────────────────┐
-│  Docker Network                          │
-│                                         │
-│  ┌──────────┐    ┌──────────────┐       │
-│  │ Forgejo  │◄───│ PostgreSQL   │       │
-│  │ :3000    │    │ :5432        │       │
-│  │ :22      │    └──────────────┘       │
-│  └────┬─────┘                           │
-│       │ gRPC (registration + jobs)      │
-│  ┌────▼─────┐                           │
-│  │act_runner│                           │
-│  │ (runner) │                           │
-│  └──────────┘                           │
-└─────────────────────────────────────────┘
+```text
+┌─────────────────────────────────────────────────┐
+│  Docker Network                                  │
+│                                                  │
+│  ┌──────────┐    ┌──────────────┐                │
+│  │ Forgejo  │◄───│ PostgreSQL   │                │
+│  │ :3000    │    │ :5432        │                │
+│  │ :22      │    └──────────────┘                │
+│  └────┬─────┘                                    │
+│       │ HTTP polling (register → job fetch)      │
+│  ┌────▼──────────────────────┐                   │
+│  │  Forgejo Runner          │                   │
+│  │  (data.forgejo/runner:12) │                   │
+│  │                          │                   │
+│  │  ┌──────────────────┐    │                   │
+│  │  │ docker-in-docker │    │                   │
+│  │  │ (dind)           │    │                   │
+│  │  └──────────────────┘    │                   │
+│  └──────────────────────────┘                   │
+└─────────────────────────────────────────────────┘
 ```
 
 ### Stack Components
 
 | Service | Image | Purpose |
 |---------|-------|---------|
-| Forgejo | `codeberg.org/forgejo/forgejo:1.22` | Git server + Actions engine |
+| Forgejo | `codeberg.org/forgejo/forgejo:15` | Git server + Actions engine |
 | PostgreSQL | `postgres:18-alpine` | Metadata storage (required for Actions) |
-| act_runner | `gitea/act_runner:latest` | CI job executor (compatible with Forgejo) |
+| Forgejo Runner | `data.forgejo.org/forgejo/runner:12` | CI job executor |
 
 **Why PostgreSQL over SQLite:** Forgejo Actions can corrupt SQLite under concurrent job loads. PostgreSQL 18 Alpine uses ~50MB RAM idle — worth it for reliability.
 
@@ -88,8 +93,12 @@ project/
 ### docker-compose.yml
 
 ```yaml
-# Forgejo + PostgreSQL + act_runner (Forgejo Actions CI/CD)
+# Forgejo + PostgreSQL + Forgejo Runner (Forgejo Actions CI/CD)
 # Deploy: docker compose up -d
+#
+# IMPORTANT: Forgejo 15.x uses OFFLINE REGISTRATION for runners
+# See Step 3-4 below for runner UUID+Token setup
+
 services:
   db:
     image: postgres:18-alpine
@@ -108,7 +117,7 @@ services:
       retries: 5
 
   forgejo:
-    image: codeberg.org/forgejo/forgejo:1.22
+    image: codeberg.org/forgejo/forgejo:15
     container_name: forgejo
     environment:
       USER_UID: 1000
@@ -137,25 +146,34 @@ services:
         condition: service_healthy
     restart: unless-stopped
 
+  # ⚠️ Runner requires manual setup BEFORE first start:
+  # 1. Create runner in Forgejo UI → get UUID + Token
+  # 2. Generate config: docker run --rm data.forgejo.org/forgejo/runner:12 forgejo-runner generate-config > ./data/runner-config.yml
+  # 3. Edit config: add server.connections.forgejo with url, uuid, token
+  docker-in-docker:
+    image: docker:dind
+    container_name: 'forgejo-dind'
+    privileged: true
+    command: ['dockerd', '-H', 'tcp://0.0.0.0:2375', '--tls=false']
+    restart: 'unless-stopped'
+
   runner:
-    image: gitea/act_runner:latest
-    container_name: forgejo-runner
-    environment:
-      GITEA_INSTANCE_URL: http://forgejo:3000
-      GITEA_RUNNER_REGISTRATION_TOKEN: ${FORGEJO_RUNNER_TOKEN:-}
-      GITEA_RUNNER_NAME: ${FORGEJO_RUNNER_NAME:-runner-1}
-    volumes:
-      - runner_data:/data
-      - /var/run/docker.sock:/var/run/docker.sock   # Docker-in-Docker for job containers
+    image: 'data.forgejo.org/forgejo/runner:12'
     depends_on:
-      forgejo:
+      docker-in-docker:
         condition: service_started
-    restart: unless-stopped
+    container_name: 'forgejo-runner'
+    environment:
+      DOCKER_HOST: tcp://docker-in-docker:2375
+    user: 1001:1001
+    volumes:
+      - ./data:/data
+    restart: 'unless-stopped'
+    command: 'forgejo-runner daemon --config /data/runner-config.yml'
 
 volumes:
   postgres_data:
   forgejo_data:
-  runner_data:
 ```
 
 ### .env
@@ -172,11 +190,9 @@ FORGEJO_SSH_PORT=22
 
 # Database
 FORGEJO_DB_PASSWORD=change_this_password
-
-# Runner — fill AFTER Forgejo is running
-FORGEJO_RUNNER_TOKEN=
-FORGEJO_RUNNER_NAME=runner-1
 ```
+
+> **No runner token in .env:** Forgejo 15.x uses offline registration via config file (UUID + Token), not env vars.
 
 ## Setup Steps
 
@@ -194,28 +210,56 @@ Open `http://YOUR_IP:3000` in browser:
 1. Fill the installation form — create admin username + password
 2. Click Install
 
-### Step 3: Get Runner Registration Token
+### Step 3: Get Runner UUID + Token (Offline Registration)
 
-**Option A — via Web UI:**  
-Admin Panel (⚙️ top right) → **Actions** → **Runners** → **"Create Runner Registration Token"**
+Forgejo 15.x uses **offline registration** — you create the runner in the UI and get a UUID+Token pair, then configure the runner with those values.
 
-**Option B — via CLI (faster):**  
+1. In Forgejo UI, go to **Settings** (⚙️ top right) → **Actions** → **Runners**
+2. Click **"Create new runner"**
+3. Enter a name (e.g., `runner-1`) → click **Create**
+4. **Copy the UUID and Token** shown — they appear only once!
+
+> ⚠️ This is **not** a "registration token" — it's a permanent UUID + Token pair for the runner's config file.
+
+### Step 4: Configure and Start the Runner
+
+First, prepare the data directory with proper permissions:
+
 ```bash
-docker exec forgejo forgejo actions generate-runner-token
+# Create data directory for runner config
+mkdir -p ./data/.cache
+sudo chown -R 1001:1001 ./data
+sudo chmod 775 ./data/.cache
+sudo chmod g+s ./data/.cache
 ```
 
-### Step 4: Start the Runner
+Generate the default config file:
 
 ```bash
-# Set token in .env
-echo 'FORGEJO_RUNNER_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxx' >> .env
+docker run --rm data.forgejo.org/forgejo/runner:12 forgejo-runner generate-config > ./data/runner-config.yml
+```
 
-# Start runner
-docker compose up -d runner
+Edit `./data/runner-config.yml` and add the runner credentials under the `server` section:
 
-# Verify
-docker compose logs runner
-# Expected: "Runner registered successfully"
+```yaml
+# ./data/runner-config.yml
+server:
+  connections:
+    forgejo:
+      url: http://forgejo:3000
+      uuid: <UUID_FROM_UI>
+      token: <TOKEN_FROM_UI>
+```
+
+Now start all services:
+
+```bash
+# Start everything (db + forgejo + dind + runner)
+docker compose up -d
+
+# Check runner logs
+docker compose logs -f runner
+# Expected: Runner daemon started successfully
 ```
 
 ### Step 5: Verify
@@ -253,8 +297,9 @@ Compatible with GitHub Actions — `actions/checkout@v4`, `actions/setup-node`, 
 
 | Aspect | Notes |
 |--------|-------|
-| Docker socket mount | Required so runner can spawn job containers (Docker-in-Docker) |
-| Token is one-time | Runner saves config to `runner_data` volume after first registration |
+| Docker socket | Not mounted — runner uses docker-in-docker (dind) sidecar for isolation |
+| Registration | Offline: create runner in UI → get UUID+Token → put in `runner-config.yml` |
+| Config file | `./data/runner-config.yml` with `server.connections.forgejo` section |
 | Workflow directory | `.forgejo/workflows/` — NOT `.github/workflows/` |
 | GitHub Marketplace actions | Compatible — use them directly |
 
@@ -696,10 +741,12 @@ docker compose up -d forgejo
 
 ## Troubleshooting
 
-**Runner can't register:**
+**Runner can't connect to Forgejo:**
 ```bash
-# Test connectivity from runner to Forgejo
-docker exec forgejo-runner curl -s http://forgejo:3000
+# Check runner logs
+docker compose logs runner
+# If "cannot register new runner" — you're using the wrong image (should be data.forgejo.org/forgejo/runner:12)
+# If it can't reach forgejo — check docker-in-docker: docker compose logs docker-in-docker
 ```
 
 **Runner registered but shows offline:**
@@ -707,10 +754,18 @@ docker exec forgejo-runner curl -s http://forgejo:3000
 docker compose restart runner
 ```
 
+**Token error (invalid_argument):**
+Forgejo 15.x does NOT use `GITEA_RUNNER_REGISTRATION_TOKEN` env var. You must:
+- Create runner in UI → get UUID + Token
+- Put them in `runner-config.yml` under `server.connections.forgejo`
+- See [Forgejo Runner Registration docs](https://forgejo.org/docs/latest/admin/actions/registration/)
+
 **Workflow triggered but jobs don't start:**
 ```bash
 docker compose logs runner
-# Usually: expired token or runner crashed
+# Usually: config file missing UUID/Token, or runner can't reach dind
+# Check DOCKER_HOST env var in runner container
+docker exec forgejo-runner env | grep DOCKER
 ```
 
 **Want to use GitHub Marketplace actions?**  
