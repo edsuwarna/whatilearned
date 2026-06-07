@@ -46,6 +46,7 @@
         "dokploy-basic-auth",
         "forgejo-cicd-docker-compose",
         "glibc-vs-musl",
+        "kata-containers-vs-firecracker",
         "kopia-backup",
         "object-storage-comparison",
         "taskfile",
