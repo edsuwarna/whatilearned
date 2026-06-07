@@ -45,6 +45,8 @@
         "dagger",
         "dokploy-basic-auth",
         "forgejo-cicd-docker-compose",
+        "forgejo-mirror-github",
+        "forgejo-storage",
         "glibc-vs-musl",
         "kata-containers-vs-firecracker",
         "kopia-backup",
