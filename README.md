@@ -24,6 +24,7 @@ Deployed on [Cloudflare Pages](https://pages.cloudflare.com) — auto-deploys on
 > 🤖 Some content in this repository is generated with the assistance of AI. All content is reviewed, edited, and curated manually to ensure accuracy and relevance.
 
 ### Career
+- **[cv-endang-suwarna](docs/career/cv-endang-suwarna.md)** — Endang Suwarna's CV: work experience, infrastructure and platform engineering roles
 - **[upwork-profile](docs/career/upwork-profile.md)** — Upwork profile optimization guide: headline, overview, portfolio, specialized profiles, and pricing strategy
 
 ### Terminal
