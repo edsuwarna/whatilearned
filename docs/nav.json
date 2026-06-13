@@ -15,6 +15,13 @@
         "picoclaw-deep-dive"
       ]
     },
+    "career": {
+      "emoji": "📁",
+      "desc": "Career",
+      "articles": [
+        "upwork-profile"
+      ]
+    },
     "cloudflare": {
       "emoji": "☁️",
       "desc": "Pages, Workers, DNS, deployments",
@@ -73,6 +80,7 @@
   },
   "order": [
     "ai",
+    "career",
     "cloudflare",
     "compliance",
     "infrastructure",
