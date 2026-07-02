@@ -485,6 +485,37 @@
             border: 1px solid var(--border);
             overflow-x: auto;
         }
+        .markdown-body pre .copy-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text-tertiary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s, background 0.15s, color 0.15s;
+        }
+        .markdown-body pre:hover .copy-btn {
+            opacity: 1;
+        }
+        .markdown-body pre .copy-btn:hover {
+            background: var(--surface-hover);
+            color: var(--accent-deep);
+            border-color: var(--accent);
+        }
+        .markdown-body pre .copy-btn.copied {
+            opacity: 1;
+            color: var(--accent-deep);
+            border-color: var(--accent);
+            background: var(--accent-subtle);
+        }
         .markdown-body pre code {
             background: none;
             padding: 0;
@@ -856,7 +887,41 @@
                     </div>
                 `;
 
-                c.querySelectorAll('h2, h3, h4').forEach(h => {
+                // Add copy buttons to code blocks
+                c.querySelectorAll('pre').forEach(function(pre) {
+                    var btn = document.createElement('button');
+                    btn.className = 'copy-btn';
+                    btn.innerHTML = '<i data-lucide="copy" style="width:14px;height:14px;"></i>';
+                    btn.setAttribute('aria-label', 'Copy code');
+                    pre.style.position = 'relative';
+                    pre.appendChild(btn);
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        var code = pre.querySelector('code');
+                        var text = code ? code.textContent : pre.textContent;
+                        // Copy using fallback (works cross-browser, no permission issues)
+                        var ta = document.createElement('textarea');
+                        ta.value = text;
+                        ta.style.cssText = 'position:fixed;left:-9999px;top:0;opacity:0;';
+                        document.body.appendChild(ta);
+                        ta.select();
+                        try { document.execCommand('copy'); } catch(e) {}
+                        document.body.removeChild(ta);
+                        // Visual feedback
+                        btn.innerHTML = '<i data-lucide="check" style="width:14px;height:14px;"></i>';
+                        btn.classList.add('copied');
+                        lucide.createIcons();
+                        setTimeout(function() {
+                            btn.innerHTML = '<i data-lucide="copy" style="width:14px;height:14px;"></i>';
+                            btn.classList.remove('copied');
+                            lucide.createIcons();
+                        }, 2000);
+                    });
+                });
+                lucide.createIcons();
+
+                // Fix heading IDs
+                c.querySelectorAll('h2, h3, h4').forEach(function(h) {
                     if (!h.id) {
                         h.id = h.textContent.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
                     }
