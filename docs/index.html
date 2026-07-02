@@ -280,8 +280,8 @@
         .content {
             flex: 1;
             margin-left: 280px;
-            padding: 48px 64px 64px;
-            max-width: 880px;
+            padding: 48px 48px 64px;
+            max-width: 1024px;
         }
 
         /* ============ THEME TOGGLE ============ */
@@ -430,7 +430,7 @@
 
         /* ============ MARKDOWN BODY ============ */
         .markdown-body {
-            max-width: 720px;
+            max-width: 800px;
         }
         .markdown-body h1 {
             font-size: 32px;
@@ -653,10 +653,15 @@
         /* ============ RESPONSIVE ============ */
         @media (min-width: 1400px) {
             .right-toc { display: block; }
-            .content { margin-left: 280px; max-width: 720px; padding: 48px 56px 64px 48px; }
+            .content { margin-left: 280px; max-width: 860px; padding: 48px 48px 64px; }
         }
         @media (min-width: 1600px) {
-            .right-toc { width: 240px; }
+            .right-toc { width: 260px; }
+            .content { margin-left: 280px; max-width: 960px; padding: 48px 56px 64px 48px; }
+        }
+        @media (min-width: 1800px) {
+            .right-toc { width: 280px; }
+            .content { margin-left: 280px; max-width: 1060px; padding: 48px 64px 64px; }
         }
 
         @media (max-width: 900px) {
