@@ -236,6 +236,26 @@
             height: 16px;
             color: var(--text-tertiary);
         }
+        .sidebar-cat-header .cat-chevron {
+            width: 14px;
+            height: 14px;
+            color: var(--text-muted);
+            transition: transform 0.25s ease;
+        }
+        .sidebar-cat-header:not(.open) .cat-chevron {
+            transform: rotate(-90deg);
+        }
+        .sidebar-cat-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .sidebar-cat-body.open {
+            max-height: 2000px;
+        }
+        .sidebar-cat-body a {
+            padding: 5px 24px 5px 44px;
+        }
 
         .sidebar-toggle {
             display: none;
@@ -762,15 +782,27 @@
             homeDiv.appendChild(homeLink);
             nav.appendChild(homeDiv);
 
-            // Categories
+            // Categories — collapsible
             siteData.order.forEach(cat => {
                 const info = siteData.categories[cat];
                 if (!info) return;
-                const label = document.createElement('div');
-                label.className = 'sidebar-label';
                 const iconName = catIcons[cat] || 'file-text';
-                label.innerHTML = `<i data-lucide="${iconName}" style="width:13px;height:13px;vertical-align:-2px;margin-right:5px;"></i> ${cat.charAt(0).toUpperCase() + cat.slice(1)}`;
-                nav.appendChild(label);
+                const catName = cat.charAt(0).toUpperCase() + cat.slice(1);
+
+                const catDiv = document.createElement('div');
+                catDiv.className = 'sidebar-cat';
+
+                const header = document.createElement('div');
+                header.className = 'sidebar-cat-header';
+                header.innerHTML = `
+                    <i data-lucide="chevron-down" class="cat-chevron"></i>
+                    <i data-lucide="${iconName}" style="width:14px;height:14px;"></i>
+                    <span class="sidebar-label" style="padding:0;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;">${catName}</span>
+                `;
+                header.style.cursor = 'pointer';
+
+                const body = document.createElement('div');
+                body.className = 'sidebar-cat-body';
 
                 info.articles.forEach(file => {
                     const a = document.createElement('a');
@@ -783,8 +815,27 @@
                         loadDoc(path);
                         if (window.innerWidth <= 900) closeSidebar();
                     };
-                    nav.appendChild(a);
+                    body.appendChild(a);
                 });
+
+                // Collapse state from localStorage (default: open)
+                const saved = localStorage.getItem('nav-cat-' + cat);
+                const defaultOpen = saved === null || saved === 'open';
+                if (defaultOpen) {
+                    header.classList.add('open');
+                    body.classList.add('open');
+                }
+
+                header.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const isOpen = header.classList.toggle('open');
+                    body.classList.toggle('open');
+                    localStorage.setItem('nav-cat-' + cat, isOpen ? 'open' : 'closed');
+                });
+
+                catDiv.appendChild(header);
+                catDiv.appendChild(body);
+                nav.appendChild(catDiv);
             });
             lucide.createIcons();
         }
@@ -930,6 +981,21 @@
                 document.querySelectorAll('.sidebar-nav a').forEach(a => {
                     a.classList.toggle('active', a.dataset.path === path);
                 });
+                // Auto-expand parent category when article is active
+                const activeLink = document.querySelector('.sidebar-nav a[data-path="' + CSS.escape(path) + '"]');
+                if (activeLink) {
+                    const parentCat = activeLink.closest('.sidebar-cat');
+                    if (parentCat) {
+                        const header = parentCat.querySelector('.sidebar-cat-header');
+                        const body = parentCat.querySelector('.sidebar-cat-body');
+                        if (header && !header.classList.contains('open')) {
+                            header.classList.add('open');
+                            body.classList.add('open');
+                            const cat = path.split('/')[0];
+                            localStorage.setItem('nav-cat-' + cat, 'open');
+                        }
+                    }
+                }
                 currentFile = path;
 
                 window.scrollTo(0, 0);
