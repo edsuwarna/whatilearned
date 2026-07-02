@@ -542,17 +542,28 @@
                     } else {
                         for (var r = 0; r < Math.min(results.length, 10); r++) {
                             var hit = results[r];
-                            html += '<a class="search-result-item" onclick="event.preventDefault(); closeSidebar(); loadDoc('' + hit.path + '')">' +
-                                '<div class="sr-title">' + (hit.emoji || '') + ' ' + hit.title.replace(/^[^\s]+\s/, '') + '</div>' +
+                            var cleanTitle = hit.title.replace(/^[^\s]+\s/, '');
+                            var cleanDesc = hit.content ? hit.content.replace(/[#*\[\]>|]/g, ' ').substring(0, 100) : '';
+                            html += '<a class="search-result-item" data-path="' + hit.path + '">' +
+                                '<div class="sr-title">' + (hit.emoji || '') + ' ' + cleanTitle + '</div>' +
                                 '<div class="sr-cat">' + hit.cat.charAt(0).toUpperCase() + hit.cat.slice(1) + '</div>' +
-                                '<div class="sr-desc">' + (hit.content ? hit.content.replace(/[#*\[\]>|
-]/g, ' ').substring(0, 100) : '') + '</div>' +
+                                '<div class="sr-desc">' + cleanDesc + '</div>' +
                                 '</a>';
                         }
                     }
                     searchResults.innerHTML = html;
                     searchResults.classList.add('open');
                 }, 250);
+            });
+
+            // Event delegation for search results (attached once)
+            searchResults.addEventListener('click', function(e) {
+                var a = e.target.closest('.search-result-item');
+                if (a) {
+                    e.preventDefault();
+                    closeSidebar();
+                    loadDoc(a.getAttribute('data-path'));
+                }
             });
             searchInput.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') { searchInput.value = ''; searchResults.classList.remove('open'); searchInput.blur(); }
