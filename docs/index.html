@@ -506,8 +506,7 @@
                         var resp = await fetch(path + '.md?t=' + Date.now());
                         if (!resp.ok) continue;
                         var md = await resp.text();
-                        var clean = md.replace(/^---[\s\S]*?---
-*/, '');
+                        var clean = md.replace(/^---[\s\S]*?---[ \t]*\n*/, '');
                         docs.push({
                             id: path,
                             title: (info.emoji || '') + ' ' + info.articles[i].replace(/-/g, ' ').replace(/\w/g, function(c) { return c.toUpperCase(); }),
