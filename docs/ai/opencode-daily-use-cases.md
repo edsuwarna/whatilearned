@@ -1,3 +1,8 @@
+---
+title: OpenCode — Daily Use Cases for Developer & DevOps
+description: **OpenCode** is a provider-agnostic AI coding agent CLI. This guide covers real-world daily use cases for developers and devops engineers.
+---
+
 # OpenCode — Daily Use Cases for Developer & DevOps
 
 **OpenCode** is a provider-agnostic AI coding agent CLI. This guide covers real-world daily use cases for developers and devops engineers.

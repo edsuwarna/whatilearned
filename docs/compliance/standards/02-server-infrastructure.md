@@ -1,3 +1,8 @@
+---
+title: 02 — Server & Infrastructure Security Standards
+description: Hardening guidelines and security controls for operating systems, servers, and network devices.
+---
+
 # 02 — Server & Infrastructure Security Standards
 
 Hardening guidelines and security controls for operating systems, servers, and network devices.

@@ -1,3 +1,8 @@
+---
+title: 9Router — Free AI Router
+description: **9Router** is a smart AI gateway that sits between your coding CLI tools (OpenCode, Claude Code, Cursor, Codex, Cline, etc.) and 60+ AI providers. It
+---
+
 # 9Router — Free AI Router
 
 **9Router** is a smart AI gateway that sits between your coding CLI tools (OpenCode, Claude Code, Cursor, Codex, Cline, etc.) and 60+ AI providers. It provides a single OpenAI-compatible endpoint and handles routing, format translation, quota tracking, and auto-fallback.

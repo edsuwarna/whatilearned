@@ -1,3 +1,8 @@
+---
+title: Google AI Studio — Free Tier Models & Limits
+description: **Google AI Studio** (ai.google.dev) provides free access to Gemini models through the Gemini API. No credit card required — just a Google account.
+---
+
 # Google AI Studio — Free Tier Models & Limits
 
 **Google AI Studio** (ai.google.dev) provides free access to Gemini models through the Gemini API. No credit card required — just a Google account.

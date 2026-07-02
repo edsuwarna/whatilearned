@@ -1,3 +1,8 @@
+---
+title: Technology Compliance Standards
+description: | # | Category | Frameworks | Typical For |
+---
+
 # Technology Compliance Standards
 
 > A curated reference of security, privacy, and governance frameworks relevant to technology infrastructure, cloud, and software development.

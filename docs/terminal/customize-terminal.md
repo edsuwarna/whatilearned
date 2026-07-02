@@ -1,3 +1,8 @@
+---
+title: Customize Terminal
+description: **Ubuntu, Debian and derivatives**
+---
+
 ### Install ZSH
 
 **macOS**
@@ -8,9 +13,9 @@
 
 `apt install zsh`
 
-Verify installation by running  `zsh --verion`
+Verify installation by running  `zsh --version`
 
-Make zsh as deafult shell: `chsh -s $(which zsh)`
+Make zsh as default shell: `chsh -s $(which zsh)`
 
 Test that it worked with `echo $SHELL`. Expected result: `/bin/zsh` or similar.
 

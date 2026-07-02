@@ -1,10 +1,15 @@
+---
+title: Colorls
+description: Colorls is a Ruby gem that beautifies the terminal's ls command, with color and font-awesome icon.
+---
+
 Colorls is a Ruby gem that beautifies the terminal's ls command, with color and font-awesome icon.
 More about colorls https://github.com/athityakumar/colorls
 
 My terminal use zsh, powerlevl10k for the theme and Firacode NF for the font.
 
 ### How to install colorls
-first you need to install rubby, gcc and cmake using this command:
+first you need to install ruby, gcc and cmake using this command:
 
 `sudo apt install ruby-dev gcc make`
 
@@ -16,7 +21,7 @@ If the installation is success, the next step is add alias to zshrc file. Open .
 
 `vi .zshrc`
 
-Add this to the zshrc file on the botom line
+Add this to the zshrc file on the bottom line
 ```
 if [ -x "$(command -v colorls)" ]; then
     alias ls="colorls"
@@ -29,4 +34,4 @@ Save the file and reload zsh using this command:
 
 Now your ls command will be beautiful like this
 
-![colorls](../../images/colorls.png)
+![colorls](/images/colorls.png)

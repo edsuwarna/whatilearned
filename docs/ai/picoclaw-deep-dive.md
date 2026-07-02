@@ -1,3 +1,8 @@
+---
+title: Picoclaw Deep Dive — Ultra-Lightweight AI Agent Framework
+description: **Project:** `sipeed/picoclaw`
+---
+
 # Picoclaw Deep Dive — Ultra-Lightweight AI Agent Framework
 
 **Project:** `sipeed/picoclaw`  

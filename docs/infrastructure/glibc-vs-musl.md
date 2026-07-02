@@ -1,3 +1,8 @@
+---
+title: glibc vs musl — C Standard Library Comparison
+description: - [Overview](#overview)
+---
+
 # glibc vs musl — C Standard Library Comparison
 
 > **Last updated:** 2026-06-07

@@ -1,3 +1,8 @@
+---
+title: Dokploy Basic Auth
+description: - [Background](#background)
+---
+
 # Dokploy Basic Auth
 
 > How to add basic authentication (username + password) to applications deployed on Dokploy, for both **Application** and **Compose** types.

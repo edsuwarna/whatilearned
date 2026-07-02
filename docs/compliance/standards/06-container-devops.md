@@ -1,3 +1,8 @@
+---
+title: 06 — Container, Kubernetes & DevOps Security Standards
+description: Security frameworks for containerized workloads, Kubernetes, CI/CD pipelines, and software supply chains.
+---
+
 # 06 — Container, Kubernetes & DevOps Security Standards
 
 Security frameworks for containerized workloads, Kubernetes, CI/CD pipelines, and software supply chains.

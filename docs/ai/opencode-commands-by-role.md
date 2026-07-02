@@ -1,3 +1,8 @@
+---
+title: OpenCode Commands by Role
+description: **OpenCode** supports **Custom Commands** — reusable `.md` prompt files stored in `~/.config/opencode/commands/` (global) or `<project>/.opencode/commands/` (per-project). Accessed via **Ctrl+K** in t
+---
+
 # OpenCode Commands by Role
 
 **OpenCode** supports **Custom Commands** — reusable `.md` prompt files stored in `~/.config/opencode/commands/` (global) or `<project>/.opencode/commands/` (per-project). Accessed via **Ctrl+K** in the TUI.

@@ -1,3 +1,8 @@
+---
+title: OpenCode Agent Skills — Open-Source Collections & Reference
+description: - [Overview](#overview)
+---
+
 # OpenCode Agent Skills — Open-Source Collections & Reference
 
 > **Last updated:** 2026-06-06

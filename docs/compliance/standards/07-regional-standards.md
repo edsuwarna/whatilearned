@@ -1,3 +1,8 @@
+---
+title: 07 — Regional Compliance Standards
+description: Country-specific and regional security frameworks that apply to government, defense, and critical infrastructure.
+---
+
 # 07 — Regional Compliance Standards
 
 Country-specific and regional security frameworks that apply to government, defense, and critical infrastructure.

@@ -1,3 +1,8 @@
+---
+title: Zot Registry
+description: - [Why Zot?](#why-zot)
+---
+
 # Zot Registry
 
 > Lightweight (~20MB binary, ~50MB RAM idle), OCI-compliant container registry in Go. A production-ready alternative to Docker Distribution and Harbor for resource-constrained environments.

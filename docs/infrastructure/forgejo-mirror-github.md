@@ -1,3 +1,8 @@
+---
+title: Mirror GitHub Repos ke Forgejo
+description: - [Cara A: Via UI Forgejo (Recommended)](#cara-a-via-ui-forgejo-recommended)
+---
+
 # Mirror GitHub Repos ke Forgejo
 
 > **Last updated:** 2026-06-07

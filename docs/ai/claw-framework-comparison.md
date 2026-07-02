@@ -1,3 +1,8 @@
+---
+title: AI Agent Framework Comparison: OpenClaw vs Hermes Agent vs Nanoclaw vs Picoclaw
+description: **Research date:** 2026-05-29
+---
+
 # AI Agent Framework Comparison: OpenClaw vs Hermes Agent vs Nanoclaw vs Picoclaw
 
 **Research date:** 2026-05-29  

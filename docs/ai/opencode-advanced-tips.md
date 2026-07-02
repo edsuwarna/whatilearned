@@ -1,3 +1,8 @@
+---
+title: OpenCode — Advanced Tips & Workflows
+description: - [📋 Table of Contents](#table-of-contents)
+---
+
 # OpenCode — Advanced Tips & Workflows
 
 

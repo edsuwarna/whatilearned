@@ -1,3 +1,8 @@
+---
+title: OpenCode — Power User Guide
+description: - [📋 Table of Contents](#table-of-contents)
+---
+
 # OpenCode — Power User Guide
 
 

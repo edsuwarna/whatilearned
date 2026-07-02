@@ -1,3 +1,8 @@
+---
+title: Forgejo Storage & Cleanup
+description: - [Storage Architecture](#storage-architecture)
+---
+
 # Forgejo Storage & Cleanup
 
 > **Last updated:** 2026-06-07

@@ -1,3 +1,8 @@
+---
+title: Dagger — A Better Way to Ship
+description: - [Overview](#overview)
+---
+
 # Dagger — A Better Way to Ship
 
 > **Last updated:** 2026-06-07

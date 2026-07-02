@@ -1,3 +1,8 @@
+---
+title: Forgejo + Forgejo Actions CI/CD with Docker Compose
+description: - [Overview](#overview)
+---
+
 # Forgejo + Forgejo Actions CI/CD with Docker Compose
 
 > **Last updated:** 2026-06-07  

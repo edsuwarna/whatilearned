@@ -1,3 +1,8 @@
+---
+title: Open Source Supply Chain Security — Prevention Playbook
+description: - [1. 🔐 GitHub / Repository Security](#1-github-repository-security)
+---
+
 # Open Source Supply Chain Security — Prevention Playbook
 
 > Lessons learned from the Trivy supply chain attack (GHSA-69fq-xp46-6x23, March 2026)

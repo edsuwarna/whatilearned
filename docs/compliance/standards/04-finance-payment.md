@@ -1,3 +1,8 @@
+---
+title: 04 — Finance & Payment Compliance Standards
+description: Security requirements for organizations handling financial transactions, cardholder data, and banking infrastructure.
+---
+
 # 04 — Finance & Payment Compliance Standards
 
 Security requirements for organizations handling financial transactions, cardholder data, and banking infrastructure.

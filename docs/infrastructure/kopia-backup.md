@@ -1,3 +1,8 @@
+---
+title: Kopia: Backup dengan R2 di VPS
+description: - [Quick Summary](#quick-summary)
+---
+
 # Kopia: Backup dengan R2 di VPS
 
 > Kopia: backup tool — incremental, dedup, encrypted. Cocok kombinasi sama **Cloudflare R2** untuk VPS dengan disk terbatas.

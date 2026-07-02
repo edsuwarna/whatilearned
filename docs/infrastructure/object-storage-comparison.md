@@ -1,3 +1,8 @@
+---
+title: Object Storage Comparison: SeaweedFS vs Garage vs JuiceFS
+description: - [Quick Summary](#quick-summary)
+---
+
 # Object Storage Comparison: SeaweedFS vs Garage vs JuiceFS
 
 > Comparing three self-hosted storage solutions for an Internal Developer Platform (IDP) running on a single VPS with Cloudflare R2.
