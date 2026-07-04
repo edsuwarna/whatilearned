@@ -48,6 +48,7 @@ ARTICLE_DESCS = {
     "compliance/standards/07-regional-standards": "Regional compliance standards (Indonesia, EU, US)",
     "compliance/standards/README": "Overview of 30+ technology compliance standards mapped to ISO 27001 controls",
     "infrastructure/act": "Run GitHub Actions workflows locally with nektos/act: installation, CLI reference, runner images, secrets, events, and practical examples",
+    "infrastructure/database-backup": "Database backup guide for PostgreSQL, MySQL, and MariaDB: dedicated users, strategies, automation scripts, and test restore",
     "infrastructure/dagger": "Programmable CI/CD platform: SDKs in 8 languages, content-addressed caching, built-in tracing, Dagger Cloud",
     "infrastructure/dokploy-basic-auth": "Adding basic auth to Compose applications on Dokploy via Traefik middleware",
     "infrastructure/forgejo-cicd-docker-compose": "Self-hosted Forgejo with CI/CD (Forgejo Actions) using Docker Compose",
