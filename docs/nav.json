@@ -50,6 +50,7 @@
       "articles": [
         "act",
         "dagger",
+        "database-backup",
         "dokploy-basic-auth",
         "forgejo-cicd-docker-compose",
         "forgejo-mirror-github",
