@@ -53,6 +53,7 @@ Deployed on [Cloudflare Pages](https://pages.cloudflare.com) — auto-deploys on
 
 ### ⚙️ Infrastructure
 - **[docs/infrastructure/act.md](docs/infrastructure/act.md)** — Run GitHub Actions workflows locally with nektos/act: installation, CLI reference, runner images, secrets, events, and practical examples
+- **[docs/infrastructure/chisel.md](docs/infrastructure/chisel.md)** — 
 - **[docs/infrastructure/dagger.md](docs/infrastructure/dagger.md)** — Programmable CI/CD platform: SDKs in 8 languages, content-addressed caching, built-in tracing, Dagger Cloud
 - **[docs/infrastructure/database-backup.md](docs/infrastructure/database-backup.md)** — Database backup guide for PostgreSQL, MySQL, and MariaDB: dedicated users, strategies, automation scripts, and test restore
 - **[docs/infrastructure/database-backup-incremental.md](docs/infrastructure/database-backup-incremental.md)** — Incremental database backup guide: pgBackRest, WAL archiving, XtraBackup, binary logs, MariaDB Backup — with tool comparison and pitfalls
