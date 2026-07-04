@@ -1,42 +1,71 @@
+---
+title: Database Backup Guide — PostgreSQL, MySQL, MariaDB
+description: - [MySQL & MariaDB](#mysql--mariadb)
+---
+
 # Database Backup Guide — PostgreSQL, MySQL, MariaDB
 
-> **TL;DR:** Jangan pakai root user. Bikin dedicated backup user dengan minimal privilege. Test restore secara berkala.
+> **TL;DR:** Never use root for backups. Create a dedicated backup user with minimal privileges. Test restore regularly.
+
+## Table of Contents
+
+- [MySQL & MariaDB](#mysql--mariadb)
+  - [Create Dedicated Backup User](#1-create-dedicated-backup-user)
+  - [Per-Database Backup](#2-per-database-backup)
+  - [All Databases Backup](#3-all-databases-backup)
+  - [Compressed Backup (Recommended)](#4-compressed-backup-recommended)
+  - [Restore](#5-restore)
+  - [Important Flags](#6-important-flags)
+- [PostgreSQL](#postgresql)
+  - [Create Dedicated Backup User](#1-create-dedicated-backup-user-1)
+  - [Per-Database Backup (Custom Format)](#2-per-database-backup-custom-format)
+  - [All Databases (Cluster Level)](#3-all-databases-cluster-level)
+  - [Compressed & Encrypted Backup](#4-compressed--encrypted-backup)
+  - [Restore](#5-restore-1)
+  - [Why Custom Format?](#6-why-custom-format-fc)
+  - [Advanced: Parallel Backup](#7-advanced-parallel-backup-with-directory-format)
+- [Automation Script](#automation-script)
+  - [Cron Setup](#cron-setup-daily-backup)
+- [Test Restore (Critical!)](#test-restore-critical)
+- [Security Best Practices](#security-best-practices)
+- [Tool Comparison](#tool-comparison)
+- [Recommended Strategy](#recommended-strategy)
 
 ---
 
-## 🟢 MySQL & MariaDB
+## MySQL & MariaDB
 
-### 1. Buat Dedicated Backup User
+### 1. Create Dedicated Backup User
 
 ```sql
-CREATE USER 'backup_user'@'localhost' IDENTIFIED BY 'password-kuat';
+CREATE USER 'backup_user'@'localhost' IDENTIFIED BY 'strong-password';
 GRANT SELECT, LOCK TABLES, SHOW VIEW, EVENT, TRIGGER, RELOAD ON *.* TO 'backup_user'@'localhost';
 FLUSH PRIVILEGES;
 ```
 
-> **Penjelasan permission:**
-> - `SELECT` — baca data
-> - `LOCK TABLES` — konsisten backup (non-InnoDB)
+> **Permission breakdown:**
+> - `SELECT` — read data
+> - `LOCK TABLES` — consistent backup (non-InnoDB tables)
 > - `SHOW VIEW` — backup view definitions
 > - `EVENT` — backup event scheduler
 > - `TRIGGER` — backup trigger definitions
-> - `RELOAD` — izin `FLUSH` untuk consistent snapshot
+> - `RELOAD` — required for `FLUSH` consistent snapshot
 
-### 2. Backup Per-Database
+### 2. Per-Database Backup
 
 ```bash
-mysqldump -u backup_user -p'password' \
+mysqldump -u backup_user -p'strong-password' \
   --single-transaction \
   --routines \
   --triggers \
   --events \
-  namadb > namadb.sql
+  dbname > dbname.sql
 ```
 
-### 3. Backup Semua Database
+### 3. All Databases Backup
 
 ```bash
-mysqldump -u backup_user -p'password' \
+mysqldump -u backup_user -p'strong-password' \
   --single-transaction \
   --routines \
   --triggers \
@@ -47,68 +76,68 @@ mysqldump -u backup_user -p'password' \
 ### 4. Compressed Backup (Recommended)
 
 ```bash
-mysqldump -u backup_user -p'password' \
+mysqldump -u backup_user -p'strong-password' \
   --single-transaction \
   --routines \
   --triggers \
   --events \
-  namadb | gzip > namadb-$(date +%Y%m%d).sql.gz
+  dbname | gzip > dbname-$(date +%Y%m%d).sql.gz
 ```
 
 ### 5. Restore
 
 ```bash
 # Per-database
-mysql -u root -p namadb < namadb.sql
+mysql -u root -p dbname < dbname.sql
 
-# Dari compressed
-gunzip < namadb.sql.gz | mysql -u root -p namadb
+# From compressed
+gunzip < dbname.sql.gz | mysql -u root -p dbname
 
 # All databases
 mysql -u root -p < all-dbs.sql
 ```
 
-### ⚠️ Penting untuk MySQL/MariaDB
+### 6. Important Flags
 
-| Flag | Fungsi |
+| Flag | Purpose |
 |---|---|
-| `--single-transaction` | Consistent snapshot tanpa locking (InnoDB). WAJIB. |
+| `--single-transaction` | Consistent snapshot without locking (InnoDB). **Required.** |
 | `--routines` | Backup stored procedures & functions |
 | `--triggers` | Backup triggers |
 | `--events` | Backup event scheduler |
-| `--quick` | Prevent memory exhaustion untuk large tables |
+| `--quick` | Prevent memory exhaustion for large tables |
 
-> **Catatan:** `--single-transaction` cuma work untuk InnoDB. Kalau masih ada tabel MyISAM, backup bakal lock tabel tersebut. Migrasi ke InnoDB atau siap-siap window maintenance.
+> **Note:** `--single-transaction` only works with InnoDB. If you still have MyISAM tables, the backup will lock those tables. Migrate to InnoDB or schedule a maintenance window.
 
 ---
 
-## 🔵 PostgreSQL
+## PostgreSQL
 
-### 1. Buat Dedicated Backup User
+### 1. Create Dedicated Backup User
 
 ```sql
-CREATE USER backup_user WITH LOGIN REPLICATION PASSWORD 'password-kuat';
+CREATE USER backup_user WITH LOGIN REPLICATION PASSWORD 'strong-password';
 GRANT pg_read_all_data TO backup_user;
 ```
 
-> Alternatif (permission lebih granular):
+> Alternative (more granular permissions):
 > ```sql
-> GRANT CONNECT ON DATABASE namadb TO backup_user;
+> GRANT CONNECT ON DATABASE dbname TO backup_user;
 > GRANT USAGE ON SCHEMA public TO backup_user;
 > GRANT SELECT ON ALL TABLES IN SCHEMA public TO backup_user;
 > GRANT SELECT ON ALL SEQUENCES IN SCHEMA public TO backup_user;
 > ```
 
-### 2. Backup Per-Database (Recommended: Custom Format)
+### 2. Per-Database Backup (Custom Format)
 
 ```bash
 pg_dump -U backup_user -h localhost \
-  -d namadb \
+  -d dbname \
   -Fc \
-  -f namadb.dump
+  -f dbname.dump
 ```
 
-### 3. Backup All Databases (Cluster Level)
+### 3. All Databases (Cluster Level)
 
 ```bash
 pg_dumpall -U backup_user -h localhost \
@@ -119,45 +148,45 @@ pg_dumpall -U backup_user -h localhost \
 
 ```bash
 # Compressed SQL
-pg_dump -U backup_user -h localhost -d namadb | gzip > namadb-$(date +%Y%m%d).sql.gz
+pg_dump -U backup_user -h localhost -d dbname | gzip > dbname-$(date +%Y%m%d).sql.gz
 
 # Custom format + compress level 9
-pg_dump -U backup_user -h localhost -d namadb -Fc -Z 9 -f namadb.dump
+pg_dump -U backup_user -h localhost -d dbname -Fc -Z 9 -f dbname.dump
 ```
 
 ### 5. Restore
 
 ```bash
-# Custom format (bisa parallel restore)
-pg_restore -U postgres -h localhost -d namadb --jobs=4 namadb.dump
+# Custom format (supports parallel restore)
+pg_restore -U postgres -h localhost -d dbname --jobs=4 dbname.dump
 
 # SQL format
-psql -U postgres -h localhost -d namadb < namadb.sql
+psql -U postgres -h localhost -d dbname < dbname.sql
 
 # All databases
 psql -U postgres -h localhost -f all-dbs.sql
 ```
 
-### 🔑 Kenapa Custom Format (`-Fc`)?
+### 6. Why Custom Format (`-Fc`)?
 
-| Format | Kelebihan | Kekurangan |
+| Format | Pros | Cons |
 |---|---|---|
 | **Custom** (`-Fc`) | Compressed, parallel restore, selective restore per-table | Proprietary format |
-| **Directory** (`-Fd`) | Parallel dump & restore, each table = file | Banyak file |
+| **Directory** (`-Fd`) | Parallel dump & restore, one file per table | Many files |
 | **Plain SQL** (`-Fp`) | Human-readable, portable | Large, no parallel |
-| **Tar** (`-Ft`) | Compressed, tapi gak bisa parallel | Jarang dipakai |
+| **Tar** (`-Ft`) | Compressed | No parallel, rarely used |
 
-> **Recommendation:** Pake `-Fc` buat backup harian. Simpen SQL format untuk jaga-jaga compatibility.
+> **Recommendation:** Use `-Fc` for daily backups. Keep a SQL-format copy for cross-version compatibility.
 
-### ⚙️ Advanced: Parallel Backup dengan Directory Format
+### 7. Advanced: Parallel Backup with Directory Format
 
 ```bash
-pg_dump -U backup_user -h localhost -d namadb -Fd -j 4 -f namadb_dir/
+pg_dump -U backup_user -h localhost -d dbname -Fd -j 4 -f dbname_dir/
 ```
 
 ---
 
-## 📋 Automation Script
+## Automation Script
 
 ```bash
 #!/bin/bash
@@ -169,7 +198,7 @@ BACKUP_DIR="/var/backups/database"
 DATE=$(date +%Y%m%d_%H%M%S)
 RETENTION_DAYS=7
 DB_USER="backup_user"
-DB_PASS="password-kuat"
+DB_PASS="strong-password"
 PG_HOST="/var/run/postgresql"  # Unix socket
 
 mkdir -p "$BACKUP_DIR/{mysql,postgres}"
@@ -191,7 +220,7 @@ su - postgres -c "pg_dumpall -U backup_user -h $PG_HOST -f $BACKUP_DIR/postgres/
 # Backup each database individually in custom format
 databases=$(psql -U backup_user -h $PG_HOST -t -c "SELECT datname FROM pg_database WHERE datistemplate = false AND datname != 'postgres';")
 for db in $databases; do
-    db=$(echo "$db" | xargs)  # trim
+    db=$(echo "$db" | xargs)  # trim whitespace
     pg_dump -U backup_user -h $PG_HOST -d "$db" -Fc -f "$BACKUP_DIR/postgres/${db}-${DATE}.dump"
 done
 
@@ -207,15 +236,15 @@ echo "[$(date)] Backup complete."
 ### Cron Setup (Daily Backup)
 
 ```bash
-# Backup tiap jam 2 pagi
+# Run daily at 2 AM
 0 2 * * * /usr/local/bin/database-backup.sh >> /var/log/database-backup.log 2>&1
 ```
 
 ---
 
-## 🧪 Test Restore (Critical!)
+## Test Restore (Critical!)
 
-Backup tanpa test restore = **ilusi keamanan**. Jadwalin test otomatis:
+Backup without test restore = **false sense of security**. Schedule automated restore tests:
 
 ```bash
 # Testing MySQL restore
@@ -226,39 +255,39 @@ mysql -u root -p test_restore -e "SELECT COUNT(*) FROM key_table;"
 mysql -u root -p -e "DROP DATABASE test_restore;"
 ```
 
-> **Best practice:** Test restore tiap 2 minggu sekali. Catat durasi restore biar tau estimasi RTO (Recovery Time Objective).
+> **Best practice:** Test restore every 2 weeks. Record restore duration to estimate RTO (Recovery Time Objective).
 
 ---
 
-## 🔐 Security Best Practices
+## Security Best Practices
 
-1. **Jangan simpan password di script** — pake `.my.cnf` (MySQL) atau `.pgpass` (PostgreSQL)
-2. **Encrypt backup** sebelum kirim ke remote storage
-3. **Isolasi backup user** — jangan pake user yang sama buat aplikasi
-4. **Restrict backup user** — `localhost` only, jangan buka dari remote
-5. **Monitor backup job** — pake alert kalau backup gagal
+1. **Never store passwords in scripts** — use `.my.cnf` (MySQL) or `.pgpass` (PostgreSQL)
+2. **Encrypt backups** before sending to remote storage
+3. **Isolate backup user** — don't reuse the same user for applications
+4. **Restrict backup user** — `localhost` only, never expose remotely
+5. **Monitor backup jobs** — set up alerts for failures
 
-### Contoh `.my.cnf`
+### `.my.cnf` Example
 
 ```ini
 [client]
 user=backup_user
-password=password-kuat
+password=strong-password
 ```
 
-Lalu set permission: `chmod 600 ~/.my.cnf`
+Then set permissions: `chmod 600 ~/.my.cnf`
 
-### Contoh `.pgpass`
+### `.pgpass` Example
 
 ```
-localhost:5432:*:backup_user:password-kuat
+localhost:5432:*:backup_user:strong-password
 ```
 
-Lalu set permission: `chmod 600 ~/.pgpass`
+Then set permissions: `chmod 600 ~/.pgpass`
 
 ---
 
-## 📊 Perbandingan Tools
+## Tool Comparison
 
 | Tool | MySQL/MariaDB | PostgreSQL | Parallel | Compression | Encryption |
 |---|---|---|---|---|---|
@@ -271,12 +300,12 @@ Lalu set permission: `chmod 600 ~/.pgpass`
 
 ---
 
-## 🚀 Recommended Strategy
+## Recommended Strategy
 
 ```
 Daily:   pg_dump -Fc (PG) + mysqldump --single-transaction (MySQL) → local disk
-Weekly:  Same backup → upload ke object storage (R2/S3) — encrypted
-Monthly: Full dump archive — cold storage
+Weekly:  Same backup → upload to object storage (R2/S3) — encrypted
+Monthly: Full dump archive → cold storage
 Quarterly: Test restore from scratch — verify RTO
 ```
 
