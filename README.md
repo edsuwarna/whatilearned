@@ -61,6 +61,7 @@ Deployed on [Cloudflare Pages](https://pages.cloudflare.com) — auto-deploys on
 - **[docs/infrastructure/forgejo-cicd-docker-compose.md](docs/infrastructure/forgejo-cicd-docker-compose.md)** — Self-hosted Forgejo with CI/CD (Forgejo Actions) using Docker Compose
 - **[docs/infrastructure/forgejo-mirror-github.md](docs/infrastructure/forgejo-mirror-github.md)** — Mirror GitHub repositories to Forgejo via UI migration or CLI
 - **[docs/infrastructure/forgejo-storage.md](docs/infrastructure/forgejo-storage.md)** — Forgejo storage architecture, backup, cleanup, and Docker build cache management
+- **[docs/infrastructure/frp.md](docs/infrastructure/frp.md)** — 
 - **[docs/infrastructure/glibc-vs-musl.md](docs/infrastructure/glibc-vs-musl.md)** — Comprehensive comparison: architecture, performance, static linking, Docker implications, DNS, threading, and when to choose which C library
 - **[docs/infrastructure/kata-containers-vs-firecracker.md](docs/infrastructure/kata-containers-vs-firecracker.md)** — Comparison of Kata Containers and Firecracker for lightweight virtualization
 - **[docs/infrastructure/kopia-backup.md](docs/infrastructure/kopia-backup.md)** — Kopia backup with Cloudflare R2: incremental, dedup, encrypted backup for VPS

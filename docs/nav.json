@@ -63,6 +63,7 @@
         "kopia-backup",
         "object-storage-comparison",
         "taskfile",
+        "warpgate",
         "zot-registry"
       ]
     },
