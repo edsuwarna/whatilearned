@@ -29,8 +29,8 @@
         :root {
             --bg: #ffffff;
             --bg-subtle: #fafafa;
-            --surface: #ffffff;
-            --surface-hover: #f8f8f8;
+            --surface: #f4f4f5;
+            --surface-hover: #eeeef0;
             --border: rgba(0,0,0,0.05);
             --border-medium: rgba(0,0,0,0.08);
             --text: #0d0d0d;
@@ -52,8 +52,8 @@
         [data-theme="dark"] {
             --bg: #0d0d0d;
             --bg-subtle: #111111;
-            --surface: #141414;
-            --surface-hover: #1a1a1a;
+            --surface: #1a1a1a;
+            --surface-hover: #222222;
             --border: rgba(255,255,255,0.06);
             --border-medium: rgba(255,255,255,0.1);
             --text: #ededed;
@@ -503,6 +503,7 @@
             background: var(--surface);
             border-radius: var(--radius-sm);
             border: 1px solid var(--border);
+            border-left: 3px solid var(--accent);
             overflow-x: auto;
         }
         .markdown-body pre .copy-btn {
@@ -544,6 +545,42 @@
             font-size: 13px;
             line-height: 1.6;
         }
+        /* ── Syntax Highlighting ── */
+        .hljs { color: var(--text); }
+        .hljs-keyword { color: #8250df; }        /* keywords: SELECT, FROM, CREATE */
+        .hljs-built_in { color: #8250df; }
+        .hljs-type { color: #0550ae; }            /* types: INT, VARCHAR */
+        .hljs-literal { color: #0550ae; }         /* literals: true, false, null */
+        .hljs-number { color: #0550ae; }          /* numbers */
+        .hljs-string { color: #0a3069; }          /* strings */
+        .hljs-comment { color: #6e7781; font-style: italic; }
+        .hljs-variable { color: #953800; }        /* env vars, variables */
+        .hljs-attr { color: #0550ae; }            /* attributes, config keys */
+        .hljs-title { color: #8250df; }           /* function names, titles */
+        .hljs-params { color: #0d0d0d; }
+        .hljs-property { color: #0550ae; }
+        .hljs-punctuation { color: #57606a; }
+        .hljs-operator { color: #0550ae; }
+        .hljs-meta { color: #6e7781; }            /* shebang, directives */
+        .hljs-section { color: #8250df; font-weight: 600; }  /* #!/bin/bash headers */
+
+        [data-theme="dark"] .hljs-keyword { color: #d2a8ff; }
+        [data-theme="dark"] .hljs-built_in { color: #d2a8ff; }
+        [data-theme="dark"] .hljs-type { color: #91cbff; }
+        [data-theme="dark"] .hljs-literal { color: #91cbff; }
+        [data-theme="dark"] .hljs-number { color: #91cbff; }
+        [data-theme="dark"] .hljs-string { color: #a5d6ff; }
+        [data-theme="dark"] .hljs-comment { color: #8b949e; }
+        [data-theme="dark"] .hljs-variable { color: #ffa657; }
+        [data-theme="dark"] .hljs-attr { color: #91cbff; }
+        [data-theme="dark"] .hljs-title { color: #d2a8ff; }
+        [data-theme="dark"] .hljs-params { color: #ededed; }
+        [data-theme="dark"] .hljs-property { color: #91cbff; }
+        [data-theme="dark"] .hljs-punctuation { color: #8b949e; }
+        [data-theme="dark"] .hljs-operator { color: #91cbff; }
+        [data-theme="dark"] .hljs-meta { color: #8b949e; }
+        [data-theme="dark"] .hljs-section { color: #d2a8ff; }
+        /* ── End Syntax Highlighting ── */
         .markdown-body table {
             width: 100%;
             border-collapse: collapse;
@@ -709,6 +746,10 @@
     </button>
 
     <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/languages/ini.min.js"></script>
     <script src="https://unpkg.com/minisearch@7/dist/umd/index.js"></script>
     <script>
         let currentFile = null;
@@ -975,6 +1016,13 @@
                     });
                 });
                 lucide.createIcons();
+
+                // Highlight code blocks
+                if (typeof hljs !== 'undefined') {
+                    c.querySelectorAll('pre code').forEach(function(block) {
+                        hljs.highlightElement(block);
+                    });
+                }
 
                 // Fix heading IDs
                 c.querySelectorAll('h2, h3, h4').forEach(function(h) {
