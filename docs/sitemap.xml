@@ -24,6 +24,7 @@
   <url><loc>https://notes.edsuwarna.id/#/infrastructure/act</loc></url>
   <url><loc>https://notes.edsuwarna.id/#/infrastructure/dagger</loc></url>
   <url><loc>https://notes.edsuwarna.id/#/infrastructure/database-backup</loc></url>
+  <url><loc>https://notes.edsuwarna.id/#/infrastructure/database-backup-incremental</loc></url>
   <url><loc>https://notes.edsuwarna.id/#/infrastructure/dokploy-basic-auth</loc></url>
   <url><loc>https://notes.edsuwarna.id/#/infrastructure/forgejo-cicd-docker-compose</loc></url>
   <url><loc>https://notes.edsuwarna.id/#/infrastructure/forgejo-mirror-github</loc></url>

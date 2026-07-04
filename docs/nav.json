@@ -51,6 +51,7 @@
         "act",
         "dagger",
         "database-backup",
+        "database-backup-incremental",
         "dokploy-basic-auth",
         "forgejo-cicd-docker-compose",
         "forgejo-mirror-github",
