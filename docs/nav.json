@@ -49,6 +49,7 @@
       "desc": "Deployment, Docker, Traefik, Dokploy",
       "articles": [
         "act",
+        "chisel",
         "dagger",
         "database-backup",
         "database-backup-incremental",
