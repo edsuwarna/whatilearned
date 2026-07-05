@@ -66,6 +66,7 @@
         "object-storage-comparison",
         "taskfile",
         "warpgate",
+        "wireguard",
         "zot-registry"
       ]
     },

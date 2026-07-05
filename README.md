@@ -70,6 +70,7 @@ Deployed on [Cloudflare Pages](https://pages.cloudflare.com) — auto-deploys on
 - **[docs/infrastructure/object-storage-comparison.md](docs/infrastructure/object-storage-comparison.md)** — Comparison of S3-compatible object storage providers: R2, S3, GCS, Backblaze B2
 - **[docs/infrastructure/taskfile.md](docs/infrastructure/taskfile.md)** — Modern YAML-based task runner: dependencies, caching, templates, includes, platform-specific commands
 - **[docs/infrastructure/warpgate.md](docs/infrastructure/warpgate.md)** — 
+- **[docs/infrastructure/wireguard.md](docs/infrastructure/wireguard.md)** — WireGuard VPN: installation, hub & spoke topology, site-to-site, NAT traversal, advanced config, security, and migration from OpenVPN
 - **[docs/infrastructure/zot-registry.md](docs/infrastructure/zot-registry.md)** — Lightweight OCI-compliant container registry with Zot: deployment, auth, R2 storage, CVE scanning
 
 ### 🔒 Security
