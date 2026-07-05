@@ -693,9 +693,9 @@
         .markdown-body h2#table-of-contents + ul { display: none; }
 
         /* ============ MOBILE TOC (accordion, < 1400px) ============ */
-        .mobile-toc {
+        .markdown-body > .mobile-toc {
             display: none;
-            margin-bottom: 24px;
+            margin: 24px 0;
             border: 1px solid var(--border);
             border-radius: 8px;
             overflow: hidden;
@@ -748,10 +748,10 @@
         .mobile-toc-body a:hover { color: var(--text-secondary); background: var(--bg-hover); }
         .mobile-toc-body a.active { color: var(--accent-deep); border-left-color: var(--accent); }
         .mobile-toc-body a.lvl-h3 { padding-left: 30px; font-size: 12px; }
-        .mobile-toc:empty { display: none; }
+        .markdown-body > .mobile-toc:empty { display: none; }
 
         @media (max-width: 1399px) {
-            .mobile-toc { display: block; }
+            .markdown-body > .mobile-toc { display: block; }
         }
 
         /* Smooth scroll for TOC anchor clicks */
@@ -807,7 +807,6 @@
         </aside>
 
         <main class="content" id="content">
-            <div id="mobileToc" class="mobile-toc"></div>
             <div id="pageContent"></div>
         </main>
 
@@ -986,8 +985,8 @@
             c.innerHTML = html;
             var rightToc = document.getElementById('rightToc');
             if (rightToc) rightToc.innerHTML = '';
-            var mobileToc = document.getElementById('mobileToc');
-            if (mobileToc) mobileToc.innerHTML = '';
+            var mobileToc = document.querySelector('.markdown-body .mobile-toc');
+            if (mobileToc) mobileToc.remove();
             document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
             currentFile = null;
             history.replaceState(null, '', '#/');
@@ -1036,8 +1035,8 @@
 
             var rightToc = document.getElementById('rightToc');
             if (rightToc) rightToc.innerHTML = '';
-            var mobileToc = document.getElementById('mobileToc');
-            if (mobileToc) mobileToc.innerHTML = '';
+            var mobileToc = document.querySelector('.markdown-body .mobile-toc');
+            if (mobileToc) mobileToc.remove();
             document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
             currentFile = null;
             history.replaceState(null, '', `#/${cat}`);
@@ -1114,12 +1113,11 @@
 
                 // Build TOC from headings (desktop sidebar + mobile accordion)
                 var rightToc = document.getElementById('rightToc');
-                var mobileToc = document.getElementById('mobileToc');
                 var tocHeadings = c.querySelectorAll('.markdown-body h2, .markdown-body h3');
                 if (tocHeadings.length > 0) {
                     // Desktop TOC
                     var tocHtml = '<div class="right-toc-label">On this page</div>';
-                    // Mobile TOC (collapsible accordion)
+                    // Mobile TOC (collapsible accordion, injected after h1)
                     var mobileHtml = '<div class="mobile-toc-header" id="mobileTocHeader">' +
                         '<span>On this page</span>' +
                         '<svg class="mobile-toc-chevron open" id="mobileTocChevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>' +
@@ -1137,7 +1135,17 @@
                     mobileHtml += '</div>';
 
                     rightToc.innerHTML = tocHtml;
-                    mobileToc.innerHTML = mobileHtml;
+
+                    // Inject mobile TOC into .markdown-body after first h1
+                    var mobileTocEl = document.createElement('div');
+                    mobileTocEl.className = 'mobile-toc';
+                    mobileTocEl.innerHTML = mobileHtml;
+                    var firstH1 = c.querySelector('.markdown-body h1');
+                    if (firstH1) {
+                        firstH1.parentNode.insertBefore(mobileTocEl, firstH1.nextSibling);
+                    } else {
+                        c.querySelector('.markdown-body').prepend(mobileTocEl);
+                    }
 
                     // Toggle mobile TOC accordion on header click
                     document.getElementById('mobileTocHeader').addEventListener('click', function() {
@@ -1147,7 +1155,7 @@
 
                     // Scroll spy: highlight active heading in both TOCs
                     var tocLinks = rightToc.querySelectorAll('a');
-                    var mobileLinks = mobileToc.querySelectorAll('a');
+                    var mobileLinks = document.querySelectorAll('.markdown-body .mobile-toc a');
                     var observer = new IntersectionObserver(function(entries) {
                         entries.forEach(function(entry) {
                             if (entry.isIntersecting) {
@@ -1166,7 +1174,8 @@
                     });
                 } else {
                     rightToc.innerHTML = '';
-                    mobileToc.innerHTML = '';
+                    var oldMobileToc = document.querySelector('.markdown-body .mobile-toc');
+                    if (oldMobileToc) oldMobileToc.remove();
                 }
 
                 document.querySelectorAll('.sidebar-nav a').forEach(a => {
@@ -1205,8 +1214,8 @@
                 `;
                 var rightToc = document.getElementById('rightToc');
                 if (rightToc) rightToc.innerHTML = '';
-                var mobileToc = document.getElementById('mobileToc');
-                if (mobileToc) mobileToc.innerHTML = '';
+                var mobileToc = document.querySelector('.markdown-body .mobile-toc');
+                if (mobileToc) mobileToc.remove();
                 currentFile = null;
             }
         }
