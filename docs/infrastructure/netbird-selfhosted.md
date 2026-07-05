@@ -16,6 +16,53 @@ description: - [Overview](#overview) - [Key Features](#key-features) - [Requirem
 
 What sets Netbird apart: **reliable NAT traversal** (uses a dedicated TURN relay), **SSO/OIDC integration** out of the box, and **group-based access policies** for fine-grained network segmentation.
 
+## Table of Contents
+
+- [Overview](#overview)
+  - [Architecture Components](#architecture-components)
+- [Key Features](#key-features)
+- [Requirements](#requirements)
+  - [Server (Management + Signal + Dashboard)](#server-management--signal--dashboard)
+  - [TURN Relay](#turn-relay-optional--recommended)
+  - [Client (Each Node)](#client-each-node)
+- [Installation (Self-Hosted)](#installation-self-hosted)
+  - [All-in-One](#option-a-all-in-one-recommended)
+  - [Configure Environment](#1-configure-environment)
+  - [Configure Management Server](#2-configure-management-server)
+  - [Start Services](#3-start-services)
+  - [Access Dashboard](#5-access-dashboard)
+- [Quick Start](#quick-start)
+  - [Generate a Setup Key](#step-1-generate-a-setup-key)
+  - [Install & Join](#step-2-install--join-a-node)
+- [Joining Nodes](#joining-nodes)
+  - [Linux](#linux-all-distros)
+  - [Docker](#docker)
+  - [macOS](#macos)
+  - [Raspberry Pi / ARM](#raspberry-pi--arm)
+- [Groups & Policies](#groups--policies)
+  - [Groups](#groups)
+  - [Policies (Flow Rules)](#policies-flow-rules)
+- [Routing Peers](#routing-peers)
+- [DNS](#dns)
+  - [Internal DNS](#internal-dns)
+  - [Split DNS](#split-dns)
+- [IDP / SSO Integration](#idp--sso-integration)
+  - [Authentik](#authentik)
+  - [Google Workspace](#google-workspace)
+  - [GitHub](#github)
+- [API & Automation](#api--automation)
+  - [Key Endpoints](#key-endpoints)
+- [Monitoring](#monitoring)
+  - [Prometheus Metrics](#prometheus-metrics)
+  - [Health Check](#health-check)
+- [Production Tips](#production-tips)
+  - [Domain Must Be HTTPS](#domain-must-be-https)
+  - [Persistent Storage](#persistent-storage)
+  - [Database](#database)
+  - [TURN Security](#turn-security)
+- [Netbird vs Netmaker vs Headscale](#netbird-vs-netmaker-vs-headscale)
+- [Tips & Pitfalls](#tips--pitfalls)
+
 ---
 
 ## Overview
