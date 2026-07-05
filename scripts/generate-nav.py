@@ -60,6 +60,8 @@ ARTICLE_DESCS = {
     "infrastructure/kopia-backup": "Kopia backup with Cloudflare R2: incremental, dedup, encrypted backup for VPS",
     "infrastructure/object-storage-comparison": "Comparison of S3-compatible object storage providers: R2, S3, GCS, Backblaze B2",
     "infrastructure/taskfile": "Modern YAML-based task runner: dependencies, caching, templates, includes, platform-specific commands",
+    "infrastructure/netbird-selfhosted": "Self-hosted Netbird WireGuard mesh VPN with SSO, groups, policies, TURN relay, and routing peers",
+    "infrastructure/netmaker-selfhosted": "Self-hosted Netmaker WireGuard mesh VPN platform: installation, ingress/egress gateways, ACL, and automation",
     "infrastructure/zot-registry": "Lightweight OCI-compliant container registry with Zot: deployment, auth, R2 storage, CVE scanning",
     "security/supply-chain-security": "Open source supply chain security prevention playbook",
     "terminal/colorls": "Beautify your ls command with color and icons",

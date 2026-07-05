@@ -61,6 +61,8 @@
         "glibc-vs-musl",
         "kata-containers-vs-firecracker",
         "kopia-backup",
+        "netbird-selfhosted",
+        "netmaker-selfhosted",
         "object-storage-comparison",
         "taskfile",
         "warpgate",

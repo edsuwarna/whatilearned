@@ -65,8 +65,11 @@ Deployed on [Cloudflare Pages](https://pages.cloudflare.com) — auto-deploys on
 - **[docs/infrastructure/glibc-vs-musl.md](docs/infrastructure/glibc-vs-musl.md)** — Comprehensive comparison: architecture, performance, static linking, Docker implications, DNS, threading, and when to choose which C library
 - **[docs/infrastructure/kata-containers-vs-firecracker.md](docs/infrastructure/kata-containers-vs-firecracker.md)** — Comparison of Kata Containers and Firecracker for lightweight virtualization
 - **[docs/infrastructure/kopia-backup.md](docs/infrastructure/kopia-backup.md)** — Kopia backup with Cloudflare R2: incremental, dedup, encrypted backup for VPS
+- **[docs/infrastructure/netbird-selfhosted.md](docs/infrastructure/netbird-selfhosted.md)** — Self-hosted Netbird WireGuard mesh VPN with SSO, groups, policies, TURN relay, and routing peers
+- **[docs/infrastructure/netmaker-selfhosted.md](docs/infrastructure/netmaker-selfhosted.md)** — Self-hosted Netmaker WireGuard mesh VPN platform: installation, ingress/egress gateways, ACL, and automation
 - **[docs/infrastructure/object-storage-comparison.md](docs/infrastructure/object-storage-comparison.md)** — Comparison of S3-compatible object storage providers: R2, S3, GCS, Backblaze B2
 - **[docs/infrastructure/taskfile.md](docs/infrastructure/taskfile.md)** — Modern YAML-based task runner: dependencies, caching, templates, includes, platform-specific commands
+- **[docs/infrastructure/warpgate.md](docs/infrastructure/warpgate.md)** — 
 - **[docs/infrastructure/zot-registry.md](docs/infrastructure/zot-registry.md)** — Lightweight OCI-compliant container registry with Zot: deployment, auth, R2 storage, CVE scanning
 
 ### 🔒 Security
