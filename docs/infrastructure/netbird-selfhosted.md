@@ -1,6 +1,6 @@
 ---
 title: Netbird — Self-Hosted WireGuard Mesh VPN with SSO
-description: - [Overview](#overview) - [Architecture](#architecture) - [Key Features](#key-features) - [Requirements](#requirements) - [Installation (Self-Hosted)](#installation-self-hosted) - [Quick Start](#quick-start) - [Joining Nodes](#joining-nodes) - [Groups & Policies](#groups--policies) - [Routing Peers](#routing-peers) - [DNS](#dns) - [IDP / SSO Integration](#idp--sso-integration) - [API & Automation](#api--automation) - [Monitoring](#monitoring) - [Production Tips](#production-tips) - [Netbird vs Netmaker vs Headscale](#netbird-vs-netmaker-vs-headscale) - [Tips & Pitfalls](#tips--pitfalls)
+description: - [Overview](#overview) - [Key Features](#key-features) - [Requirements](#requirements) - [Installation](#installation-self-hosted) - [Quick Start](#quick-start) - [Joining Nodes](#joining-nodes) - [Groups & Policies](#groups--policies) - [Routing Peers](#routing-peers) - [DNS](#dns) - [IDP / SSO Integration](#idp--sso-integration) - [API & Automation](#api--automation) - [Monitoring](#monitoring) - [Production Tips](#production-tips) - [Netbird vs Netmaker vs Headscale](#netbird-vs-netmaker-vs-headscale) - [Tips & Pitfalls](#tips--pitfalls)
 ---
 
 # Netbird — Self-Hosted WireGuard Mesh VPN with SSO

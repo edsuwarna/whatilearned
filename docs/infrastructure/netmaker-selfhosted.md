@@ -1,6 +1,6 @@
 ---
 title: Netmaker — Self-Hosted WireGuard Mesh VPN Platform
-description: - [Overview](#overview) - [Architecture](#architecture) - [Key Features](#key-features) - [Requirements](#requirements) - [Installation](#installation) - [Configuration](#configuration) - [Joining Nodes](#joining-nodes) - [Networks & Mesh](#networks--mesh) - [Ingress Gateway](#ingress-gateway) - [Egress Gateway](#egress-gateway) - [ACL](#acls-acl) - [DNS](#dns) - [API & Automation](#api--automation) - [Production Setup](#production-setup) - [Monitoring](#monitoring) - [Netmaker vs Netbird vs Headscale](#netmaker-vs-netbird-vs-headscale) - [Tips & Pitfalls](#tips--pitfalls)
+description: - [Overview](#overview) - [Key Features](#key-features) - [Requirements](#requirements) - [Installation](#installation) - [Configuration](#configuration) - [Joining Nodes](#joining-nodes) - [Networks & Mesh](#networks--mesh) - [Ingress Gateway](#ingress-gateway) - [Egress Gateway](#egress-gateway) - [ACL](#acl-access-control) - [DNS](#dns) - [API & Automation](#api--automation) - [Production Setup](#production-setup) - [Monitoring](#monitoring) - [Netmaker vs Netbird vs Headscale](#netmaker-vs-netbird-vs-headscale) - [Tips & Pitfalls](#tips--pitfalls)
 ---
 
 # Netmaker — Self-Hosted WireGuard Mesh VPN Platform
