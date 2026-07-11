@@ -177,7 +177,7 @@ htpasswd -nbB robot-ci token123 >> htpasswd
     "oidc": {
       "provider": {
         "name": "authentik",
-        "issuer": "https://auth.domain.com/application/o/zot-registry/"
+        "issuer": "https://auth.example.com/application/o/zot-registry/"
       },
       "clientid": "xxx",
       "clientsecret": "xxx"
@@ -204,7 +204,7 @@ Zot runs with no auth, Traefik handles authentication via labels:
 ```yaml
 labels:
   - "traefik.enable=true"
-  - "traefik.http.routers.zot.rule=Host(`registry.domain.com`)"
+  - "traefik.http.routers.zot.rule=Host(`registry.example.com`)"
   - "traefik.http.routers.zot.entrypoints=websecure"
   - "traefik.http.routers.zot.tls.certresolver=letsencrypt"
   - "traefik.http.routers.zot.service=zot"
@@ -403,13 +403,13 @@ Zot is **OCI-native** — based on OCI Image Spec v1.1.0 + OCI Distribution Spec
 | Type | How to push |
 |------|-------------|
 | **Container images** (Docker/OCI) | `docker push`, `podman push` |
-| **Helm charts** | `helm push chart.tgz oci://registry.domain.com/repo` |
+| **Helm charts** | `helm push chart.tgz oci://registry.example.com/repo` |
 | **WASM modules** | `wasm-to-oci push` |
 | **SBOM** (CycloneDX, SPDX) | ORAS CLI |
 | **Cosign signatures** | `cosign sign` (pushes signature as artifact) |
 | **Notation signatures** | `notation sign` |
 | **Attestations** (SLSA, intoto) | `cosign attest` |
-| **Generic files** | `oras push oci://registry.domain.com/repo file.txt` |
+| **Generic files** | `oras push oci://registry.example.com/repo file.txt` |
 | **Any OCI artifact** | ORAS CLI: `oras push` |
 
 ### Referrers API
@@ -464,7 +464,7 @@ services:
       - TZ=Asia/Jakarta
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.zot.rule=Host(`registry.domain.com`)"
+      - "traefik.http.routers.zot.rule=Host(`registry.example.com`)"
       - "traefik.http.routers.zot.entrypoints=websecure"
       - "traefik.http.routers.zot.tls.certresolver=letsencrypt"
       - "traefik.http.routers.zot.service=zot"

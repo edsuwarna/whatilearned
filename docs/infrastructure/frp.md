@@ -150,7 +150,7 @@ webServer.password = "admin"
 
 ```toml
 # frpc.toml
-serverAddr = "your-server.com"
+serverAddr = "your-server.example.com"
 serverPort = 7000
 
 [[proxies]]
@@ -165,7 +165,7 @@ remotePort = 6000
 ./frpc -c frpc.toml
 ```
 
-Now `ssh -oPort=6000 your-server.com` connects to the client's SSH.
+Now `ssh -oPort=6000 your-server.example.com` connects to the client's SSH.
 
 ### Config Format
 
@@ -191,7 +191,7 @@ localPort = 3306
 remotePort = 3306
 ```
 
-Now `your-server.com:3306` → client's `localhost:3306`.
+Now `your-server.example.com:3306` → client's `localhost:3306`.
 
 ### UDP
 
@@ -205,7 +205,7 @@ remotePort = 6000
 ```
 
 ```bash
-dig @your-server.com -p 6000 www.google.com
+dig @your-server.example.com -p 6000 www.google.com
 ```
 
 ### HTTP/HTTPS
@@ -224,10 +224,10 @@ vhostHTTPPort = 8080
 name = "web"
 type = "http"
 localPort = 80
-customDomains = ["app.yourdomain.com"]
+customDomains = ["app.your-domain.example.com"]
 ```
 
-Point `app.yourdomain.com` DNS A record to frps server IP, then visit `http://app.yourdomain.com:8080`.
+Point `app.your-domain.example.com` DNS A record to frps server IP, then visit `http://app.your-domain.example.com:8080`.
 
 For **HTTPS**, use `vhostHTTPSPort` on server and `type = "https"` on client. You can also use the `https2http` plugin:
 
@@ -235,7 +235,7 @@ For **HTTPS**, use `vhostHTTPSPort` on server and `type = "https"` on client. Yo
 [[proxies]]
 name = "secure-web"
 type = "https"
-customDomains = ["app.yourdomain.com"]
+customDomains = ["app.your-domain.example.com"]
 
 [proxies.plugin]
 type = "https2http"
@@ -394,7 +394,7 @@ remotePort = 9100              # unique per VPS — 9100, 9101, 9102...
 bindPort = 7000
 vhostHTTPPort = 80             # direct HTTP access
 vhostHTTPSPort = 443           # optional HTTPS
-subDomainHost = "frp.yourdomain.com"
+subDomainHost = "frp.your-domain.example.com"
 ```
 
 ```toml
@@ -406,7 +406,7 @@ localPort = 3000
 subdomain = "grafana"
 ```
 
-Now `grafana.frp.yourdomain.com` → localhost:3000.
+Now `grafana.frp.your-domain.example.com` → localhost:3000.
 
 ### Load Balancing
 
@@ -443,10 +443,10 @@ sshTunnelGateway.bindPort = 2200
 Then:
 
 ```bash
-ssh -R :80:127.0.0.1:8080 v0@your-server.com -p 2200 tcp --proxy_name "test-tcp" --remote_port 9090
+ssh -R :80:127.0.0.1:8080 v0@your-server.example.com -p 2200 tcp --proxy_name "test-tcp" --remote_port 9090
 ```
 
-This exposes `localhost:8080` as `your-server.com:9090`, equivalent to running `frpc tcp`.
+This exposes `localhost:8080` as `your-server.example.com:9090`, equivalent to running `frpc tcp`.
 
 ### Virtual Network (TUN)
 
@@ -519,7 +519,7 @@ webServer.tls.certFile = "server.crt"
 webServer.tls.keyFile = "server.key"
 ```
 
-Visit `http://your-server.com:7500` to see:
+Visit `http://your-server.example.com:7500` to see:
 - Connected clients
 - Active proxies with traffic stats
 - Bandwidth usage
@@ -552,7 +552,7 @@ webServer.port = 7500
 enablePrometheus = true
 ```
 
-Metrics at `http://your-server.com:7500/metrics`.
+Metrics at `http://your-server.example.com:7500/metrics`.
 
 ---
 
@@ -586,8 +586,8 @@ auth.tokenSource.file.path = "/path/to/token/file"
 ```toml
 # frps.toml
 auth.method = "oidc"
-auth.oidc.issuer = "https://your-oidc-issuer.com/"
-auth.oidc.audience = "https://audience.com/.default"
+auth.oidc.issuer = "https://your-oidc-issuer.example.com/"
+auth.oidc.audience = "https://your-audience.example.com/.default"
 ```
 
 ```toml
@@ -595,8 +595,8 @@ auth.oidc.audience = "https://audience.com/.default"
 auth.method = "oidc"
 auth.oidc.clientID = "your-client-id"
 auth.oidc.clientSecret = "your-client-secret"
-auth.oidc.audience = "https://audience.com/.default"
-auth.oidc.tokenEndpointURL = "https://issuer.com/oauth2/v2.0/token"
+auth.oidc.audience = "https://your-audience.example.com/.default"
+auth.oidc.tokenEndpointURL = "https://your-issuer.example.com/oauth2/v2.0/token"
 ```
 
 ### Per-Proxy Auth
@@ -795,7 +795,7 @@ remotePort = 1080
 type = "socks5"
 ```
 
-Turn frpc into a SOCKS5 proxy — configure browser to use `your-server.com:1080`.
+Turn frpc into a SOCKS5 proxy — configure browser to use `your-server.example.com:1080`.
 
 ---
 

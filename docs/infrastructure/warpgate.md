@@ -249,7 +249,7 @@ Host *.wg
   ProxyJump none
 ```
 
-Then: `ssh deploy@production-web.wg`
+Then: `ssh deploy@production-web.example.com`
 
 ### SSH with 2FA
 

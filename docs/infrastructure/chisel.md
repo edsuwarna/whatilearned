@@ -195,7 +195,7 @@ All three tunnels share **one TCP connection** — efficient.
 ```bash
 # Tunnel SSH through chisel
 ssh -o ProxyCommand='chisel client chisel-server.com stdio:%h:%p' \
-    user@internal-server.com
+    user@internal.example.com
 ```
 
 ---
