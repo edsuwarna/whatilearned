@@ -736,7 +736,7 @@ Forgejo supports external authentication via OAuth2 / OpenID Connect. Dex (or an
    - **OAuth2 Provider:** OpenID Connect
    - **Client ID:** `forgejo`
    - **Client Secret:** `forgejo-client-secret-change-me`
-   - **OpenID Connect Auto Discovery URL:** `https://auth.dtakah.com/.well-known/openid-configuration`
+   - **OpenID Connect Auto Discovery URL:** `https://auth.example.com/.well-known/openid-configuration`
    - **Scopes:** `openid profile email`
 3. Save
 
@@ -760,7 +760,7 @@ In Dex `config.yaml`, add to `staticClients`:
     name: Forgejo
     secret: forgejo-client-secret-change-me
     redirectURIs:
-      - "https://git.dtakah.com/user/oauth2/dex/callback"
+      - "https://git.example.com/user/oauth2/dex/callback"
 ```
 
 Forgejo automatically shows a "Sign in with Dex" button on the login page.

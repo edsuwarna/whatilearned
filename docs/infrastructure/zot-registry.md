@@ -228,11 +228,11 @@ Dex as OIDC provider for Zot browser login. Requires API key for `docker login`.
       "sessionKeysFile": "/etc/zot/sessionKeys.json",
       "apikey": true,
       "openid": {
-        "callbackAllowOrigins": ["https://registry.dtakah.com"],
+        "callbackAllowOrigins": ["https://registry.example.com"],
         "providers": {
           "dex": {
             "name": "Dex",
-            "issuer": "https://auth.dtakah.com",
+            "issuer": "https://auth.example.com",
             "credentialsFile": "/etc/zot/dex-credentials.json",
             "scopes": ["openid", "profile", "email"],
             "claimMapping": {
@@ -256,12 +256,12 @@ Dex as OIDC provider for Zot browser login. Requires API key for `docker login`.
 ```
 
 **How it works:**
-1. User opens `https://registry.dtakah.com` → clicks "Login with Dex"
+1. User opens `https://registry.example.com` → clicks "Login with Dex"
 2. Redirected to Dex → authenticates → redirected back
 3. Zot UI now shows authenticated user
 4. **For docker CLI** — user generates API key from Zot UI, then:
    ```bash
-   docker login -u <username> -p <api_key> registry.dtakah.com
+   docker login -u <username> -p <api_key> registry.example.com
    ```
 
 > See full Dex setup in [dex-oidc.md](./dex-oidc.md).

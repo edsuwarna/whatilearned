@@ -39,7 +39,7 @@ Each app redirects to Dex for login. Dex authenticates against the configured co
 services:
   dex:
     image: ghcr.io/dexidp/dex:v2.42.0
-    container_name: dtakah-dex
+    container_name: dex
     restart: unless-stopped
     ports:
       - "5556:5556"
@@ -61,10 +61,10 @@ services:
       - dokploy-network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.dtakah-dex.rule=Host(`auth.dtakah.com`)"
-      - "traefik.http.routers.dtakah-dex.entrypoints=websecure"
-      - "traefik.http.routers.dtakah-dex.tls.certresolver=letsencrypt"
-      - "traefik.http.services.dtakah-dex.loadbalancer.server.port=5556"
+      - "traefik.http.routers.dex.rule=Host(`auth.example.com`)"
+      - "traefik.http.routers.dex.entrypoints=websecure"
+      - "traefik.http.routers.dex.tls.certresolver=letsencrypt"
+      - "traefik.http.services.dex.loadbalancer.server.port=5556"
 ```
 
 ## Configuration
@@ -72,7 +72,7 @@ services:
 ### `dex/config.yaml`
 
 ```yaml
-issuer: https://auth.dtakah.com
+issuer: https://auth.example.com
 
 storage:
   type: sqlite3
@@ -93,10 +93,10 @@ connectors:
     name: Static Users
     config:
       users:
-        - email: admin@dtakah.com
+        - email: admin@example.com
           hash: "$2a$10$..."  # bcrypt hash
           username: admin
-        - email: user@dtakah.com
+        - email: user@example.com
           hash: "$2a$10$..."
           username: user
 
@@ -122,19 +122,19 @@ staticClients:
     name: Zot Registry
     secret: zot-client-secret-change-me
     redirectURIs:
-      - "https://registry.dtakah.com/auth/callback/oidc"
+      - "https://registry.example.com/auth/callback/oidc"
 
   - id: forgejo
     name: Forgejo
     secret: forgejo-client-secret-change-me
     redirectURIs:
-      - "https://git.dtakah.com/user/oauth2/dex/callback"
+      - "https://git.example.com/user/oauth2/dex/callback"
 
   - id: beszel
     name: Beszel
     secret: beszel-client-secret-change-me
     redirectURIs:
-      - "https://beszel.dtakah.com/api/oauth2-redirect"
+      - "https://beszel.example.com/api/oauth2-redirect"
 ```
 
 ### Generate bcrypt Password
@@ -179,7 +179,7 @@ Key points:
 
 ## Verification
 
-1. Open Dex discovery URL: `https://auth.dtakah.com/.well-known/openid-configuration`
+1. Open Dex discovery URL: `https://auth.example.com/.well-known/openid-configuration`
    - Should return JSON with `issuer`, `authorization_endpoint`, `token_endpoint`, etc.
 2. Test auth flow: open any app → click "Login with Dex" → should redirect to Dex login page
 3. After login, should redirect back to the app authenticated

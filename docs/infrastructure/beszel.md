@@ -80,7 +80,7 @@ services:
       - "8090"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.beszel.rule=Host(`beszel.dtakah.com`)"
+      - "traefik.http.routers.beszel.rule=Host(`beszel.example.com`)"
       - "traefik.http.routers.beszel.entrypoints=websecure"
       - "traefik.http.routers.beszel.tls.certresolver=letsencrypt"
       - "traefik.http.services.beszel.loadbalancer.server.port=8090"
@@ -146,7 +146,7 @@ Beszel uses **PocketBase** as its backend. OIDC is configured via the PocketBase
    - **Provider:** `oidc`
    - **Client ID:** `beszel`
    - **Client Secret:** `beszel-client-secret-change-me`
-   - **Issuer URL:** `https://auth.dtakah.com` (Dex URL)
+   - **Issuer URL:** `https://auth.example.com` (Dex URL)
 6. Save collection
 7. Toggle "Hide collection create and edit controls" back **ON**
 8. Set env vars:
