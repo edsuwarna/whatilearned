@@ -78,7 +78,7 @@
             transition: background 0.25s ease, color 0.25s ease;
         }
 
-        .layout { display: flex; min-height: 100vh; }
+        .layout { display: flex; min-height: 100vh; overflow-x: hidden; }
 
         /* ============ SIDEBAR ============ */
         .sidebar {
@@ -468,6 +468,8 @@
             color: var(--accent-deep);
             text-decoration: none;
             font-weight: 500;
+            overflow-wrap: break-word;
+            word-break: break-word;
         }
         .markdown-body a:hover { text-decoration: underline; }
         .markdown-body ul, .markdown-body ol {
@@ -586,6 +588,10 @@
             border-collapse: collapse;
             margin: 16px 0 20px;
             font-size: 14px;
+            display: block;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            word-break: break-word;
         }
         .markdown-body th, .markdown-body td {
             padding: 10px 14px;
@@ -777,18 +783,20 @@
             .sidebar-overlay.open { display: block; }
             .sidebar-toggle {
                 display: block;
-                top: 12px;
-                left: 12px;
-                bottom: auto;
-                padding: 8px 10px;
-                border-radius: var(--radius-sm);
-                box-shadow: var(--shadow-button);
+                top: auto;
+                left: max(12px, env(safe-area-inset-left, 12px));
+                bottom: max(24px, env(safe-area-inset-bottom, 24px));
+                padding: 10px 12px;
+                border-radius: var(--radius-pill);
+                box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+                z-index: 250;
             }
             .theme-toggle {
                 backdrop-filter: blur(8px);
                 -webkit-backdrop-filter: blur(8px);
                 background: color-mix(in srgb, var(--surface) 80%, transparent);
-                right: 16px;
+                right: max(16px, env(safe-area-inset-right, 16px));
+                top: max(12px, env(safe-area-inset-top, 12px));
             }
             .content { margin-left: 0; padding: 24px 20px 48px; max-width: 100%; }
             .categories-grid { grid-template-columns: 1fr; }
