@@ -70,6 +70,7 @@ ARTICLE_DESCS = {
     "infrastructure/zot-registry": "Lightweight OCI-compliant container registry with Zot: deployment, auth, R2 storage, CVE scanning",
     "infrastructure/beszel": "Beszel — lightweight server monitoring with historical data, Docker stats, alerts, and OIDC/OAuth support",
     "infrastructure/dozzle": "Dozzle — real-time Docker log viewer with forward-proxy OIDC auth via Dex and oauth2-proxy",
+    "infrastructure/datasette-sqlite-tools": "Datasette, Turso/libSQL, SQLPage — open-source SQLite tools with web UI, auto APIs, and enhanced features for exploring and managing databases",
     "security/supply-chain-security": "Open source supply chain security prevention playbook",
     "terminal/colorls": "Beautify your ls command with color and icons",
     "terminal/customize-terminal": "ZSH + oh-my-zsh installation guide",

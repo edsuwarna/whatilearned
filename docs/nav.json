@@ -54,6 +54,7 @@
         "dagger",
         "database-backup",
         "database-backup-incremental",
+        "datasette-sqlite-tools",
         "dex-oidc",
         "dokploy-basic-auth",
         "dozzle",
