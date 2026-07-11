@@ -1372,8 +1372,8 @@
                 });
 
                 // 4. Prev/Next article navigation
-                var cat = path.split('/')[0];
-                if (siteData && siteData.categories && siteData.categories[cat]) {
+                const artCat = path.split('/')[0];
+                if (siteData && siteData.categories && siteData.categories[artCat]) {
                     var articles = siteData.categories[cat].articles;
                     var currentIdx = articles.indexOf(path.replace(cat + '/', ''));
                     if (articles.length > 1) {
