@@ -7,4 +7,4 @@ cd "$(git rev-parse --show-toplevel)" || exit 1
 echo "🔧 pre-commit: generating nav.json + sitemap.xml..."
 python3 scripts/generate-nav.py
 python3 scripts/generate-sitemap.py
-git add docs/nav.json docs/sitemap.xml
+git add docs/nav.json docs/sitemap.xml docs/article-dates.json

@@ -308,6 +308,18 @@
             box-shadow: 0 0 0 3px rgba(24, 226, 153, 0.12);
         }
 
+        /* ============ READING PROGRESS ============ */
+        #readingProgress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--accent);
+            z-index: 9999;
+            width: 0;
+            transition: width 0.1s linear;
+        }
+
         /* ============ HOME PAGE ============ */
         .home-header {
             text-align: center;
@@ -428,6 +440,51 @@
             margin-top: 4px;
         }
 
+        /* ============ DOCUMENT NAVIGATION (prev/next) ============ */
+        .doc-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+        .doc-nav a {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            padding: 12px 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-card);
+            text-decoration: none;
+            color: var(--text);
+            transition: all 0.2s;
+            flex: 1;
+            min-width: 0;
+        }
+        .doc-nav a:hover {
+            border-color: var(--border-medium);
+            box-shadow: rgba(0,0,0,0.06) 0px 4px 12px;
+        }
+        .doc-nav .nav-label {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            font-weight: 500;
+        }
+        .doc-nav .nav-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .doc-nav .nav-next { text-align: right; }
+        .doc-nav .nav-prev { text-align: left; }
+
         /* ============ MARKDOWN BODY ============ */
         .markdown-body {
             max-width: 800px;
@@ -439,6 +496,7 @@
             margin: 0 0 6px;
             line-height: 1.15;
             color: var(--text);
+            scroll-margin-top: 80px;
         }
         .markdown-body .subtitle {
             color: var(--text-secondary);
@@ -452,16 +510,19 @@
             margin: 40px 0 10px;
             padding-bottom: 10px;
             border-bottom: 1px solid var(--border);
+            scroll-margin-top: 80px;
         }
         .markdown-body h3 {
             font-size: 17px;
             font-weight: 600;
             margin: 28px 0 8px;
+            scroll-margin-top: 72px;
         }
         .markdown-body h4 {
             font-size: 15px;
             font-weight: 600;
             margin: 20px 0 6px;
+            scroll-margin-top: 64px;
         }
         .markdown-body p { margin: 0 0 14px; color: var(--text); }
         .markdown-body a {
@@ -566,6 +627,25 @@
         .hljs-meta { color: #6e7781; }            /* shebang, directives */
         .hljs-section { color: #8250df; font-weight: 600; }  /* #!/bin/bash headers */
 
+        /* ── Code Language Label ── */
+        .code-lang-label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            font-size: 10px;
+            font-family: var(--font-mono);
+            color: var(--text-tertiary);
+            background: var(--bg-subtle);
+            padding: 2px 8px;
+            border-radius: 0 0 6px 0;
+            border-right: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            line-height: 1.4;
+            z-index: 1;
+        }
+
         [data-theme="dark"] .hljs-keyword { color: #d2a8ff; }
         [data-theme="dark"] .hljs-built_in { color: #d2a8ff; }
         [data-theme="dark"] .hljs-type { color: #91cbff; }
@@ -652,6 +732,25 @@
             color: var(--accent-deep);
             text-decoration: none;
             font-weight: 500;
+        }
+
+        /* ============ IMAGE LIGHTBOX ============ */
+        .img-lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: zoom-out;
+            padding: 20px;
+        }
+        .img-lightbox img {
+            max-width: 100%;
+            max-height: 100vh;
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
         }
 
         /* ============ RIGHT TOC ============ */
@@ -804,6 +903,7 @@
     </style>
 </head>
 <body>
+    <div id="readingProgress"></div>
     <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
         <i data-lucide="menu" style="width:18px;height:18px;"></i>
     </button>
@@ -1226,6 +1326,102 @@
                 var titleEl = c.querySelector('h1');
                 if (titleEl) updateMeta(titleEl.textContent.replace(/^[^\s]+\s/, '').trim());
 
+                // ===== ENHANCEMENTS =====
+
+                // 1. Date display (from article-dates.json)
+                if (typeof articleDates !== 'undefined' && articleDates && articleDates[path]) {
+                    var dateStr = articleDates[path];
+                    var h1 = c.querySelector('.markdown-body h1');
+                    if (h1) {
+                        var dateEl = document.createElement('div');
+                        dateEl.className = 'article-date';
+                        dateEl.textContent = 'Last updated ' + dateStr;
+                        dateEl.style.cssText = 'color:var(--text-tertiary);font-size:12px;margin:-4px 0 24px;';
+                        h1.parentNode.insertBefore(dateEl, h1.nextSibling);
+                    }
+                }
+
+                // 2. Language labels on code blocks
+                c.querySelectorAll('pre code[class*="language-"]').forEach(function(codeEl) {
+                    var pre = codeEl.parentNode;
+                    if (pre.querySelector('.code-lang-label')) return; // skip if already has label
+                    var match = codeEl.className.match(/language-(\w+)/);
+                    if (match && match[1]) {
+                        var label = document.createElement('span');
+                        label.className = 'code-lang-label';
+                        label.textContent = match[1];
+                        pre.style.position = 'relative';
+                        pre.appendChild(label);
+                    }
+                });
+
+                // 3. Image lightbox on click
+                c.querySelectorAll('.markdown-body img').forEach(function(img) {
+                    img.style.cursor = 'zoom-in';
+                    img.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        // Close any existing lightbox
+                        var existing = document.querySelector('.img-lightbox');
+                        if (existing) existing.remove();
+                        var overlay = document.createElement('div');
+                        overlay.className = 'img-lightbox';
+                        overlay.innerHTML = '<img src="' + img.src + '" alt="' + (img.alt || '') + '">';
+                        overlay.addEventListener('click', function() { overlay.remove(); });
+                        document.body.appendChild(overlay);
+                    });
+                });
+
+                // 4. Prev/Next article navigation
+                var cat = path.split('/')[0];
+                if (siteData && siteData.categories && siteData.categories[cat]) {
+                    var articles = siteData.categories[cat].articles;
+                    var currentIdx = articles.indexOf(path.replace(cat + '/', ''));
+                    if (articles.length > 1) {
+                        var prevPath = currentIdx > 0 ? cat + '/' + articles[currentIdx - 1] : null;
+                        var nextPath = currentIdx < articles.length - 1 ? cat + '/' + articles[currentIdx + 1] : null;
+                        if (prevPath || nextPath) {
+                            var navHtml = '<div class="doc-nav">';
+                            if (prevPath) {
+                                var prevTitle = articles[currentIdx - 1].replace(/-/g, ' ');
+                                navHtml += '<a class="nav-prev" href="#" data-path="' + prevPath + '">' +
+                                    '<span class="nav-label">← Previous</span>' +
+                                    '<span class="nav-title">' + prevTitle.charAt(0).toUpperCase() + prevTitle.slice(1) + '</span>' +
+                                    '</a>';
+                            } else {
+                                navHtml += '<div></div>';
+                            }
+                            if (nextPath) {
+                                var nextTitle = articles[currentIdx + 1].replace(/-/g, ' ');
+                                navHtml += '<a class="nav-next" href="#" data-path="' + nextPath + '">' +
+                                    '<span class="nav-label">Next →</span>' +
+                                    '<span class="nav-title">' + nextTitle.charAt(0).toUpperCase() + nextTitle.slice(1) + '</span>' +
+                                    '</a>';
+                            } else {
+                                navHtml += '<div></div>';
+                            }
+                            navHtml += '</div>';
+                            var mdBody = c.querySelector('.markdown-body');
+                            if (mdBody) {
+                                var navEl = document.createElement('div');
+                                navEl.innerHTML = navHtml;
+                                mdBody.appendChild(navEl.firstElementChild);
+                                // Click handler for prev/next via event delegation
+                                var docNav = mdBody.querySelector('.doc-nav');
+                                if (docNav) {
+                                    docNav.addEventListener('click', function(e) {
+                                        var link = e.target.closest('a');
+                                        if (link) {
+                                            e.preventDefault();
+                                            var targetPath = link.getAttribute('data-path');
+                                            if (targetPath) loadDoc(targetPath);
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+
             } catch (e) {
                 c.innerHTML = `
                     <div class="error-state">
@@ -1424,6 +1620,38 @@
 
         loadNavData();
         lucide.createIcons();
+
+        // ===== ARTICLE DATES LOADING =====
+        var articleDates = null;
+        fetch('article-dates.json?t=' + Date.now()).then(function(r) {
+            if (r.ok) return r.json();
+            throw new Error('Not found');
+        }).then(function(data) {
+            articleDates = data;
+        }).catch(function() {
+            articleDates = {};
+        });
+
+        // ===== READING PROGRESS BAR =====
+        var progressBar = document.getElementById('readingProgress');
+        if (progressBar) {
+            window.addEventListener('scroll', function() {
+                var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+                var scrollHeight = (document.documentElement.scrollHeight || document.body.scrollHeight) - (document.documentElement.clientHeight || window.innerHeight);
+                if (scrollHeight > 0) {
+                    progressBar.style.width = Math.min((scrollTop / scrollHeight) * 100, 100) + '%';
+                }
+            });
+        }
+
+        // ===== CTRL+K / CMD+K SEARCH SHORTCUT =====
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                var input = document.getElementById('searchInput');
+                if (input) input.focus();
+            }
+        });
     </script>
 </body>
 </html>

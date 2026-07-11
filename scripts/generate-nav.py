@@ -7,6 +7,7 @@ Output: docs/nav.json — read by index.html to build nav + category pages.
 """
 
 import json
+import subprocess
 from pathlib import Path
 
 DOCS_DIR = Path(__file__).resolve().parent.parent / "docs"
@@ -22,6 +23,7 @@ CATEGORY_META = {
     "infrastructure": {"emoji": "⚙️", "desc": "Deployment, Docker, Traefik, Dokploy"},
     "compliance": {"emoji": "🛡️", "desc": "CIS benchmarks, Lynis, Anjungan \u2014 plus 30+ technology compliance standards"},
 }
+DATES_FILE = DOCS_DIR / "article-dates.json"
 IGNORE_DIRS = {"images"}
 IGNORE_FILES = {"index.html", "nav.json"}
 
@@ -200,6 +202,50 @@ def write_readme(nav: dict, articles: list[dict]) -> bool:
     return True
 
 
+def generate_article_dates(articles: list[dict]) -> dict:
+    """Generate last-updated dates for each article from git log."""
+    repo_root = Path(__file__).resolve().parent.parent
+    dates = {}
+    for art in articles:
+        md_path = DOCS_DIR / f"{art['path']}.md"
+        if not md_path.exists():
+            continue
+        try:
+            result = subprocess.run(
+                ["git", "log", "-1", "--format=%ai", "--", str(md_path.relative_to(repo_root))],
+                capture_output=True, text=True, cwd=repo_root, timeout=5,
+            )
+            date_str = result.stdout.strip()
+            if date_str:
+                # "2024-12-25 14:30:00 +0700" → "Dec 25, 2024"
+                parts = date_str.split()
+                if parts:
+                    from datetime import datetime
+                    dt = datetime.strptime(parts[0], "%Y-%m-%d")
+                    dates[art["path"]] = dt.strftime("%b %d, %Y")
+        except Exception:
+            pass
+    return dates
+
+
+def write_article_dates(dates: dict) -> bool:
+    """Write article-dates.json. Returns True if changed."""
+    existing = None
+    if DATES_FILE.exists():
+        try:
+            existing = json.loads(DATES_FILE.read_text())
+        except json.JSONDecodeError:
+            pass
+
+    if existing == dates:
+        print("✅ article-dates.json unchanged")
+        return False
+
+    DATES_FILE.write_text(json.dumps(dates, indent=2, ensure_ascii=False) + "\n")
+    print(f"✅ Generated article-dates.json ({len(dates)} dates)")
+    return True
+
+
 def main() -> int:
     if not DOCS_DIR.exists():
         print(f"❌ docs/ not found at {DOCS_DIR}")
@@ -208,6 +254,8 @@ def main() -> int:
     nav, all_articles = generate_nav_json()
     write_nav_json(nav)
     write_readme(nav, all_articles)
+    dates = generate_article_dates(all_articles)
+    write_article_dates(dates)
     return 0
 
 
