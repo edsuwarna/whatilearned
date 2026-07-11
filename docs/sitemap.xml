@@ -22,30 +22,30 @@
   <url><loc>https://notes.edsuwarna.id/#/compliance/standards/07-regional-standards</loc></url>
   <url><loc>https://notes.edsuwarna.id/#/compliance/standards/README</loc></url>
   <url><loc>https://notes.edsuwarna.id/#/infrastructure/act</loc></url>
-  <url><loc>https://notes.edsuwarna.id/#/infrastructure/beszel</loc></url>
-  <url><loc>https://notes.edsuwarna.id/#/infrastructure/chisel</loc></url>
   <url><loc>https://notes.edsuwarna.id/#/infrastructure/dagger</loc></url>
-  <url><loc>https://notes.edsuwarna.id/#/infrastructure/database-backup</loc></url>
-  <url><loc>https://notes.edsuwarna.id/#/infrastructure/database-backup-incremental</loc></url>
-  <url><loc>https://notes.edsuwarna.id/#/infrastructure/datasette-sqlite-tools</loc></url>
-  <url><loc>https://notes.edsuwarna.id/#/infrastructure/dex-oidc</loc></url>
-  <url><loc>https://notes.edsuwarna.id/#/infrastructure/dokploy-basic-auth</loc></url>
-  <url><loc>https://notes.edsuwarna.id/#/infrastructure/dozzle</loc></url>
   <url><loc>https://notes.edsuwarna.id/#/infrastructure/forgejo-cicd-docker-compose</loc></url>
   <url><loc>https://notes.edsuwarna.id/#/infrastructure/forgejo-mirror-github</loc></url>
   <url><loc>https://notes.edsuwarna.id/#/infrastructure/forgejo-storage</loc></url>
-  <url><loc>https://notes.edsuwarna.id/#/infrastructure/frp</loc></url>
   <url><loc>https://notes.edsuwarna.id/#/infrastructure/glibc-vs-musl</loc></url>
   <url><loc>https://notes.edsuwarna.id/#/infrastructure/kata-containers-vs-firecracker</loc></url>
-  <url><loc>https://notes.edsuwarna.id/#/infrastructure/kopia-backup</loc></url>
-  <url><loc>https://notes.edsuwarna.id/#/infrastructure/netbird-selfhosted</loc></url>
-  <url><loc>https://notes.edsuwarna.id/#/infrastructure/netmaker-selfhosted</loc></url>
-  <url><loc>https://notes.edsuwarna.id/#/infrastructure/object-storage-comparison</loc></url>
   <url><loc>https://notes.edsuwarna.id/#/infrastructure/taskfile</loc></url>
-  <url><loc>https://notes.edsuwarna.id/#/infrastructure/warpgate</loc></url>
-  <url><loc>https://notes.edsuwarna.id/#/infrastructure/wireguard</loc></url>
-  <url><loc>https://notes.edsuwarna.id/#/infrastructure/zot-registry</loc></url>
+  <url><loc>https://notes.edsuwarna.id/#/monitoring/beszel</loc></url>
+  <url><loc>https://notes.edsuwarna.id/#/monitoring/dozzle</loc></url>
+  <url><loc>https://notes.edsuwarna.id/#/networking/chisel</loc></url>
+  <url><loc>https://notes.edsuwarna.id/#/networking/frp</loc></url>
+  <url><loc>https://notes.edsuwarna.id/#/networking/netbird-selfhosted</loc></url>
+  <url><loc>https://notes.edsuwarna.id/#/networking/netmaker-selfhosted</loc></url>
+  <url><loc>https://notes.edsuwarna.id/#/networking/warpgate</loc></url>
+  <url><loc>https://notes.edsuwarna.id/#/networking/wireguard</loc></url>
+  <url><loc>https://notes.edsuwarna.id/#/security/dex-oidc</loc></url>
+  <url><loc>https://notes.edsuwarna.id/#/security/dokploy-basic-auth</loc></url>
   <url><loc>https://notes.edsuwarna.id/#/security/supply-chain-security</loc></url>
+  <url><loc>https://notes.edsuwarna.id/#/storage/database-backup</loc></url>
+  <url><loc>https://notes.edsuwarna.id/#/storage/database-backup-incremental</loc></url>
+  <url><loc>https://notes.edsuwarna.id/#/storage/datasette-sqlite-tools</loc></url>
+  <url><loc>https://notes.edsuwarna.id/#/storage/kopia-backup</loc></url>
+  <url><loc>https://notes.edsuwarna.id/#/storage/object-storage-comparison</loc></url>
+  <url><loc>https://notes.edsuwarna.id/#/storage/zot-registry</loc></url>
   <url><loc>https://notes.edsuwarna.id/#/terminal/colorls</loc></url>
   <url><loc>https://notes.edsuwarna.id/#/terminal/customize-terminal</loc></url>
 </urlset>

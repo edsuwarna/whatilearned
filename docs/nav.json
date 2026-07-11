@@ -46,39 +46,57 @@
     },
     "infrastructure": {
       "emoji": "⚙️",
-      "desc": "Deployment, Docker, Traefik, Dokploy",
+      "desc": "Core devops: build tools, container runtimes, CI/CD SDKs",
       "articles": [
         "act",
-        "beszel",
-        "chisel",
         "dagger",
-        "database-backup",
-        "database-backup-incremental",
-        "datasette-sqlite-tools",
-        "dex-oidc",
-        "dokploy-basic-auth",
-        "dozzle",
         "forgejo-cicd-docker-compose",
         "forgejo-mirror-github",
         "forgejo-storage",
-        "frp",
         "glibc-vs-musl",
         "kata-containers-vs-firecracker",
-        "kopia-backup",
+        "taskfile"
+      ]
+    },
+    "monitoring": {
+      "emoji": "📊",
+      "desc": "Server monitoring, Docker log viewers, observability",
+      "articles": [
+        "beszel",
+        "dozzle"
+      ]
+    },
+    "networking": {
+      "emoji": "🌐",
+      "desc": "VPN, tunnels, mesh networking, remote access",
+      "articles": [
+        "chisel",
+        "frp",
         "netbird-selfhosted",
         "netmaker-selfhosted",
-        "object-storage-comparison",
-        "taskfile",
         "warpgate",
-        "wireguard",
-        "zot-registry"
+        "wireguard"
       ]
     },
     "security": {
       "emoji": "🔒",
-      "desc": "Supply chain security, best practices",
+      "desc": "Identity, authentication, OIDC, supply chain security",
       "articles": [
+        "dex-oidc",
+        "dokploy-basic-auth",
         "supply-chain-security"
+      ]
+    },
+    "storage": {
+      "emoji": "💾",
+      "desc": "Database backup, object storage, container registry, SQLite tools",
+      "articles": [
+        "database-backup",
+        "database-backup-incremental",
+        "datasette-sqlite-tools",
+        "kopia-backup",
+        "object-storage-comparison",
+        "zot-registry"
       ]
     },
     "terminal": {
@@ -96,7 +114,10 @@
     "cloudflare",
     "compliance",
     "infrastructure",
+    "monitoring",
+    "networking",
     "security",
+    "storage",
     "terminal"
   ]
 }

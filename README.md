@@ -58,6 +58,7 @@ Deployed on [Cloudflare Pages](https://pages.cloudflare.com) — auto-deploys on
 - **[docs/infrastructure/dagger.md](docs/infrastructure/dagger.md)** — Programmable CI/CD platform: SDKs in 8 languages, content-addressed caching, built-in tracing, Dagger Cloud
 - **[docs/infrastructure/database-backup.md](docs/infrastructure/database-backup.md)** — Database backup guide for PostgreSQL, MySQL, and MariaDB: dedicated users, strategies, automation scripts, and test restore
 - **[docs/infrastructure/database-backup-incremental.md](docs/infrastructure/database-backup-incremental.md)** — Incremental database backup guide: pgBackRest, WAL archiving, XtraBackup, binary logs, MariaDB Backup — with tool comparison and pitfalls
+- **[docs/infrastructure/datasette-sqlite-tools.md](docs/infrastructure/datasette-sqlite-tools.md)** — Datasette, Turso/libSQL, SQLPage — open-source SQLite tools with web UI, auto APIs, and enhanced features for exploring and managing databases
 - **[docs/infrastructure/dex-oidc.md](docs/infrastructure/dex-oidc.md)** — Dex OIDC — federated OpenID Connect identity provider for self-hosted apps (Zot, Forgejo, Beszel)
 - **[docs/infrastructure/dokploy-basic-auth.md](docs/infrastructure/dokploy-basic-auth.md)** — Adding basic auth to Compose applications on Dokploy via Traefik middleware
 - **[docs/infrastructure/dozzle.md](docs/infrastructure/dozzle.md)** — Dozzle — real-time Docker log viewer with forward-proxy OIDC auth via Dex and oauth2-proxy

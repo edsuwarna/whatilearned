@@ -956,6 +956,9 @@
             'cloudflare': 'cloud',
             'compliance': 'shield',
             'infrastructure': 'server',
+            'networking': 'network',
+            'storage': 'database',
+            'monitoring': 'activity',
             'security': 'lock',
             'terminal': 'terminal'
         };
@@ -963,11 +966,14 @@
         // Fallback meta for categories
         const fallbackMeta = {
             'terminal': { emoji: '🖥️', desc: 'ZSH, oh-my-zsh, colorls, terminal customization' },
-            'security': { emoji: '🔒', desc: 'Supply chain security, best practices' },
+            'security': { emoji: '🔒', desc: 'Identity, authentication, OIDC, supply chain security' },
             'cloudflare': { emoji: '☁️', desc: 'Pages, Workers, DNS, deployments' },
             'ai': { emoji: '🤖', desc: 'AI agent frameworks, comparisons, deep dives' },
-            'infrastructure': { emoji: '⚙️', desc: 'Deployment, Docker, Traefik, Dokploy' },
-            'compliance': { emoji: '🛡️', desc: 'Compliance scanning, CIS benchmarks, Lynis' }
+            'infrastructure': { emoji: '⚙️', desc: 'Core devops: build tools, container runtimes, CI/CD SDKs' },
+            'compliance': { emoji: '🛡️', desc: 'Compliance scanning, CIS benchmarks, Lynis' },
+            'networking': { emoji: '🌐', desc: 'VPN, tunnels, mesh networking, remote access' },
+            'storage': { emoji: '💾', desc: 'Database backup, object storage, container registry, SQLite tools' },
+            'monitoring': { emoji: '📊', desc: 'Server monitoring, Docker log viewers, observability' }
         };
 
         // Backward compat: old URL patterns → new flat paths
@@ -982,7 +988,24 @@
             'id/keamanan/supply-chain-security': 'security/supply-chain-security',
             'id/security/supply-chain-security': 'security/supply-chain-security',
             'id/cloudflare/deploy-littlelink-ke-cloudflare-pages': 'cloudflare/deploy-littlelink-to-cloudflare-pages',
-            'id/cloudflare/deploy-littlelink-to-cloudflare-pages': 'cloudflare/deploy-littlelink-to-cloudflare-pages'
+            'id/cloudflare/deploy-littlelink-to-cloudflare-pages': 'cloudflare/deploy-littlelink-to-cloudflare-pages',
+            // Category restructure: infrastructure/* → new categories
+            'infrastructure/chisel': 'networking/chisel',
+            'infrastructure/frp': 'networking/frp',
+            'infrastructure/netbird-selfhosted': 'networking/netbird-selfhosted',
+            'infrastructure/netmaker-selfhosted': 'networking/netmaker-selfhosted',
+            'infrastructure/warpgate': 'networking/warpgate',
+            'infrastructure/wireguard': 'networking/wireguard',
+            'infrastructure/database-backup': 'storage/database-backup',
+            'infrastructure/database-backup-incremental': 'storage/database-backup-incremental',
+            'infrastructure/kopia-backup': 'storage/kopia-backup',
+            'infrastructure/object-storage-comparison': 'storage/object-storage-comparison',
+            'infrastructure/zot-registry': 'storage/zot-registry',
+            'infrastructure/datasette-sqlite-tools': 'storage/datasette-sqlite-tools',
+            'infrastructure/beszel': 'monitoring/beszel',
+            'infrastructure/dozzle': 'monitoring/dozzle',
+            'infrastructure/dex-oidc': 'security/dex-oidc',
+            'infrastructure/dokploy-basic-auth': 'security/dokploy-basic-auth',
         };
 
         async function loadNavData() {
