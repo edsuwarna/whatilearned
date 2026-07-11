@@ -19,6 +19,7 @@ description: - [Why Zot?](#why-zot)
   - [2. OIDC (for web browser SSO)](#2-oidc-for-web-browser-sso)
   - [3. Dual auth (recommended — htpasswd for CLI + OIDC for web)](#3-dual-auth-recommended-htpasswd-for-cli-oidc-for-web)
   - [4. Traefik Basic Auth (for Dokploy Compose)](#4-traefik-basic-auth-for-dokploy-compose)
+  - [5. Dex OIDC](#5-dex-oidc)
 - [Access Control (RBAC)](#access-control-rbac)
   - [Actions](#actions)
   - [Permission levels](#permission-levels)
@@ -213,6 +214,57 @@ labels:
 ```
 
 **⚠️ CRITICAL:** In docker-compose.yml, every `$` in bcrypt hash must be doubled to `$$` (Docker Compose variable interpolation).
+
+### 5. Dex OIDC
+
+Dex as OIDC provider for Zot browser login. Requires API key for `docker login`.
+
+**Zot config (`zot-config.json`):**
+
+```json
+{
+  "http": {
+    "auth": {
+      "sessionKeysFile": "/etc/zot/sessionKeys.json",
+      "apikey": true,
+      "openid": {
+        "callbackAllowOrigins": ["https://registry.dtakah.com"],
+        "providers": {
+          "dex": {
+            "name": "Dex",
+            "issuer": "https://auth.dtakah.com",
+            "credentialsFile": "/etc/zot/dex-credentials.json",
+            "scopes": ["openid", "profile", "email"],
+            "claimMapping": {
+              "username": "preferred_username",
+              "groups": "groups"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+**`dex-credentials.json`** (mount at `/etc/zot/`):
+```json
+{
+  "clientid": "zot",
+  "clientsecret": "zot-client-secret-change-me"
+}
+```
+
+**How it works:**
+1. User opens `https://registry.dtakah.com` → clicks "Login with Dex"
+2. Redirected to Dex → authenticates → redirected back
+3. Zot UI now shows authenticated user
+4. **For docker CLI** — user generates API key from Zot UI, then:
+   ```bash
+   docker login -u <username> -p <api_key> registry.dtakah.com
+   ```
+
+> See full Dex setup in [dex-oidc.md](./dex-oidc.md).
 
 ---
 

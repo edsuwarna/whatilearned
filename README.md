@@ -53,10 +53,12 @@ Deployed on [Cloudflare Pages](https://pages.cloudflare.com) — auto-deploys on
 
 ### ⚙️ Infrastructure
 - **[docs/infrastructure/act.md](docs/infrastructure/act.md)** — Run GitHub Actions workflows locally with nektos/act: installation, CLI reference, runner images, secrets, events, and practical examples
-- **[docs/infrastructure/chisel.md](docs/infrastructure/chisel.md)** — 
+- **[docs/infrastructure/beszel.md](docs/infrastructure/beszel.md)** — Beszel — lightweight server monitoring with historical data, Docker stats, alerts, and OIDC/OAuth support
+- **[docs/infrastructure/chisel.md](docs/infrastructure/chisel.md)** — Chisel: fast TCP/UDP tunnel over HTTP, alternative to frp and ngrok — client-server architecture
 - **[docs/infrastructure/dagger.md](docs/infrastructure/dagger.md)** — Programmable CI/CD platform: SDKs in 8 languages, content-addressed caching, built-in tracing, Dagger Cloud
 - **[docs/infrastructure/database-backup.md](docs/infrastructure/database-backup.md)** — Database backup guide for PostgreSQL, MySQL, and MariaDB: dedicated users, strategies, automation scripts, and test restore
 - **[docs/infrastructure/database-backup-incremental.md](docs/infrastructure/database-backup-incremental.md)** — Incremental database backup guide: pgBackRest, WAL archiving, XtraBackup, binary logs, MariaDB Backup — with tool comparison and pitfalls
+- **[docs/infrastructure/dex-oidc.md](docs/infrastructure/dex-oidc.md)** — Dex OIDC — federated OpenID Connect identity provider for self-hosted apps (Zot, Forgejo, Beszel)
 - **[docs/infrastructure/dokploy-basic-auth.md](docs/infrastructure/dokploy-basic-auth.md)** — Adding basic auth to Compose applications on Dokploy via Traefik middleware
 - **[docs/infrastructure/forgejo-cicd-docker-compose.md](docs/infrastructure/forgejo-cicd-docker-compose.md)** — Self-hosted Forgejo with CI/CD (Forgejo Actions) using Docker Compose
 - **[docs/infrastructure/forgejo-mirror-github.md](docs/infrastructure/forgejo-mirror-github.md)** — Mirror GitHub repositories to Forgejo via UI migration or CLI

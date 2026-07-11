@@ -42,6 +42,7 @@ description: - [Overview](#overview)
   - [Provider Examples](#provider-examples)
   - [Recommendation for MiniPC (4c/8GB/512GB)](#recommendation-for-minipc-4c8gb512gb)
   - [Migrating Existing Data](#migrating-existing-data)
+- [OAuth2 Authentication (Dex)](#oauth2-authentication-dex)
 - [Troubleshooting](#troubleshooting)
 - [Related](#related)
 
@@ -721,6 +722,50 @@ docker exec forgejo-garage garage key info forgejo-user
 1. **Cloudflare R2** — kalo lo pengen storage di cloud tanpa biaya egress dan free tier 10GB. Cocok buat LFS kalo lo sering push binary/assets.
 2. **Garage** — kalo lo pengen self-hosted tapi RAM miniPC-nya terbatas. Jauh lebih ringan dari MinIO.
 3. **Jangan MinIO** di MiniPC — kebanyakan makan RAM buat single-user setup.
+
+## OAuth2 Authentication (Dex)
+
+Forgejo supports external authentication via OAuth2 / OpenID Connect. Dex (or any OIDC provider) can be the single sign-on for Forgejo.
+
+### Setup via Admin UI
+
+1. **Forgejo** → **Panel Admin** → **Authentication Sources** → **Add Authentication Source**
+2. Fill in:
+   - **Type:** OAuth2
+   - **Name:** Dex
+   - **OAuth2 Provider:** OpenID Connect
+   - **Client ID:** `forgejo`
+   - **Client Secret:** `forgejo-client-secret-change-me`
+   - **OpenID Connect Auto Discovery URL:** `https://auth.dtakah.com/.well-known/openid-configuration`
+   - **Scopes:** `openid profile email`
+3. Save
+
+### Docker Compose Environment
+
+```yaml
+services:
+  forgejo:
+    environment:
+      FORGEJO__openid__ENABLE_OPENID_SIGNIN: true
+      FORGEJO__oauth2__ENABLED: true
+      FORGEJO__oauth2__JWT_SECRET: some-random-secret
+```
+
+### Dex Client Config
+
+In Dex `config.yaml`, add to `staticClients`:
+
+```yaml
+  - id: forgejo
+    name: Forgejo
+    secret: forgejo-client-secret-change-me
+    redirectURIs:
+      - "https://git.dtakah.com/user/oauth2/dex/callback"
+```
+
+Forgejo automatically shows a "Sign in with Dex" button on the login page.
+
+> See full Dex setup in [dex-oidc.md](./dex-oidc.md).
 
 ### Migrating Existing Data
 

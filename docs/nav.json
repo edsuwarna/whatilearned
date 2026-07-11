@@ -49,10 +49,12 @@
       "desc": "Deployment, Docker, Traefik, Dokploy",
       "articles": [
         "act",
+        "beszel",
         "chisel",
         "dagger",
         "database-backup",
         "database-backup-incremental",
+        "dex-oidc",
         "dokploy-basic-auth",
         "forgejo-cicd-docker-compose",
         "forgejo-mirror-github",
