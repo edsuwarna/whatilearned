@@ -16,7 +16,8 @@ User Browser
   │
   ├── Zot Registry  ────┐
   ├── Forgejo       ────┤  OIDC (Authorization Code Flow)
-  └── Beszel        ────┤
+  ├── Beszel        ────┤
+  └── Dozzle        ────┘  ← via oauth2-proxy (forward-proxy)
                         ▼
                   ┌──────────┐
                   │   Dex    │  ← federated OIDC provider
@@ -135,6 +136,12 @@ staticClients:
     secret: beszel-client-secret-change-me
     redirectURIs:
       - "https://beszel.example.com/api/oauth2-redirect"
+
+  - id: dozzle
+    name: Dozzle
+    secret: dozzle-client-secret-change-me
+    redirectURIs:
+      - "https://dozzle.example.com/oauth2/callback"
 ```
 
 ### Generate bcrypt Password
@@ -177,6 +184,15 @@ Key points:
 - Redirect URI: `https://beszel.example.com/api/oauth2-redirect`
 - Enable `USER_CREATION=true` for auto-provisioning
 
+### Dozzle
+
+See [dozzle.md](./dozzle.md#docker-compose-setup).
+
+Key points:
+- Dozzle uses `--auth-provider=forward-proxy` — it does **not** speak OIDC natively
+- `oauth2-proxy` sits in front as the OIDC client, handles Dex authentication, and passes `Remote-User`/`Remote-Email` headers to Dozzle
+- Traefik routes to oauth2-proxy (port 4180), not Dozzle directly
+
 ## Verification
 
 1. Open Dex discovery URL: `https://auth.example.com/.well-known/openid-configuration`
@@ -189,4 +205,5 @@ Key points:
 - [Zot Registry](./zot-registry.md) — OCI container registry with Dex OIDC
 - [Forgejo CI/CD](./forgejo-cicd-docker-compose.md) — Git server with Dex OAuth
 - [Beszel](./beszel.md) — Server monitoring with Dex OIDC
+- [Dozzle](./dozzle.md) — Docker log viewer with Dex via oauth2-proxy
 - [Dex Documentation](https://dexidp.io/docs/) — Official Dex docs

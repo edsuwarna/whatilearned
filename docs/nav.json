@@ -56,6 +56,7 @@
         "database-backup-incremental",
         "dex-oidc",
         "dokploy-basic-auth",
+        "dozzle",
         "forgejo-cicd-docker-compose",
         "forgejo-mirror-github",
         "forgejo-storage",

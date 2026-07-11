@@ -60,6 +60,7 @@ Deployed on [Cloudflare Pages](https://pages.cloudflare.com) — auto-deploys on
 - **[docs/infrastructure/database-backup-incremental.md](docs/infrastructure/database-backup-incremental.md)** — Incremental database backup guide: pgBackRest, WAL archiving, XtraBackup, binary logs, MariaDB Backup — with tool comparison and pitfalls
 - **[docs/infrastructure/dex-oidc.md](docs/infrastructure/dex-oidc.md)** — Dex OIDC — federated OpenID Connect identity provider for self-hosted apps (Zot, Forgejo, Beszel)
 - **[docs/infrastructure/dokploy-basic-auth.md](docs/infrastructure/dokploy-basic-auth.md)** — Adding basic auth to Compose applications on Dokploy via Traefik middleware
+- **[docs/infrastructure/dozzle.md](docs/infrastructure/dozzle.md)** — Dozzle — real-time Docker log viewer with forward-proxy OIDC auth via Dex and oauth2-proxy
 - **[docs/infrastructure/forgejo-cicd-docker-compose.md](docs/infrastructure/forgejo-cicd-docker-compose.md)** — Self-hosted Forgejo with CI/CD (Forgejo Actions) using Docker Compose
 - **[docs/infrastructure/forgejo-mirror-github.md](docs/infrastructure/forgejo-mirror-github.md)** — Mirror GitHub repositories to Forgejo via UI migration or CLI
 - **[docs/infrastructure/forgejo-storage.md](docs/infrastructure/forgejo-storage.md)** — Forgejo storage architecture, backup, cleanup, and Docker build cache management

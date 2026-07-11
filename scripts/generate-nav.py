@@ -67,6 +67,7 @@ ARTICLE_DESCS = {
     "infrastructure/netmaker-selfhosted": "Self-hosted Netmaker WireGuard mesh VPN platform: installation, ingress/egress gateways, ACL, and automation",
     "infrastructure/zot-registry": "Lightweight OCI-compliant container registry with Zot: deployment, auth, R2 storage, CVE scanning",
     "infrastructure/beszel": "Beszel — lightweight server monitoring with historical data, Docker stats, alerts, and OIDC/OAuth support",
+    "infrastructure/dozzle": "Dozzle — real-time Docker log viewer with forward-proxy OIDC auth via Dex and oauth2-proxy",
     "security/supply-chain-security": "Open source supply chain security prevention playbook",
     "terminal/colorls": "Beautify your ls command with color and icons",
     "terminal/customize-terminal": "ZSH + oh-my-zsh installation guide",
