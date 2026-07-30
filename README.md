@@ -53,32 +53,40 @@ Deployed on [Cloudflare Pages](https://pages.cloudflare.com) — auto-deploys on
 
 ### ⚙️ Infrastructure
 - **[docs/infrastructure/act.md](docs/infrastructure/act.md)** — Run GitHub Actions workflows locally with nektos/act: installation, CLI reference, runner images, secrets, events, and practical examples
-- **[docs/infrastructure/beszel.md](docs/infrastructure/beszel.md)** — Beszel — lightweight server monitoring with historical data, Docker stats, alerts, and OIDC/OAuth support
-- **[docs/infrastructure/chisel.md](docs/infrastructure/chisel.md)** — Chisel: fast TCP/UDP tunnel over HTTP, alternative to frp and ngrok — client-server architecture
 - **[docs/infrastructure/dagger.md](docs/infrastructure/dagger.md)** — Programmable CI/CD platform: SDKs in 8 languages, content-addressed caching, built-in tracing, Dagger Cloud
-- **[docs/infrastructure/database-backup.md](docs/infrastructure/database-backup.md)** — Database backup guide for PostgreSQL, MySQL, and MariaDB: dedicated users, strategies, automation scripts, and test restore
-- **[docs/infrastructure/database-backup-incremental.md](docs/infrastructure/database-backup-incremental.md)** — Incremental database backup guide: pgBackRest, WAL archiving, XtraBackup, binary logs, MariaDB Backup — with tool comparison and pitfalls
-- **[docs/infrastructure/datasette-sqlite-tools.md](docs/infrastructure/datasette-sqlite-tools.md)** — Datasette, Turso/libSQL, SQLPage — open-source SQLite tools with web UI, auto APIs, and enhanced features for exploring and managing databases
-- **[docs/infrastructure/dex-oidc.md](docs/infrastructure/dex-oidc.md)** — Dex OIDC — federated OpenID Connect identity provider for self-hosted apps (Zot, Forgejo, Beszel)
-- **[docs/infrastructure/dokploy-basic-auth.md](docs/infrastructure/dokploy-basic-auth.md)** — Adding basic auth to Compose applications on Dokploy via Traefik middleware
-- **[docs/infrastructure/dozzle.md](docs/infrastructure/dozzle.md)** — Dozzle — real-time Docker log viewer with forward-proxy OIDC auth via Dex and oauth2-proxy
 - **[docs/infrastructure/forgejo-cicd-docker-compose.md](docs/infrastructure/forgejo-cicd-docker-compose.md)** — Self-hosted Forgejo with CI/CD (Forgejo Actions) using Docker Compose
 - **[docs/infrastructure/forgejo-mirror-github.md](docs/infrastructure/forgejo-mirror-github.md)** — Mirror GitHub repositories to Forgejo via UI migration or CLI
 - **[docs/infrastructure/forgejo-storage.md](docs/infrastructure/forgejo-storage.md)** — Forgejo storage architecture, backup, cleanup, and Docker build cache management
-- **[docs/infrastructure/frp.md](docs/infrastructure/frp.md)** — 
 - **[docs/infrastructure/glibc-vs-musl.md](docs/infrastructure/glibc-vs-musl.md)** — Comprehensive comparison: architecture, performance, static linking, Docker implications, DNS, threading, and when to choose which C library
 - **[docs/infrastructure/kata-containers-vs-firecracker.md](docs/infrastructure/kata-containers-vs-firecracker.md)** — Comparison of Kata Containers and Firecracker for lightweight virtualization
-- **[docs/infrastructure/kopia-backup.md](docs/infrastructure/kopia-backup.md)** — Kopia backup with Cloudflare R2: incremental, dedup, encrypted backup for VPS
-- **[docs/infrastructure/netbird-selfhosted.md](docs/infrastructure/netbird-selfhosted.md)** — Self-hosted Netbird WireGuard mesh VPN with SSO, groups, policies, TURN relay, and routing peers
-- **[docs/infrastructure/netmaker-selfhosted.md](docs/infrastructure/netmaker-selfhosted.md)** — Self-hosted Netmaker WireGuard mesh VPN platform: installation, ingress/egress gateways, ACL, and automation
-- **[docs/infrastructure/object-storage-comparison.md](docs/infrastructure/object-storage-comparison.md)** — Comparison of S3-compatible object storage providers: R2, S3, GCS, Backblaze B2
+- **[docs/infrastructure/proxmox-active-standby-architecture.md](docs/infrastructure/proxmox-active-standby-architecture.md)** — 
 - **[docs/infrastructure/taskfile.md](docs/infrastructure/taskfile.md)** — Modern YAML-based task runner: dependencies, caching, templates, includes, platform-specific commands
-- **[docs/infrastructure/warpgate.md](docs/infrastructure/warpgate.md)** — 
-- **[docs/infrastructure/wireguard.md](docs/infrastructure/wireguard.md)** — WireGuard VPN: installation, hub & spoke topology, site-to-site, NAT traversal, advanced config, security, and migration from OpenVPN
-- **[docs/infrastructure/zot-registry.md](docs/infrastructure/zot-registry.md)** — Lightweight OCI-compliant container registry with Zot: deployment, auth, R2 storage, CVE scanning
+- **[docs/infrastructure/virtualization-comparison-proxmox-cloudstack-openstack.md](docs/infrastructure/virtualization-comparison-proxmox-cloudstack-openstack.md)** — 
+
+### 📊 Monitoring
+- **[docs/monitoring/beszel.md](docs/monitoring/beszel.md)** — Beszel — lightweight server monitoring with historical data, Docker stats, alerts, and OIDC/OAuth support
+- **[docs/monitoring/dozzle.md](docs/monitoring/dozzle.md)** — Dozzle — real-time Docker log viewer with forward-proxy OIDC auth via Dex and oauth2-proxy
+
+### 🌐 Networking
+- **[docs/networking/chisel.md](docs/networking/chisel.md)** — Chisel: fast TCP/UDP tunnel over HTTP, alternative to frp and ngrok — client-server architecture
+- **[docs/networking/frp.md](docs/networking/frp.md)** — Fast reverse proxy for exposing local servers behind NAT or firewalls: client-server architecture with multiple tunnel types
+- **[docs/networking/netbird-selfhosted.md](docs/networking/netbird-selfhosted.md)** — Self-hosted Netbird WireGuard mesh VPN with SSO, groups, policies, TURN relay, and routing peers
+- **[docs/networking/netmaker-selfhosted.md](docs/networking/netmaker-selfhosted.md)** — Self-hosted Netmaker WireGuard mesh VPN platform: installation, ingress/egress gateways, ACL, and automation
+- **[docs/networking/warpgate.md](docs/networking/warpgate.md)** — Warpgate — smart SSH bastion host with OIDC auth, session recording, and web-based SSH client
+- **[docs/networking/wireguard.md](docs/networking/wireguard.md)** — WireGuard VPN: installation, hub & spoke topology, site-to-site, NAT traversal, advanced config, security, and migration from OpenVPN
 
 ### 🔒 Security
+- **[docs/security/dex-oidc.md](docs/security/dex-oidc.md)** — Dex OIDC — federated OpenID Connect identity provider for self-hosted apps (Zot, Forgejo, Beszel)
+- **[docs/security/dokploy-basic-auth.md](docs/security/dokploy-basic-auth.md)** — Adding basic auth to Compose applications on Dokploy via Traefik middleware
 - **[docs/security/supply-chain-security.md](docs/security/supply-chain-security.md)** — Open source supply chain security prevention playbook
+
+### 💾 Storage
+- **[docs/storage/database-backup.md](docs/storage/database-backup.md)** — Database backup guide for PostgreSQL, MySQL, and MariaDB: dedicated users, strategies, automation scripts, and test restore
+- **[docs/storage/database-backup-incremental.md](docs/storage/database-backup-incremental.md)** — Incremental database backup guide: pgBackRest, WAL archiving, XtraBackup, binary logs, MariaDB Backup — with tool comparison and pitfalls
+- **[docs/storage/datasette-sqlite-tools.md](docs/storage/datasette-sqlite-tools.md)** — Datasette, Turso/libSQL, SQLPage — open-source SQLite tools with web UI, auto APIs, and enhanced features for exploring and managing databases
+- **[docs/storage/kopia-backup.md](docs/storage/kopia-backup.md)** — Kopia backup with Cloudflare R2: incremental, dedup, encrypted backup for VPS
+- **[docs/storage/object-storage-comparison.md](docs/storage/object-storage-comparison.md)** — Comparison of S3-compatible object storage providers: R2, S3, GCS, Backblaze B2
+- **[docs/storage/zot-registry.md](docs/storage/zot-registry.md)** — Lightweight OCI-compliant container registry with Zot: deployment, auth, R2 storage, CVE scanning
 
 ### 🖥️ Terminal
 - **[docs/terminal/colorls.md](docs/terminal/colorls.md)** — Beautify your ls command with color and icons

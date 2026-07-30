@@ -28,7 +28,9 @@
   <url><loc>https://notes.edsuwarna.id/#/infrastructure/forgejo-storage</loc></url>
   <url><loc>https://notes.edsuwarna.id/#/infrastructure/glibc-vs-musl</loc></url>
   <url><loc>https://notes.edsuwarna.id/#/infrastructure/kata-containers-vs-firecracker</loc></url>
+  <url><loc>https://notes.edsuwarna.id/#/infrastructure/proxmox-active-standby-architecture</loc></url>
   <url><loc>https://notes.edsuwarna.id/#/infrastructure/taskfile</loc></url>
+  <url><loc>https://notes.edsuwarna.id/#/infrastructure/virtualization-comparison-proxmox-cloudstack-openstack</loc></url>
   <url><loc>https://notes.edsuwarna.id/#/monitoring/beszel</loc></url>
   <url><loc>https://notes.edsuwarna.id/#/monitoring/dozzle</loc></url>
   <url><loc>https://notes.edsuwarna.id/#/networking/chisel</loc></url>

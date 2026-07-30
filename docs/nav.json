@@ -55,7 +55,9 @@
         "forgejo-storage",
         "glibc-vs-musl",
         "kata-containers-vs-firecracker",
-        "taskfile"
+        "proxmox-active-standby-architecture",
+        "taskfile",
+        "virtualization-comparison-proxmox-cloudstack-openstack"
       ]
     },
     "monitoring": {
