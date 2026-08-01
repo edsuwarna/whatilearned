@@ -37,11 +37,11 @@ Three 2026 models from MiniMax, Alibaba, and Tencent — all strong agentic cont
 
 ## ⚡ Qwen3.7-Flash
 
-**Official source:** OpenRouter + Aliyun Model Studio (百炼) + platform.qianwenai.com
+**Official source:** OpenRouter + Aliyun Model Studio (Bailian) + platform.qianwenai.com
 
 | Aspect | Detail |
 |---|---|
-| Positioning | Alibaba's **vision-language reasoning model** — "能看、能想、能动手" (sees, thinks, acts) |
+| Positioning | Alibaba's **vision-language reasoning model** — "sees, thinks, and acts" |
 | Modality | 🖼️ **Text + Image + Video → Text** (multimodal!) |
 | Context | **1M tokens**, max output 64K |
 | Released | Jul 28, 2026 (slug `qwen3.7-flash-20260727`) |
@@ -59,7 +59,7 @@ Three 2026 models from MiniMax, Alibaba, and Tencent — all strong agentic cont
 
 | Property | Value |
 |---|---|
-| Developer | **Tencent Hy Team** (腾讯混元) |
+| Developer | **Tencent Hy Team** (Hunyuan) |
 | Architecture | Sparse MoE |
 | Total Params | **295B** |
 | Active Params | **21B** (top-8 of 192 experts) |
