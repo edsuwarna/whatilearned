@@ -79,6 +79,11 @@ ARTICLE_DESCS = {
     "monitoring/dozzle": "Dozzle — real-time Docker log viewer with forward-proxy OIDC auth via Dex and oauth2-proxy",
     "terminal/colorls": "Beautify your ls command with color and icons",
     "terminal/customize-terminal": "ZSH + oh-my-zsh installation guide",
+    "ai/nvidia-nim-budget-models": "7 budget LLMs on NVIDIA NIM: Gemma 4, Step-3.7-Flash, GPT-OSS, Llama 3.x — specs & use cases",
+    "ai/xiaomi-mimo-v25-models": "MiMo V2.5 (310B omnimodal) vs V2.5-Pro (1.02T agentic) — comparison & positioning",
+    "ai/2026-agentic-models-minimax-qwen-tencent": "MiniMax M2.7-highspeed, Qwen3.7-Flash & Tencent Hy3 — 2026 agentic contenders",
+    "ai/small-cheap-models-nano-seed": "GPT-4.1-nano, GPT-5-nano, Seed-2.0-Mini, GPT-4o-mini — small/cheap model comparison",
+    "ai/omniroute-combo-model-guide": "Group free/cheap LLMs into OmniRoute auto/ combos — 6 ready-made designs",
 }
 
 

@@ -24,15 +24,20 @@ Deployed on [Cloudflare Pages](https://pages.cloudflare.com) — auto-deploys on
 > 🤖 Some content in this repository is generated with the assistance of AI. All content is reviewed, edited, and curated manually to ensure accuracy and relevance.
 
 ### 🤖 AI
+- **[docs/ai/2026-agentic-models-minimax-qwen-tencent.md](docs/ai/2026-agentic-models-minimax-qwen-tencent.md)** — MiniMax M2.7-highspeed, Qwen3.7-Flash & Tencent Hy3 — 2026 agentic contenders
 - **[docs/ai/9router-free-ai-router.md](docs/ai/9router-free-ai-router.md)** — Setup guide for 9Router: free AI gateway for OpenCode, Claude Code, and other CLI tools
 - **[docs/ai/claw-framework-comparison.md](docs/ai/claw-framework-comparison.md)** — Side-by-side comparison of OpenClaw, Hermes Agent, Nanoclaw, and Picoclaw AI agent frameworks
 - **[docs/ai/google-ai-studio-free-models.md](docs/ai/google-ai-studio-free-models.md)** — Google AI Studio free tier models, rate limits, and API access guide
+- **[docs/ai/nvidia-nim-budget-models.md](docs/ai/nvidia-nim-budget-models.md)** — 7 budget LLMs on NVIDIA NIM: Gemma 4, Step-3.7-Flash, GPT-OSS, Llama 3.x — specs & use cases
+- **[docs/ai/omniroute-combo-model-guide.md](docs/ai/omniroute-combo-model-guide.md)** — Group free/cheap LLMs into OmniRoute auto/ combos — 6 ready-made designs
 - **[docs/ai/opencode-advanced-tips.md](docs/ai/opencode-advanced-tips.md)** — Advanced OpenCode workflows: live log tailing, SSH analysis, MCP servers, incident response, per-project commands, and SRE emergency kit
 - **[docs/ai/opencode-agent-skills.md](docs/ai/opencode-agent-skills.md)** — OpenCode agent skills reference: open-source SKILL.md repositories, skill managers (skillkit, agnix), and cross-tool compatibility
 - **[docs/ai/opencode-commands-by-role.md](docs/ai/opencode-commands-by-role.md)** — OpenCode custom commands organized by engineering role: Developer, DevOps, SRE, Cloud, and Infrastructure
 - **[docs/ai/opencode-daily-use-cases.md](docs/ai/opencode-daily-use-cases.md)** — Real-world daily use cases for OpenCode: coding, debugging, refactoring, Docker, CI/CD, security, and devops workflows
 - **[docs/ai/opencode-power-user.md](docs/ai/opencode-power-user.md)** — OpenCode power user guide: custom instructions, TUI shortcuts, token management, model strategy, git superpowers, tmux workflow, and session hygiene
 - **[docs/ai/picoclaw-deep-dive.md](docs/ai/picoclaw-deep-dive.md)** — Comprehensive deep dive into Picoclaw (sipeed/picoclaw), the ultra-lightweight Go-based AI agent framework
+- **[docs/ai/small-cheap-models-nano-seed.md](docs/ai/small-cheap-models-nano-seed.md)** — GPT-4.1-nano, GPT-5-nano, Seed-2.0-Mini, GPT-4o-mini — small/cheap model comparison
+- **[docs/ai/xiaomi-mimo-v25-models.md](docs/ai/xiaomi-mimo-v25-models.md)** — MiMo V2.5 (310B omnimodal) vs V2.5-Pro (1.02T agentic) — comparison & positioning
 
 ### 📁 Career
 - **[docs/career/upwork-profile.md](docs/career/upwork-profile.md)** — Upwork profile optimization guide: headline, overview, portfolio, specialized profiles, and pricing strategy

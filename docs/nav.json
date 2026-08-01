@@ -4,15 +4,20 @@
       "emoji": "🤖",
       "desc": "AI agent frameworks, comparisons, deep dives",
       "articles": [
+        "2026-agentic-models-minimax-qwen-tencent",
         "9router-free-ai-router",
         "claw-framework-comparison",
         "google-ai-studio-free-models",
+        "nvidia-nim-budget-models",
+        "omniroute-combo-model-guide",
         "opencode-advanced-tips",
         "opencode-agent-skills",
         "opencode-commands-by-role",
         "opencode-daily-use-cases",
         "opencode-power-user",
-        "picoclaw-deep-dive"
+        "picoclaw-deep-dive",
+        "small-cheap-models-nano-seed",
+        "xiaomi-mimo-v25-models"
       ]
     },
     "career": {
