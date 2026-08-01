@@ -8,7 +8,7 @@ description: Capability deep-dive of 7 models available on NVIDIA NIM — Gemma 
 > **Last updated:** 2026-08-01
 > **Source:** NVIDIA NIM (integrate.api.nvidia.com) + Hugging Face model cards
 
-Roundup of free/mit-licensed LLMs exposed via NVIDIA's NIM endpoint. All 7 verified present in the catalog (102 models total). Two surprises: **Gemma-4 and Step-3.7 are actually multimodal** (image-text-to-text), not text-only.
+Roundup of free/open-licensed LLMs exposed via NVIDIA's NIM endpoint. All 7 verified present in the catalog (102 models total). Two surprises: **Gemma-4 and Step-3.7 are actually multimodal** (image-text-to-text), not text-only.
 
 ## Table of Contents
 
@@ -36,67 +36,67 @@ Roundup of free/mit-licensed LLMs exposed via NVIDIA's NIM endpoint. All 7 verif
 
 ## 🤖 google/gemma-4-31b-it
 
-*Multimodal generasi terbaru Google — image + video*
+*Google's newest multimodal generation — image + video*
 
-- Input: teks + gambar + **video sebagai frame (hingga 60 detik @ 1fps)**
-- 140+ bahasa, 256K context, reasoning mode (`enable_thinking`)
-- **Visual token budget** configurable (70–1120): budget rendah → caption/video, tinggi → OCR/dokumen
-- Hybrid attention: sliding window + global attention + p-RoPE → kuat long-context
-- Use case: reasoning, agentic, coding, OCR, document parsing, video understanding
-- ⚠️ `google/gemma-4-31B-it` di HF = `image-text-to-text` — **bukan text-only**
+- Input: text + image + **video as frames (up to 60 seconds @ 1fps)**
+- 140+ languages, 256K context, reasoning mode (`enable_thinking`)
+- **Configurable visual token budget** (70–1120): low budget → caption/video, high budget → OCR/documents
+- Hybrid attention: sliding window + global attention + p-RoPE → strong long-context
+- Use cases: reasoning, agentic, coding, OCR, document parsing, video understanding
+- ⚠️ `google/gemma-4-31B-it` on HF = `image-text-to-text` — **not text-only**
 
 ## ⚡ stepfun-ai/step-3.7-flash
 
-*MoE vision-language dari StepFun — speed gila*
+*StepFun's vision-language MoE — insane speed*
 
-- 198B total tapi hanya ~11B aktif per token → speed kelas 11B, intelligence kelas 100B+
-- **MTP-3** (3-way Multi-Token Prediction): 100–300 tok/s, peak 350 tok/s untuk coding
-- Vision module 728×728 px — cocok baca screenshot/UI
-- Use case: multimodal understanding, **GUI automation** (baca screenshot), coding/frontend generation, tool calling, agentic
-- Positioning: "mini GPT-4o versi open-source"
+- 198B total but only ~11B active per token → 11B-class speed, 100B+ intelligence
+- **MTP-3** (3-way Multi-Token Prediction): 100–300 tok/s, peak 350 tok/s for coding
+- Vision module 728×728 px — great for reading screenshots/UI
+- Use cases: multimodal understanding, **GUI automation** (reading screenshots), coding/frontend generation, tool calling, agentic
+- Positioning: "open-source mini GPT-4o"
 
 ## 🧠 openai/gpt-oss-120b
 
-*Reasoning model open-weight OpenAI*
+*OpenAI's open-weight reasoning model*
 
-- Full chain-of-thought (CoT bisa dibaca untuk debugging), **reasoning effort configurable** (low/med/high)
+- Full chain-of-thought (CoT readable for debugging), **configurable reasoning effort** (low/med/high)
 - Tool use: function calling, web browsing, python execution, structured outputs
-- 117B / 5.7B active → muat di **1× H100**, native MXFP4 quantization
-- Benchmark (NVIDIA card, high reasoning): **2622 elo with tools** vs 2516 tanpa tools
+- 117B / 5.7B active → fits in **1× H100**, native MXFP4 quantization
+- Benchmark (NVIDIA card, high reasoning): **2622 elo with tools** vs 2516 without
 - **Text-only**
 
 ## 🚀 openai/gpt-oss-20b
 
-- Arsitektur & kemampuan reasoning identik dengan 120b, tapi 20B total / 4B active
-- Latency rendah → cocok local/specialized deployment
-- Kompatibel **OpenAI Responses API** + structured output
+- Same architecture & reasoning capabilities as the 120b, but 20B total / 4B active
+- Low latency → good for local/specialized deployment
+- Compatible with **OpenAI Responses API** + structured output
 
 ## 📚 meta/llama-3.1-70b-instruct
 
 - Dense 70B, tool/function calling, JSON mode
-- 8 bahasa utama (EN, DE, FR, IT, PT, HI, ES, TH)
-- Solid untuk production RAG/agent, tapi generasi 2024
+- 8 major languages (EN, DE, FR, IT, PT, HI, ES, TH)
+- Solid for production RAG/agents, but a 2024 generation
 
 ## 🐣 meta/llama-3.1-8b-instruct
 
 - 8B dense, 128K context, function calling
-- Untuk edge/local, latency kritis, atau baseline murah
+- For edge/local, latency-critical, or cheap baseline workloads
 
 ## 👁️ meta/llama-3.2-11b-vision-instruct
 
 - Text + image input, text output
-- Use case: image captioning, document QA, OCR, visual reasoning
-- License Llama 3.2 (komersial OK, syarat >700M MAU)
+- Use cases: image captioning, document QA, OCR, visual reasoning
+- Llama 3.2 license (commercial OK, >700M MAU clause)
 
 ## 💡 Quick Recommendations
 
-| Kebutuhan | Model |
+| Need | Model |
 |---|---|
-| Vision + video + reasoning, GPU biasa | **gemma-4-31b-it** |
-| Screenshot/UI agent + speed tinggi | **step-3.7-flash** |
-| Reasoning/agent production text-only, 1 GPU | **gpt-oss-120b** |
-| Latency rendah text reasoning | **gpt-oss-20b** |
-| OCR/vision ringan | **llama-3.2-11b-vision** |
-| RAG/chat stabil murah | **llama-3.1-8b** |
+| Vision + video + reasoning on consumer GPU | **gemma-4-31b-it** |
+| Screenshot/UI agent + high speed | **step-3.7-flash** |
+| Text-only reasoning/agent production, 1 GPU | **gpt-oss-120b** |
+| Low-latency text reasoning | **gpt-oss-20b** |
+| Lightweight OCR/vision | **llama-3.2-11b-vision** |
+| Stable cheap RAG/chat | **llama-3.1-8b** |
 
-> **TL;DR:** Yang paling menarik: **gemma-4-31b-it** (multimodal + video + 256K, Apache 2.0) dan **step-3.7-flash** (MoE 198B speed gila). Dua-duanya gratis via API trial NVIDIA (integrate.api.nvidia.com) — tinggal bikin API key di build.nvidia.com.
+> **TL;DR:** Most interesting: **gemma-4-31b-it** (multimodal + video + 256K, Apache 2.0) and **step-3.7-flash** (198B MoE with insane speed). Both free via NVIDIA's trial API (integrate.api.nvidia.com) — just create an API key at build.nvidia.com.

@@ -19,74 +19,74 @@ Three 2026 models from MiniMax, Alibaba, and Tencent — all strong agentic cont
 
 ## 🚀 MiniMax-M2.7-highspeed
 
-**Sumber resmi:** platform.minimax.io (docs resmi MiniMax)
+**Official source:** platform.minimax.io (MiniMax docs)
 
-| Aspek | Detail |
+| Aspect | Detail |
 |---|---|
-| Positioning | **Varian "highspeed" dari M2.7** — performa sama, inference jauh lebih cepat, low latency |
-| Arsitektur | MoE, 62 layer, hidden 3072, **256 local experts / 8 aktif per token**, full attention |
+| Positioning | **"highspeed" variant of M2.7** — same performance, much faster inference, low latency |
+| Architecture | MoE, 62 layers, hidden 3072, **256 local experts / 8 active per token**, full attention |
 | Context | **200K tokens** (196K usable) |
-| Keunggulan | 🧑💻 **Polyglot code mastery** + precision code refactoring + low latency |
-| Capability M2.7 | "Recursive self-improvement", **agentic multi-agent**, top real-world engineering, office delivery, character-rich interaction |
+| Strengths | 🧑💻 **Polyglot code mastery** + precision code refactoring + low latency |
+| M2.7 base capabilities | "Recursive self-improvement", **agentic multi-agent**, top real-world engineering, office delivery, character-rich interaction |
 | Tool use | ✅ Function calling (`minimax_m2` parser), reasoning, structured outputs, interleaved thinking |
-| Ekstra | MTP (3 modules) akselerasi output, QK-norm |
-| Harga (OpenRouter) | $0.25/M input, $1/M output |
+| Extras | MTP (3 modules) output acceleration, QK-norm |
+| Price (OpenRouter) | $0.25/M input, $1/M output |
 | Deploy | Self-host: vLLM / SGLang (Linux GPU) / MLX (Mac Studio) — BF16 ~457GB VRAM |
 
-**Kesimpulan:** fokus ke **coding, refactoring presisi, skenario butuh respons cepat** (agent, real-time). Text-only.
+**Takeaway:** focused on **coding, precise refactoring, and fast-response scenarios** (agents, real-time). Text-only.
 
 ## ⚡ Qwen3.7-Flash
 
-**Sumber resmi:** OpenRouter + Aliyun Model Studio (百炼) + platform.qianwenai.com
+**Official source:** OpenRouter + Aliyun Model Studio (百炼) + platform.qianwenai.com
 
-| Aspek | Detail |
+| Aspect | Detail |
 |---|---|
-| Positioning | **Vision-language reasoning model** Alibaba — "能看、能想、能动手" (bisa lihat, berpikir, bertindak) |
+| Positioning | Alibaba's **vision-language reasoning model** — "能看、能想、能动手" (sees, thinks, acts) |
 | Modality | 🖼️ **Text + Image + Video → Text** (multimodal!) |
 | Context | **1M tokens**, max output 64K |
-| Rilis | 28 Jul 2026 (slug `qwen3.7-flash-20260727`) |
-| Use case resmi | **Multimodal agents, visual coding, search, computer interaction** — kuat di object recognition, spatial understanding, real-world visual perception |
-| Capability dasar | Creative writing, math/logic, code development, info QA, text translation |
+| Released | Jul 28, 2026 (slug `qwen3.7-flash-20260727`) |
+| Official use cases | **Multimodal agents, visual coding, search, computer interaction** — strong at object recognition, spatial understanding, real-world visual perception |
+| Base capabilities | Creative writing, math/logic, code development, info QA, text translation |
 | Tool use | ✅ Tools, reasoning, response_format, seed, logprobs |
-| Harga | Sangat murah: **$0.03/M input, $0.13/M output** (cache read $0.006/M) |
-| Performa real | Latency 0.91s (P50), ~38 tps, uptime 99.99% (Alibaba Cloud) |
+| Price | Very cheap: **$0.03/M input, $0.13/M output** (cache read $0.006/M) |
+| Real performance | Latency 0.91s (P50), ~38 tps, uptime 99.99% (Alibaba Cloud) |
 
-**Kesimpulan:** model **multimodal agent** — input gambar & video, reasoning, tool calling, context 1M, harga murah. Penerus Qwen3-VL lineage dengan kemampuan agentic.
+**Takeaway:** a **multimodal agent model** — image & video input, reasoning, tool calling, 1M context, dirt cheap. Successor to the Qwen3-VL lineage with agentic capabilities.
 
 ## 🤖 Tencent Hy3
 
-**Sumber resmi:** HF model card `tencent/Hy3` + OpenRouter
+**Official source:** HF model card `tencent/Hy3` + OpenRouter
 
-| Property | Nilai |
+| Property | Value |
 |---|---|
 | Developer | **Tencent Hy Team** (腾讯混元) |
-| Arsitektur | Sparse MoE |
+| Architecture | Sparse MoE |
 | Total Params | **295B** |
-| Active Params | **21B** (top-8 dari 192 experts) |
+| Active Params | **21B** (top-8 of 192 experts) |
 | MTP Layer | 3.8B (1 layer) |
 | Layers | 80 (GQA, 64 heads, 8 KV heads, head dim 128) |
 | Context | **256K** |
 | License | **Apache 2.0** (open-source!) |
-| Precision | BF16 (ada varian FP8) |
+| Precision | BF16 (FP8 variant available) |
 
-**Capability inti:**
-- **Reasoning kuat** — configurable reasoning effort (disabled/low/high). 21B aktif tapi kompetitif dengan flagship 2-5x lebih besar
-- **Agentic workflows** — keunggulan utama:
-  - **Stability tool calls & output format** — production-grade, error recovery bagus, generalizes across scaffolding (CodeBuddy, Cline, KiloCode — SWE-Bench variance < 4%)
-  - Dari feedback 50+ produk Tencent
-- **Anti-hallucination**: hallucination rate turun **12.5% → 5.4%**, commonsense error **25.4% → 12.7%**
-- **Long-context & multi-turn**: issue rate turun **17.4% → 7.9%**; kuat di long-dialogue (MRCR)
+**Core capabilities:**
+- **Strong reasoning** — configurable reasoning effort (disabled/low/high). 21B active yet competitive with flagships 2-5× larger
+- **Agentic workflows** — main strength:
+  - **Stable tool calls & output formats** — production-grade, error recovery, generalizes across scaffoldings (CodeBuddy, Cline, KiloCode — SWE-Bench variance < 4%)
+  - Built from feedback across 50+ Tencent products
+- **Anti-hallucination**: hallucination rate down **12.5% → 5.4%**, commonsense errors **25.4% → 12.7%**
+- **Long-context & multi-turn**: issue rate down **17.4% → 7.9%**; strong on long-dialogue evals (MRCR)
 - **Productivity**: coding, office work, **financial modeling**, **frontend design**, **game development**
-- **Benchmark**: blind eval 270 experts → **2.67/4** > GLM-5.1 (2.51/4)
+- **Benchmark**: blind eval of 270 experts → **2.67/4** > GLM-5.1 (2.51/4)
 
-**Harga (OpenRouter):** $0.132/M input, $0.528/M output, cache read $0.033/M
+**Price (OpenRouter):** $0.132/M input, $0.528/M output, $0.033/M cache read
 
-**Catatan:** text-only (bukan multimodal). Open-source Apache 2.0 → bisa self-host (vLLM/SGLang, ada guide finetuning & RL). Ada varian **hy3-preview** (April, lebih murah: $0.063/$0.21).
+**Notes:** text-only (not multimodal). Open-source Apache 2.0 → self-hostable (vLLM/SGLang, finetuning & RL guides included). **hy3-preview** variant available (April, cheaper: $0.063/$0.21).
 
 ## 🆚 Comparison
 
-| Model | Total/Active | Context | Fokus | Modalitas | Harga in/out per 1M |
+| Model | Total/Active | Context | Focus | Modality | Price in/out per 1M |
 |---|---|---|---|---|---|
-| **M2.7-highspeed** | ~172B/? | 200K | Coding cepat & refactoring | Text | $0.25/$1 |
-| **Qwen3.7-Flash** | ? | **1M** | Agent multimodal & visual | Text+Img+Vid | **$0.03/$0.13** |
+| **M2.7-highspeed** | ~172B/? | 200K | Fast coding & refactoring | Text | $0.25/$1 |
+| **Qwen3.7-Flash** | ? | **1M** | Multimodal & visual agent | Text+Img+Vid | **$0.03/$0.13** |
 | **Hy3** | 295B/21B | 256K | Agentic + reliability + anti-hallucination | Text | $0.132/$0.528 |
