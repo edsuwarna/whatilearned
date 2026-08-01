@@ -28,6 +28,7 @@ Deployed on [Cloudflare Pages](https://pages.cloudflare.com) — auto-deploys on
 - **[docs/ai/9router-free-ai-router.md](docs/ai/9router-free-ai-router.md)** — Setup guide for 9Router: free AI gateway for OpenCode, Claude Code, and other CLI tools
 - **[docs/ai/claw-framework-comparison.md](docs/ai/claw-framework-comparison.md)** — Side-by-side comparison of OpenClaw, Hermes Agent, Nanoclaw, and Picoclaw AI agent frameworks
 - **[docs/ai/google-ai-studio-free-models.md](docs/ai/google-ai-studio-free-models.md)** — Google AI Studio free tier models, rate limits, and API access guide
+- **[docs/ai/mem0-vs-honcho-hermes-memory.md](docs/ai/mem0-vs-honcho-hermes-memory.md)** — 
 - **[docs/ai/nvidia-nim-budget-models.md](docs/ai/nvidia-nim-budget-models.md)** — 7 budget LLMs on NVIDIA NIM: Gemma 4, Step-3.7-Flash, GPT-OSS, Llama 3.x — specs & use cases
 - **[docs/ai/omniroute-combo-model-guide.md](docs/ai/omniroute-combo-model-guide.md)** — Group free/cheap LLMs into OmniRoute auto/ combos — 6 ready-made designs
 - **[docs/ai/opencode-advanced-tips.md](docs/ai/opencode-advanced-tips.md)** — Advanced OpenCode workflows: live log tailing, SSH analysis, MCP servers, incident response, per-project commands, and SRE emergency kit
