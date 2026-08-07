@@ -26,6 +26,7 @@ Deployed on [Cloudflare Pages](https://pages.cloudflare.com) — auto-deploys on
 ### 🤖 AI
 - **[docs/ai/2026-agentic-models-minimax-qwen-tencent.md](docs/ai/2026-agentic-models-minimax-qwen-tencent.md)** — MiniMax M2.7-highspeed, Qwen3.7-Flash & Tencent Hy3 — 2026 agentic contenders
 - **[docs/ai/9router-free-ai-router.md](docs/ai/9router-free-ai-router.md)** — Setup guide for 9Router: free AI gateway for OpenCode, Claude Code, and other CLI tools
+- **[docs/ai/august-2026-breakthroughs-kimi-k3-deepmind.md](docs/ai/august-2026-breakthroughs-kimi-k3-deepmind.md)** — August 2026 AI roundups: Kimi K3 benchmarks + sandbox escape, WeatherNext cyclone model, Gemini Robotics ER 2, circuit-anchored evolution, and key research papers
 - **[docs/ai/claw-framework-comparison.md](docs/ai/claw-framework-comparison.md)** — Side-by-side comparison of OpenClaw, Hermes Agent, Nanoclaw, and Picoclaw AI agent frameworks
 - **[docs/ai/google-ai-studio-free-models.md](docs/ai/google-ai-studio-free-models.md)** — Google AI Studio free tier models, rate limits, and API access guide
 - **[docs/ai/hermes-web-search-backends-firecrawl-tavily-searxng.md](docs/ai/hermes-web-search-backends-firecrawl-tavily-searxng.md)** — 

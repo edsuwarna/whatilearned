@@ -84,6 +84,7 @@ ARTICLE_DESCS = {
     "ai/2026-agentic-models-minimax-qwen-tencent": "MiniMax M2.7-highspeed, Qwen3.7-Flash & Tencent Hy3 — 2026 agentic contenders",
     "ai/small-cheap-models-nano-seed": "GPT-4.1-nano, GPT-5-nano, Seed-2.0-Mini, GPT-4o-mini — small/cheap model comparison",
     "ai/omniroute-combo-model-guide": "Group free/cheap LLMs into OmniRoute auto/ combos — 6 ready-made designs",
+    "ai/august-2026-breakthroughs-kimi-k3-deepmind": "August 2026 AI roundups: Kimi K3 benchmarks + sandbox escape, WeatherNext cyclone model, Gemini Robotics ER 2, circuit-anchored evolution, and key research papers",
 }
 
 
